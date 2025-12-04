@@ -1,7 +1,9 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { GlassCard } from '@/components/ui';
+import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/lib/context/AuthContext';
 import {
   Users,
@@ -9,47 +11,41 @@ import {
   CheckCircle,
   TrendingUp,
   ArrowRight,
-  Clock
+  Clock,
+  Phone,
+  Plus
 } from 'lucide-react';
-import { getNewReferralsCount, mockReferrals } from '@/lib/mock-data/referrals';
+import { DailyDigestModal } from '@/components/dashboard/DailyDigestModal';
+import { StatsCard } from '@/components/dashboard/StatsCard';
+import { AppointmentsTimeline } from '@/components/dashboard/AppointmentsTimeline';
+import { ActivityFeed } from '@/components/dashboard/ActivityFeed';
+import {
+  mockReferrals,
+  getNewReferralsCount,
+  getSignedICFCount,
+  getActiveReferralsCount,
+  getConversionRate,
+  getOverdueReferrals,
+} from '@/lib/mock-data/referrals';
 import { mockStudies } from '@/lib/mock-data/studies';
-
-// Placeholder stats for Phase 1
-const stats = [
-  {
-    label: 'Total Referrals',
-    value: mockReferrals.length,
-    icon: Users,
-    trend: '+12%',
-    trendUp: true,
-  },
-  {
-    label: 'Appointments This Week',
-    value: 4,
-    icon: Calendar,
-    trend: '+3',
-    trendUp: true,
-  },
-  {
-    label: 'Signed ICFs (Monthly)',
-    value: mockReferrals.filter(r => r.status === 'signed_icf').length,
-    icon: CheckCircle,
-    trend: '+8%',
-    trendUp: true,
-  },
-  {
-    label: 'Conversion Rate',
-    value: '24%',
-    icon: TrendingUp,
-    trend: '+2.3%',
-    trendUp: true,
-  },
-];
+import { getTodaysAppointments, getAppointmentCountThisWeek } from '@/lib/mock-data/appointments';
+import { getRecentActivity } from '@/lib/mock-data/activity';
 
 export default function DashboardPage() {
   const { user } = useAuth();
-  const newReferrals = getNewReferralsCount();
+  const [showDigest, setShowDigest] = useState(false);
   const firstName = user?.firstName || 'there';
+
+  // Check if digest should show on mount
+  useEffect(() => {
+    const dismissedDate = localStorage.getItem('digestDismissedDate');
+    const today = new Date().toDateString();
+    if (dismissedDate !== today) {
+      // Small delay to let the page load first
+      const timer = setTimeout(() => setShowDigest(true), 500);
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   // Get time-based greeting
   const getGreeting = () => {
@@ -59,181 +55,273 @@ export default function DashboardPage() {
     return 'Good evening';
   };
 
+  // Stats data
+  const stats = [
+    {
+      title: 'Total Referrals',
+      value: getActiveReferralsCount(),
+      icon: <Users className="w-6 h-6 text-mint" />,
+      iconBgColor: 'bg-mint/10',
+      trend: { value: 12, direction: 'up' as const },
+    },
+    {
+      title: 'Appointments This Week',
+      value: getAppointmentCountThisWeek(),
+      icon: <Calendar className="w-6 h-6 text-purple-500" />,
+      iconBgColor: 'bg-purple-500/10',
+      trend: { value: 8, direction: 'up' as const },
+    },
+    {
+      title: 'Signed ICFs (Monthly)',
+      value: getSignedICFCount(),
+      icon: <CheckCircle className="w-6 h-6 text-green-500" />,
+      iconBgColor: 'bg-green-500/10',
+      trend: { value: 15, direction: 'up' as const },
+    },
+    {
+      title: 'Conversion Rate',
+      value: getConversionRate(),
+      suffix: '%',
+      icon: <TrendingUp className="w-6 h-6 text-vista-blue" />,
+      iconBgColor: 'bg-vista-blue/10',
+      trend: { value: 2, direction: 'up' as const },
+    },
+  ];
+
+  const todaysAppointments = getTodaysAppointments();
+  const recentActivity = getRecentActivity(15);
+  const newReferrals = getNewReferralsCount();
+  const overdueReferrals = getOverdueReferrals(2);
+
   return (
-    <div className="space-y-6">
-      {/* Welcome Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-      >
-        <h1 className="text-2xl font-semibold text-text-primary">
-          {getGreeting()}, {firstName}!
-        </h1>
-        <p className="text-text-secondary mt-1">
-          Here&apos;s what&apos;s happening with your referrals today.
-        </p>
-      </motion.div>
+    <>
+      {/* Daily Digest Modal */}
+      <DailyDigestModal
+        isOpen={showDigest}
+        onClose={() => setShowDigest(false)}
+      />
 
-      {/* Stats Grid */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.1 }}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
-      >
-        {stats.map((stat, index) => {
-          const Icon = stat.icon;
-          return (
-            <GlassCard
-              key={stat.label}
-              padding="md"
-              animate={false}
-              className="group hover:scale-[1.02] transition-transform duration-200"
+      <div className="space-y-6">
+        {/* Welcome Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="flex items-center justify-between"
+        >
+          <div>
+            <h1 className="text-2xl font-semibold text-text-primary">
+              {getGreeting()}, {firstName}!
+            </h1>
+            <p className="text-text-secondary mt-1">
+              Here&apos;s what&apos;s happening with your referrals today.
+            </p>
+          </div>
+          <div className="flex gap-3">
+            <Button
+              variant="secondary"
+              leftIcon={<Plus className="w-4 h-4" />}
             >
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.1 * index }}
-              >
-                <div className="flex items-start justify-between">
-                  <div className="p-2 rounded-xl bg-mint/10">
-                    <Icon className="w-5 h-5 text-mint" />
-                  </div>
-                  <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-                    stat.trendUp
-                      ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-                      : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
-                  }`}>
-                    {stat.trend}
-                  </span>
-                </div>
-                <div className="mt-4">
-                  <p className="text-2xl font-semibold text-text-primary">
-                    {stat.value}
-                  </p>
-                  <p className="text-sm text-text-secondary mt-1">
-                    {stat.label}
-                  </p>
-                </div>
-              </motion.div>
-            </GlassCard>
-          );
-        })}
-      </motion.div>
-
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Needs Attention Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.2 }}
-          className="lg:col-span-2"
-        >
-          <GlassCard padding="lg" animate={false}>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-text-primary">
-                Needs Attention
-              </h2>
-              <span className="px-2.5 py-1 rounded-full bg-warning/10 text-warning text-sm font-medium">
-                {newReferrals} new
-              </span>
-            </div>
-
-            {newReferrals > 0 ? (
-              <div className="space-y-3">
-                {mockReferrals
-                  .filter(r => r.status === 'new')
-                  .slice(0, 3)
-                  .map((referral) => (
-                    <div
-                      key={referral.id}
-                      className="flex items-center justify-between p-3 rounded-xl bg-bg-tertiary/50 hover:bg-bg-tertiary transition-colors"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-mint/20 flex items-center justify-center text-mint font-semibold">
-                          {referral.firstName[0]}{referral.lastName[0]}
-                        </div>
-                        <div>
-                          <p className="font-medium text-text-primary">
-                            {referral.firstName} {referral.lastName}
-                          </p>
-                          <p className="text-sm text-text-secondary">
-                            {mockStudies.find(s => s.id === referral.studyId)?.name}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-text-muted">
-                        <Clock className="w-4 h-4" />
-                        <span>New</span>
-                        <ArrowRight className="w-4 h-4 text-mint" />
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            ) : (
-              <div className="text-center py-8">
-                <CheckCircle className="w-12 h-12 text-mint mx-auto mb-3" />
-                <p className="text-text-secondary">All caught up! Great work.</p>
-              </div>
-            )}
-          </GlassCard>
+              Add Referral
+            </Button>
+            <Button
+              variant="primary"
+              leftIcon={<Phone className="w-4 h-4" />}
+            >
+              Start Session
+            </Button>
+          </div>
         </motion.div>
 
-        {/* Active Studies Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.3 }}
-        >
-          <GlassCard padding="lg" animate={false}>
-            <h2 className="text-lg font-semibold text-text-primary mb-4">
-              Active Studies
-            </h2>
-            <div className="space-y-3">
-              {mockStudies.slice(0, 4).map((study) => {
-                const progress = Math.round(
-                  (study.currentEnrollment / study.enrollmentGoal) * 100
-                );
-                return (
-                  <div key={study.id} className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-text-primary">
-                        {study.name}
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {stats.map((stat, index) => (
+            <StatsCard
+              key={stat.title}
+              title={stat.title}
+              value={stat.value}
+              suffix={stat.suffix}
+              icon={stat.icon}
+              iconBgColor={stat.iconBgColor}
+              trend={stat.trend}
+              delay={0.1 + index * 0.05}
+            />
+          ))}
+        </div>
+
+        {/* Main Content Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Left Column - Appointments & Activity */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Today's Appointments */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.3 }}
+            >
+              <AppointmentsTimeline appointments={todaysAppointments} />
+            </motion.div>
+
+            {/* Needs Attention */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.35 }}
+            >
+              <GlassCard padding="lg" animate={false}>
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-lg font-semibold text-text-primary">
+                    Needs Attention
+                  </h2>
+                  <div className="flex items-center gap-2">
+                    {newReferrals > 0 && (
+                      <span className="px-2.5 py-1 rounded-full bg-mint/10 text-mint text-sm font-medium">
+                        {newReferrals} new
                       </span>
-                      <span className="text-xs text-text-muted">
-                        {study.currentEnrollment}/{study.enrollmentGoal}
+                    )}
+                    {overdueReferrals.length > 0 && (
+                      <span className="px-2.5 py-1 rounded-full bg-warning/10 text-warning text-sm font-medium">
+                        {overdueReferrals.length} overdue
                       </span>
-                    </div>
-                    <div className="h-2 rounded-full bg-bg-tertiary overflow-hidden">
+                    )}
+                  </div>
+                </div>
+
+                {newReferrals > 0 || overdueReferrals.length > 0 ? (
+                  <div className="space-y-3">
+                    {/* New Referrals */}
+                    {mockReferrals
+                      .filter(r => r.status === 'new')
+                      .slice(0, 3)
+                      .map((referral) => (
+                        <div
+                          key={referral.id}
+                          className="flex items-center justify-between p-3 rounded-xl bg-bg-tertiary/50 hover:bg-bg-tertiary transition-colors cursor-pointer"
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-full bg-mint/20 flex items-center justify-center text-mint font-semibold">
+                              {referral.firstName[0]}{referral.lastName[0]}
+                            </div>
+                            <div>
+                              <p className="font-medium text-text-primary">
+                                {referral.firstName} {referral.lastName}
+                              </p>
+                              <p className="text-sm text-text-secondary">
+                                {mockStudies.find(s => s.id === referral.studyId)?.name}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2 text-sm text-text-muted">
+                            <span className="px-2 py-0.5 rounded-full bg-mint/20 text-mint text-xs font-medium">
+                              New
+                            </span>
+                            <ArrowRight className="w-4 h-4 text-mint" />
+                          </div>
+                        </div>
+                      ))}
+
+                    {/* Overdue follow-ups */}
+                    {overdueReferrals.slice(0, 2).map((referral) => (
+                      <div
+                        key={referral.id}
+                        className="flex items-center justify-between p-3 rounded-xl bg-bg-tertiary/50 hover:bg-bg-tertiary transition-colors cursor-pointer"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-warning/20 flex items-center justify-center text-warning font-semibold">
+                            {referral.firstName[0]}{referral.lastName[0]}
+                          </div>
+                          <div>
+                            <p className="font-medium text-text-primary">
+                              {referral.firstName} {referral.lastName}
+                            </p>
+                            <p className="text-sm text-text-secondary">
+                              Last contacted {Math.floor((Date.now() - new Date(referral.updatedAt).getTime()) / (1000 * 60 * 60 * 24))} days ago
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-text-muted">
+                          <Clock className="w-4 h-4 text-warning" />
+                          <span className="text-warning">Overdue</span>
+                          <ArrowRight className="w-4 h-4" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8">
+                    <CheckCircle className="w-12 h-12 text-mint mx-auto mb-3" />
+                    <p className="text-text-secondary">All caught up! Great work.</p>
+                  </div>
+                )}
+              </GlassCard>
+            </motion.div>
+          </div>
+
+          {/* Right Column - Activity Feed & Studies */}
+          <div className="space-y-6">
+            {/* Recent Activity */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.4 }}
+            >
+              <ActivityFeed
+                activities={recentActivity}
+                maxItems={8}
+                showFilters={false}
+              />
+            </motion.div>
+
+            {/* Active Studies Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.45 }}
+            >
+              <GlassCard padding="lg" animate={false}>
+                <h2 className="text-lg font-semibold text-text-primary mb-4">
+                  Active Studies
+                </h2>
+                <div className="space-y-4">
+                  {mockStudies.slice(0, 4).map((study, index) => {
+                    const progress = Math.round(
+                      (study.currentEnrollment / study.enrollmentGoal) * 100
+                    );
+                    const isNearGoal = progress >= 80;
+                    return (
                       <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: `${progress}%` }}
-                        transition={{ duration: 0.5, delay: 0.3 }}
-                        className="h-full bg-mint rounded-full"
-                      />
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </GlassCard>
-        </motion.div>
+                        key={study.id}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.5 + index * 0.05 }}
+                        className="space-y-2"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-medium text-text-primary">
+                            {study.name}
+                          </span>
+                          <span className={`text-xs font-medium ${isNearGoal ? 'text-mint' : 'text-text-muted'}`}>
+                            {study.currentEnrollment}/{study.enrollmentGoal}
+                          </span>
+                        </div>
+                        <div className="h-2 rounded-full bg-bg-tertiary overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${progress}%` }}
+                            transition={{ duration: 0.8, delay: 0.5 + index * 0.1 }}
+                            className={`h-full rounded-full ${isNearGoal ? 'bg-mint' : 'bg-vista-blue'}`}
+                          />
+                        </div>
+                        <p className="text-xs text-text-muted">{study.indication}</p>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </GlassCard>
+            </motion.div>
+          </div>
+        </div>
       </div>
-
-      {/* Phase 2 Notice */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.4, delay: 0.4 }}
-      >
-        <GlassCard variant="inset" padding="md" animate={false}>
-          <p className="text-center text-sm text-text-muted">
-            Dashboard fully functional. Additional features (Daily Digest Modal, Activity Feed, Appointments Timeline) coming in Phase 2.
-          </p>
-        </GlassCard>
-      </motion.div>
-    </div>
+    </>
   );
 }
