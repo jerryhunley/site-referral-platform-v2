@@ -24,6 +24,12 @@
   --vista-blue: #7991C6;
   --slate-gray: #678283;
 
+  /* Gradient Background Colors - Soft pastels */
+  --gradient-mint: rgba(83, 202, 151, 0.12);
+  --gradient-blue: rgba(121, 145, 198, 0.10);
+  --gradient-pink: rgba(244, 190, 220, 0.08);
+  --gradient-peach: rgba(254, 215, 190, 0.06);
+
   /* Semantic */
   --success: #53CA97;
   --warning: #F59E0B;
@@ -253,6 +259,119 @@ body {
    Background Styles
    ======================================== */
 
+/* Glassmorphic gradient background */
+.glassmorphic-bg {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.glassmorphic-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 20%, var(--gradient-mint) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 80% 30%, var(--gradient-blue) 0%, transparent 45%),
+    radial-gradient(ellipse 50% 60% at 70% 80%, var(--gradient-pink) 0%, transparent 50%),
+    radial-gradient(ellipse 70% 50% at 30% 70%, var(--gradient-peach) 0%, transparent 45%),
+    linear-gradient(180deg, #FAFBFC 0%, #F5F7F9 50%, #F8F9FA 100%);
+}
+
+.dark .glassmorphic-bg::before {
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 20%, rgba(83, 202, 151, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 35% at 80% 30%, rgba(121, 145, 198, 0.06) 0%, transparent 45%),
+    linear-gradient(180deg, #0D1117 0%, #0F1419 50%, #0D1117 100%);
+}
+
+/* Animated floating orbs - subtle motion */
+.gradient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  will-change: transform;
+}
+
+.gradient-orb-1 {
+  width: 500px;
+  height: 500px;
+  background: linear-gradient(135deg, rgba(83, 202, 151, 0.25) 0%, rgba(83, 202, 151, 0.1) 100%);
+  top: -150px;
+  right: 10%;
+  animation: orb-float-1 25s ease-in-out infinite;
+}
+
+.gradient-orb-2 {
+  width: 400px;
+  height: 400px;
+  background: linear-gradient(135deg, rgba(121, 145, 198, 0.2) 0%, rgba(121, 145, 198, 0.08) 100%);
+  bottom: -100px;
+  left: 5%;
+  animation: orb-float-2 30s ease-in-out infinite;
+}
+
+.gradient-orb-3 {
+  width: 300px;
+  height: 300px;
+  background: linear-gradient(135deg, rgba(244, 190, 220, 0.15) 0%, rgba(244, 190, 220, 0.05) 100%);
+  top: 40%;
+  left: 60%;
+  animation: orb-float-3 20s ease-in-out infinite;
+}
+
+.dark .gradient-orb-1 {
+  background: linear-gradient(135deg, rgba(83, 202, 151, 0.12) 0%, rgba(83, 202, 151, 0.04) 100%);
+}
+
+.dark .gradient-orb-2 {
+  background: linear-gradient(135deg, rgba(121, 145, 198, 0.1) 0%, rgba(121, 145, 198, 0.03) 100%);
+}
+
+.dark .gradient-orb-3 {
+  display: none;
+}
+
+@keyframes orb-float-1 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(-30px, 20px) scale(1.02);
+  }
+  50% {
+    transform: translate(20px, -15px) scale(0.98);
+  }
+  75% {
+    transform: translate(-10px, -25px) scale(1.01);
+  }
+}
+
+@keyframes orb-float-2 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(25px, -20px) scale(1.03);
+  }
+  66% {
+    transform: translate(-15px, 30px) scale(0.97);
+  }
+}
+
+@keyframes orb-float-3 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-20px, 15px) scale(1.05);
+  }
+}
+
+/* Legacy app-background class - keep for compatibility */
 .app-background {
   background:
     radial-gradient(ellipse at 20% 20%, rgba(83, 202, 151, 0.15) 0%, transparent 50%),
@@ -264,45 +383,6 @@ body {
 
 .dark .app-background {
   background: linear-gradient(135deg, #0D1117 0%, #0F1A15 50%, #0D1117 100%);
-}
-
-/* Animated Background Orbs */
-.background-orb {
-  position: fixed;
-  border-radius: 50%;
-  filter: blur(100px);
-  opacity: 0.3;
-  pointer-events: none;
-  animation: float 20s ease-in-out infinite;
-}
-
-.background-orb-1 {
-  width: 600px;
-  height: 600px;
-  background: var(--mint);
-  top: -200px;
-  right: -200px;
-}
-
-.background-orb-2 {
-  width: 400px;
-  height: 400px;
-  background: var(--vista-blue);
-  bottom: -100px;
-  left: -100px;
-  animation-delay: -10s;
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-  }
-  33% {
-    transform: translate(30px, -30px) scale(1.05);
-  }
-  66% {
-    transform: translate(-20px, 20px) scale(0.95);
-  }
 }
 
 /* ========================================

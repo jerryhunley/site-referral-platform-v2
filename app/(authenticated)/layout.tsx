@@ -9,6 +9,7 @@ import { ToastProvider } from '@/components/ui/Toast';
 import { Sidebar, Header } from '@/components/layout';
 import { UpgradeModal } from '@/components/ui/UpgradeModal';
 import { Confetti } from '@/components/ui/Confetti';
+import { GradientBackground } from '@/components/ui/GradientBackground';
 
 function AuthenticatedLayoutContent({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, user } = useAuth();
@@ -26,6 +27,9 @@ function AuthenticatedLayoutContent({ children }: { children: React.ReactNode })
 
   return (
     <>
+      {/* Glassmorphic gradient background */}
+      <GradientBackground />
+
       {/* Confetti celebration on Pro upgrade */}
       <Confetti isActive={showConfetti} />
 
@@ -35,14 +39,14 @@ function AuthenticatedLayoutContent({ children }: { children: React.ReactNode })
         onClose={() => setShowUpgradeModal(false)}
       />
 
-      <div className="flex h-screen bg-bg-primary overflow-hidden">
+      <div className="relative flex h-screen overflow-hidden">
         {/* Sidebar */}
-        <div className="relative flex-shrink-0">
+        <div className="relative flex-shrink-0 z-10">
           <Sidebar />
         </div>
 
         {/* Main Content Area */}
-        <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative z-10">
           <Header />
           <main className="flex-1 overflow-y-auto p-6">
             <div className="max-w-7xl mx-auto">
