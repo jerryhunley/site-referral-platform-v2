@@ -105,10 +105,10 @@ export function Sidebar() {
                     <motion.span
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      className="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-gradient-to-r from-purple-500/20 to-vista-blue/20 border border-purple-500/30"
+                      className="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-gradient-to-r from-amber-500/20 to-yellow-500/20 border border-amber-500/30"
                     >
-                      <Lock className="w-2.5 h-2.5 text-purple-400" />
-                      <span className="text-[10px] font-semibold text-purple-400 uppercase tracking-wider">
+                      <Lock className="w-2.5 h-2.5 text-amber-400" />
+                      <span className="text-[10px] font-semibold text-amber-400 uppercase tracking-wider">
                         Pro
                       </span>
                     </motion.span>

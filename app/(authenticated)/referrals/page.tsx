@@ -219,7 +219,7 @@ export default function ReferralsPage() {
                 >
                   Bulk SMS
                   {!isPro && (
-                    <span className="ml-1.5 flex items-center gap-0.5 px-1 py-0.5 rounded text-[9px] font-semibold bg-purple-500/20 text-purple-400 border border-purple-500/30">
+                    <span className="ml-1.5 flex items-center gap-0.5 px-1 py-0.5 rounded text-[9px] font-semibold bg-amber-500/20 text-amber-400 border border-amber-500/30">
                       <Lock className="w-2 h-2" />
                       PRO
                     </span>

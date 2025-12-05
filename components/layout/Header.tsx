@@ -37,12 +37,12 @@ export function Header({ title = 'Dashboard' }: HeaderProps) {
         ) : (
           <motion.button
             onClick={() => setShowUpgradeModal(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-purple-500/20 to-vista-blue/20 border border-purple-500/30 hover:from-purple-500/30 hover:to-vista-blue/30 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500/20 to-yellow-500/20 border border-amber-500/30 hover:from-amber-500/30 hover:to-yellow-500/30 transition-colors"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            <Sparkles className="w-4 h-4 text-purple-400" />
-            <span className="text-sm font-medium text-purple-400">Upgrade to Pro</span>
+            <Sparkles className="w-4 h-4 text-amber-400" />
+            <span className="text-sm font-medium text-amber-400">Upgrade to Pro</span>
           </motion.button>
         )}
 

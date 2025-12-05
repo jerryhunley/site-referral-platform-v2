@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, type InputHTMLAttributes } from 'react';
+import { forwardRef, useId, type InputHTMLAttributes } from 'react';
 import { motion } from 'framer-motion';
 import { Check, Minus } from 'lucide-react';
 
@@ -13,7 +13,8 @@ interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'typ
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   ({ label, description, indeterminate = false, error, className = '', id, checked, disabled, ...props }, ref) => {
-    const checkboxId = id || label?.toLowerCase().replace(/\s+/g, '-');
+    const generatedId = useId();
+    const checkboxId = id || label?.toLowerCase().replace(/\s+/g, '-') || generatedId;
 
     return (
       <div className={`flex items-start gap-3 ${className}`}>
