@@ -98,11 +98,6 @@ export function AppointmentsTimeline({
               transition={{ delay: index * 0.05 }}
               className="relative"
             >
-              {/* Timeline connector */}
-              {index < appointments.length - 1 && (
-                <div className="absolute left-[1.375rem] top-12 bottom-0 w-px bg-glass-border" />
-              )}
-
               <div
                 className={`flex items-start gap-3 p-3 rounded-xl transition-colors ${
                   isCurrentTime
