@@ -573,6 +573,32 @@ textarea,
     0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
+/* Sidebar Collapse Button */
+.sidebar-collapse-btn {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  color: var(--text-muted);
+  transition: all 150ms ease;
+}
+
+.sidebar-collapse-btn:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.dark .sidebar-collapse-btn {
+  background: #1e2530;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  color: #9ca3af;
+}
+
+.dark .sidebar-collapse-btn:hover {
+  background: #2a3040;
+  color: white;
+}
+
 /* Legacy app-background class - keep for compatibility */
 .app-background {
   background:
