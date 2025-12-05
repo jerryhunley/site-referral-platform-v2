@@ -152,7 +152,7 @@ export function ReferralCard({
         )}
 
         {/* Actions */}
-        <div className="mt-4 pt-4 border-t border-glass-border flex items-center justify-between">
+        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-glass-border flex items-center justify-between">
         <div className="flex items-center gap-2">
           <motion.button
             onClick={(e) => {
