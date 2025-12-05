@@ -4,14 +4,12 @@ import { motion } from 'framer-motion';
 import { forwardRef, type ReactNode, type HTMLAttributes } from 'react';
 
 type GlassCardVariant = 'default' | 'elevated' | 'inset' | 'liquid' | 'frosted';
-type AccentColor = 'mint' | 'blue' | 'purple' | 'amber';
 
 interface GlassCardProps extends HTMLAttributes<HTMLDivElement> {
   variant?: GlassCardVariant;
   padding?: 'none' | 'sm' | 'md' | 'lg';
   animate?: boolean;
   shimmer?: boolean;
-  accentColor?: AccentColor;
   children?: ReactNode;
 }
 
@@ -30,13 +28,6 @@ const paddingClasses = {
   lg: 'p-8',
 };
 
-const accentGlowClasses: Record<AccentColor, string> = {
-  mint: 'hover-glow-mint',
-  blue: 'hover-glow-blue',
-  purple: 'hover-glow-purple',
-  amber: 'hover-glow-amber',
-};
-
 export const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(
   (
     {
@@ -44,7 +35,6 @@ export const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(
       padding = 'md',
       animate = true,
       shimmer = false,
-      accentColor,
       className = '',
       children,
       ...props
@@ -52,8 +42,7 @@ export const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(
     ref
   ) => {
     const shimmerClass = shimmer ? 'glass-card-shimmer' : '';
-    const glowClass = accentColor ? accentGlowClasses[accentColor] : '';
-    const baseClasses = `${variantClasses[variant]} ${paddingClasses[padding]} ${shimmerClass} ${glowClass} ${className}`.trim();
+    const baseClasses = `${variantClasses[variant]} ${paddingClasses[padding]} ${shimmerClass} ${className}`.trim();
 
     if (!animate) {
       return (

@@ -120,7 +120,7 @@ export function StatsCard({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <GlassCard padding="lg" animate={false} accentColor={accentColor} className="h-full relative overflow-hidden">
+      <GlassCard padding="lg" animate={false} className="h-full relative overflow-hidden">
         {/* Subtle gradient accent at bottom */}
         <div className={`absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t ${colors.gradient} pointer-events-none`} />
 

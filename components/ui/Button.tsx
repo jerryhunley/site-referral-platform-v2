@@ -17,13 +17,13 @@ interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onA
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    'bg-mint text-white hover:bg-mint-dark hover-glow-mint focus:ring-mint/50',
+    'bg-mint text-white hover:bg-mint-dark focus:ring-mint/50',
   secondary:
     'bg-bg-tertiary text-text-primary hover:bg-bg-secondary border border-glass-border dark:bg-bg-tertiary dark:hover:bg-bg-secondary hover:shadow-md',
   ghost:
     'bg-transparent text-text-primary hover:bg-bg-tertiary',
   danger:
-    'bg-error text-white hover:bg-red-600 hover-glow-error focus:ring-error/50',
+    'bg-error text-white hover:bg-red-600 focus:ring-error/50',
 };
 
 const sizeClasses: Record<ButtonSize, string> = {

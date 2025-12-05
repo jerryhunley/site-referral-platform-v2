@@ -15,10 +15,10 @@ const typeIcons = {
 };
 
 const typeColors = {
-  timing: { bg: 'bg-vista-blue/10', text: 'text-vista-blue', border: 'border-vista-blue/30', glow: '0 0 16px rgba(121, 145, 198, 0.35)' },
-  priority: { bg: 'bg-mint/10', text: 'text-mint', border: 'border-mint/30', glow: '0 0 16px rgba(83, 202, 151, 0.35)' },
-  warning: { bg: 'bg-warning/10', text: 'text-warning', border: 'border-warning/30', glow: '0 0 16px rgba(245, 158, 11, 0.35)' },
-  tip: { bg: 'bg-purple-500/10', text: 'text-purple-500', border: 'border-purple-500/30', glow: '0 0 16px rgba(168, 85, 247, 0.35)' },
+  timing: { bg: 'bg-vista-blue/10', text: 'text-vista-blue', border: 'border-vista-blue/30' },
+  priority: { bg: 'bg-mint/10', text: 'text-mint', border: 'border-mint/30' },
+  warning: { bg: 'bg-warning/10', text: 'text-warning', border: 'border-warning/30' },
+  tip: { bg: 'bg-purple-500/10', text: 'text-purple-500', border: 'border-purple-500/30' },
 };
 
 function InsightCard({ insight, index }: { insight: AIInsight; index: number }) {
@@ -31,8 +31,7 @@ function InsightCard({ insight, index }: { insight: AIInsight; index: number }) 
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 10 }}
       transition={{ delay: index * 0.05 }}
-      whileHover={{ boxShadow: colors.glow }}
-      className={`p-3 rounded-xl border ${colors.border} ${colors.bg} transition-all duration-200 cursor-pointer`}
+      className={`p-3 rounded-xl border ${colors.border} ${colors.bg} transition-all duration-200 cursor-pointer hover:brightness-105`}
     >
       <div className="flex items-start gap-3">
         <div className={`p-2 rounded-lg ${colors.bg}`}>

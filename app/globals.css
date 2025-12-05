@@ -666,64 +666,6 @@ textarea,
 }
 
 /* ========================================
-   Button Glow Effects
-   ======================================== */
-
-.glow-mint {
-  box-shadow: 0 0 20px var(--mint-glow);
-}
-
-.hover-glow-mint {
-  transition: box-shadow 0.3s ease;
-}
-
-.hover-glow-mint:hover {
-  box-shadow:
-    0 0 20px rgba(83, 202, 151, 0.4),
-    0 0 40px rgba(83, 202, 151, 0.2);
-}
-
-.hover-glow-blue {
-  transition: box-shadow 0.3s ease;
-}
-
-.hover-glow-blue:hover {
-  box-shadow:
-    0 0 20px rgba(121, 145, 198, 0.4),
-    0 0 40px rgba(121, 145, 198, 0.2);
-}
-
-.hover-glow-purple {
-  transition: box-shadow 0.3s ease;
-}
-
-.hover-glow-purple:hover {
-  box-shadow:
-    0 0 20px rgba(168, 85, 247, 0.4),
-    0 0 40px rgba(168, 85, 247, 0.2);
-}
-
-.hover-glow-amber {
-  transition: box-shadow 0.3s ease;
-}
-
-.hover-glow-amber:hover {
-  box-shadow:
-    0 0 20px rgba(245, 158, 11, 0.4),
-    0 0 40px rgba(245, 158, 11, 0.2);
-}
-
-.hover-glow-error {
-  transition: box-shadow 0.3s ease;
-}
-
-.hover-glow-error:hover {
-  box-shadow:
-    0 0 20px rgba(239, 68, 68, 0.4),
-    0 0 40px rgba(239, 68, 68, 0.2);
-}
-
-/* ========================================
    Shimmer Border Animation
    ======================================== */
 
