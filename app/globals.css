@@ -344,3 +344,25 @@ body {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
+/* ========================================
+   Login Page Styles
+   ======================================== */
+
+.login-left-panel {
+  background: var(--bg-primary);
+}
+
+.login-right-panel {
+  background: linear-gradient(
+    135deg,
+    #0D1117 0%,
+    #0F1A15 40%,
+    #162016 60%,
+    #0D1117 100%
+  );
+}
+
+.dark .login-left-panel {
+  background: var(--bg-secondary);
+}
