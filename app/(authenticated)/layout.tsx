@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ThemeProvider } from '@/lib/context/ThemeContext';
 import { AuthProvider, useAuth } from '@/lib/context/AuthContext';
+import { ProTierProvider } from '@/lib/context/ProTierContext';
 import { ToastProvider } from '@/components/ui/Toast';
 import { Sidebar, Header } from '@/components/layout';
 
@@ -48,9 +49,11 @@ export default function AuthenticatedLayout({
   return (
     <ThemeProvider>
       <AuthProvider>
-        <ToastProvider>
-          <AuthenticatedLayoutContent>{children}</AuthenticatedLayoutContent>
-        </ToastProvider>
+        <ProTierProvider>
+          <ToastProvider>
+            <AuthenticatedLayoutContent>{children}</AuthenticatedLayoutContent>
+          </ToastProvider>
+        </ProTierProvider>
       </AuthProvider>
     </ThemeProvider>
   );

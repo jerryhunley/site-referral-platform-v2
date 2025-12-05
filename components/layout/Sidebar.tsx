@@ -12,14 +12,19 @@ import {
   ChevronLeft,
   ChevronRight,
   LogOut,
+  BarChart3,
+  Sparkles,
+  Lock,
 } from 'lucide-react';
 import { Logo } from '@/components/ui';
 import { useAuth } from '@/lib/context/AuthContext';
+import { useProTier } from '@/lib/context/ProTierContext';
 import { getUserInitials, getUserFullName } from '@/lib/mock-data/users';
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/referrals', label: 'Referrals', icon: Users },
+  { href: '/analytics', label: 'Analytics', icon: BarChart3, isPro: true },
   { href: '/working-session', label: 'Working Session', icon: Phone },
   { href: '/settings', label: 'Settings', icon: Settings },
 ];
@@ -28,6 +33,7 @@ export function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const pathname = usePathname();
   const { user, logout } = useAuth();
+  const { isPro } = useProTier();
 
   return (
     <motion.aside
@@ -65,6 +71,7 @@ export function Sidebar() {
           {navItems.map((item) => {
             const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
             const Icon = item.icon;
+            const showProBadge = item.isPro && !isPro;
 
             return (
               <li key={item.href}>
@@ -87,12 +94,34 @@ export function Sidebar() {
                         animate={{ opacity: 1, width: 'auto' }}
                         exit={{ opacity: 0, width: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="font-medium whitespace-nowrap overflow-hidden"
+                        className="font-medium whitespace-nowrap overflow-hidden flex-1"
                       >
                         {item.label}
                       </motion.span>
                     )}
                   </AnimatePresence>
+                  {/* PRO Badge */}
+                  {!isCollapsed && showProBadge && (
+                    <motion.span
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-gradient-to-r from-purple-500/20 to-vista-blue/20 border border-purple-500/30"
+                    >
+                      <Lock className="w-2.5 h-2.5 text-purple-400" />
+                      <span className="text-[10px] font-semibold text-purple-400 uppercase tracking-wider">
+                        Pro
+                      </span>
+                    </motion.span>
+                  )}
+                  {/* Unlocked sparkle */}
+                  {!isCollapsed && item.isPro && isPro && (
+                    <motion.span
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                    >
+                      <Sparkles className="w-4 h-4 text-mint" />
+                    </motion.span>
+                  )}
                 </Link>
               </li>
             );
