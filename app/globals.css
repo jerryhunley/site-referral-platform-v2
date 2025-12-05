@@ -290,8 +290,21 @@ body {
   box-shadow: 0 0 20px var(--mint-glow);
 }
 
+.hover-glow-mint {
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
 .hover-glow-mint:hover {
-  box-shadow: 0 0 30px var(--mint-glow);
+  box-shadow:
+    0 0 20px rgba(83, 202, 151, 0.4),
+    0 0 40px rgba(83, 202, 151, 0.2),
+    0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.hover-glow-mint:active {
+  box-shadow:
+    0 0 15px rgba(83, 202, 151, 0.3),
+    0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* ========================================
@@ -365,4 +378,39 @@ body {
 
 .dark .login-left-panel {
   background: var(--bg-secondary);
+}
+
+/* ========================================
+   Input Focus Effects
+   ======================================== */
+
+input:focus,
+textarea:focus {
+  box-shadow:
+    0 0 0 3px rgba(83, 202, 151, 0.15),
+    0 0 20px rgba(83, 202, 151, 0.1);
+}
+
+/* ========================================
+   Reduced Motion Support (Accessibility)
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Disable specific animations */
+  .glass-card,
+  .glass-card-elevated,
+  .glass-card-inset,
+  .glass-liquid,
+  .glass-frosted {
+    animation: none !important;
+  }
 }
