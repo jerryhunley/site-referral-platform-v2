@@ -181,7 +181,7 @@ export function FilterBar({
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.15 }}
-                  className="absolute top-full left-0 mt-2 z-50 w-80 p-4 glass-card shadow-xl"
+                  className="absolute top-full left-0 mt-2 z-50 w-80 p-4 glass-dropdown"
                 >
                   <div className="space-y-4">
                     {/* Active Statuses */}
@@ -199,8 +199,8 @@ export function FilterBar({
                                 px-3 py-1.5 rounded-lg text-xs font-medium
                                 transition-all duration-150
                                 ${isSelected
-                                  ? `${config.bgClass} ${config.textClass} ring-2 ring-offset-1 ring-offset-bg-primary ring-current`
-                                  : `${config.bgClass} ${config.textClass} opacity-40 hover:opacity-100`
+                                  ? `${config.bgClass} ${config.textClass} ring-2 ring-offset-1 ring-offset-white dark:ring-offset-gray-800 ring-current`
+                                  : `${config.bgClass} ${config.textClass} opacity-70 hover:opacity-100`
                                 }
                               `}
                             >
@@ -226,8 +226,8 @@ export function FilterBar({
                                 px-3 py-1.5 rounded-lg text-xs font-medium
                                 transition-all duration-150
                                 ${isSelected
-                                  ? `${config.bgClass} ${config.textClass} ring-2 ring-offset-1 ring-offset-bg-primary ring-current`
-                                  : `${config.bgClass} ${config.textClass} opacity-40 hover:opacity-100`
+                                  ? `${config.bgClass} ${config.textClass} ring-2 ring-offset-1 ring-offset-white dark:ring-offset-gray-800 ring-current`
+                                  : `${config.bgClass} ${config.textClass} opacity-70 hover:opacity-100`
                                 }
                               `}
                             >
@@ -253,8 +253,8 @@ export function FilterBar({
                                 px-3 py-1.5 rounded-lg text-xs font-medium
                                 transition-all duration-150
                                 ${isSelected
-                                  ? `${config.bgClass} ${config.textClass} ring-2 ring-offset-1 ring-offset-bg-primary ring-current`
-                                  : `${config.bgClass} ${config.textClass} opacity-40 hover:opacity-100`
+                                  ? `${config.bgClass} ${config.textClass} ring-2 ring-offset-1 ring-offset-white dark:ring-offset-gray-800 ring-current`
+                                  : `${config.bgClass} ${config.textClass} opacity-70 hover:opacity-100`
                                 }
                               `}
                             >

@@ -137,8 +137,8 @@ export const statusConfigs: Record<ReferralStatus, StatusConfig> = {
   new: {
     label: 'New',
     color: 'mint',
-    bgClass: 'bg-mint/20',
-    textClass: 'text-mint-dark',
+    bgClass: 'bg-mint/20 dark:bg-mint/30',
+    textClass: 'text-mint-dark dark:text-mint',
   },
   attempt_1: {
     label: 'Attempt 1',
@@ -173,8 +173,8 @@ export const statusConfigs: Record<ReferralStatus, StatusConfig> = {
   sent_sms: {
     label: 'Sent SMS',
     color: 'blue',
-    bgClass: 'bg-vista-blue/20',
-    textClass: 'text-vista-blue',
+    bgClass: 'bg-vista-blue/20 dark:bg-vista-blue/30',
+    textClass: 'text-vista-blue dark:text-sky-400',
   },
   appointment_scheduled: {
     label: 'Appt Scheduled',

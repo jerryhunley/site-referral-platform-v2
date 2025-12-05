@@ -553,6 +553,26 @@ textarea,
   border-color: rgba(255, 255, 255, 0.12);
 }
 
+/* Glass Dropdown - more opaque for readability */
+.glass-dropdown {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(200, 200, 200, 0.3);
+  border-radius: var(--radius-xl);
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.12),
+    0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.dark .glass-dropdown {
+  background: rgba(30, 35, 45, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.4),
+    0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
 /* Legacy app-background class - keep for compatibility */
 .app-background {
   background:

@@ -157,7 +157,7 @@ export function LeadSelector({ onStartSession }: LeadSelectorProps) {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="space-y-4 overflow-hidden"
+              className="space-y-4"
             >
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Dropdown
