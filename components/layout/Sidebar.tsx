@@ -38,12 +38,12 @@ export function Sidebar() {
   return (
     <motion.aside
       initial={false}
-      animate={{ width: isCollapsed ? 80 : 260 }}
+      animate={{ width: isCollapsed ? 88 : 268 }}
       transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-      className="h-screen bg-bg-secondary border-r border-glass-border flex flex-col"
+      className="h-[calc(100vh-24px)] my-3 ml-3 flex flex-col floating-sidebar"
     >
       {/* Logo Section */}
-      <div className="p-4 border-b border-glass-border">
+      <div className="px-4 py-5">
         <div className="flex items-center justify-between">
           <AnimatePresence mode="wait">
             {!isCollapsed && (
@@ -67,7 +67,7 @@ export function Sidebar() {
 
       {/* Navigation */}
       <nav className="flex-1 py-4 overflow-y-auto">
-        <ul className="space-y-1 px-3">
+        <ul className="space-y-1.5 px-3">
           {navItems.map((item) => {
             const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
             const Icon = item.icon;
@@ -78,15 +78,15 @@ export function Sidebar() {
                 <Link
                   href={item.href}
                   className={`
-                    flex items-center gap-3 px-3 py-2.5 rounded-xl
-                    transition-all duration-200
+                    flex items-center gap-3 px-3 py-2.5 rounded-2xl
+                    transition-all duration-200 relative
                     ${isActive
-                      ? 'bg-mint/10 text-mint border border-mint/20'
-                      : 'text-text-secondary hover:bg-bg-tertiary hover:text-text-primary'
+                      ? 'bg-mint text-white shadow-md shadow-mint/25'
+                      : 'text-text-secondary hover:bg-white/60 dark:hover:bg-white/10 hover:text-text-primary'
                     }
                   `}
                 >
-                  <Icon className={`w-5 h-5 flex-shrink-0 ${isActive ? 'text-mint' : ''}`} />
+                  <Icon className={`w-5 h-5 flex-shrink-0 ${isActive ? 'text-white' : ''}`} />
                   <AnimatePresence mode="wait">
                     {!isCollapsed && (
                       <motion.span
@@ -132,18 +132,18 @@ export function Sidebar() {
       {/* Collapse Toggle */}
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
-        className="absolute top-1/2 -right-3 w-6 h-6 rounded-full bg-bg-secondary border border-glass-border flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-bg-tertiary transition-colors"
+        className="absolute top-1/2 -right-3 w-6 h-6 rounded-full bg-white dark:bg-bg-tertiary border border-glass-border-subtle dark:border-glass-border shadow-sm flex items-center justify-center text-text-muted hover:text-text-primary hover:bg-bg-tertiary transition-colors z-20"
         aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
       >
         {isCollapsed ? (
-          <ChevronRight className="w-4 h-4" />
+          <ChevronRight className="w-3.5 h-3.5" />
         ) : (
-          <ChevronLeft className="w-4 h-4" />
+          <ChevronLeft className="w-3.5 h-3.5" />
         )}
       </button>
 
       {/* User Section */}
-      <div className="p-4 border-t border-glass-border">
+      <div className="p-4 mt-auto">
         <div className="flex items-center gap-3">
           {/* Avatar */}
           <div className="w-10 h-10 rounded-full bg-mint/20 flex items-center justify-center text-mint font-semibold flex-shrink-0">
