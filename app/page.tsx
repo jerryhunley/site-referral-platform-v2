@@ -3,7 +3,7 @@
 import { useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Button, Input, Logo, ThemeToggle, AnimatedHeroSVG } from '@/components/ui';
+import { Button, Input, Logo, ThemeToggle } from '@/components/ui';
 import { useAuth } from '@/lib/context/AuthContext';
 import { ThemeProvider } from '@/lib/context/ThemeContext';
 import { AuthProvider } from '@/lib/context/AuthContext';
@@ -175,16 +175,6 @@ function LoginForm() {
         </div>
 
         <div className="relative z-10 max-w-md">
-          {/* Animated Hero SVG */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2, duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-            className="mb-8 flex justify-center"
-          >
-            <AnimatedHeroSVG />
-          </motion.div>
-
           {/* Headline */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}

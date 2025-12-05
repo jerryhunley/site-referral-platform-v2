@@ -74,11 +74,11 @@ export function ReferralCard({
   const statusConfig = statusConfigs[referral.status];
 
   const cardContent = (
-    <>
+    <div className="text-left relative">
       {/* Selection Checkbox */}
       {onSelect && (
         <div
-          className="absolute top-4 left-4 z-10"
+          className="absolute top-0 left-0 z-10"
           onClick={(e) => e.stopPropagation()}
         >
           <Checkbox
@@ -88,69 +88,71 @@ export function ReferralCard({
         </div>
       )}
 
-      {/* Header */}
-      <div className={`flex items-start justify-between ${onSelect ? 'ml-8' : ''}`}>
-        <div className="flex items-center gap-3">
-          <Avatar
-            firstName={referral.firstName}
-            lastName={referral.lastName}
-            size="lg"
-          />
-          <div>
-            <h3 className="font-semibold text-text-primary">
-              {referral.firstName} {referral.lastName}
-            </h3>
-            <p className="text-sm text-text-secondary">{formatPhone(referral.phone)}</p>
+      {/* Content wrapper with consistent left margin when checkbox present */}
+      <div className={onSelect ? 'ml-8' : ''}>
+        {/* Header */}
+        <div className="flex items-start justify-between">
+          <div className="flex items-center gap-3">
+            <Avatar
+              firstName={referral.firstName}
+              lastName={referral.lastName}
+              size="lg"
+            />
+            <div className="text-left">
+              <h3 className="font-semibold text-text-primary text-left">
+                {referral.firstName} {referral.lastName}
+              </h3>
+              <p className="text-sm text-text-secondary text-left">{formatPhone(referral.phone)}</p>
+            </div>
+          </div>
+
+          {/* Status Badge */}
+          <span
+            className={`px-2.5 py-1 rounded-full text-xs font-medium shrink-0 ${statusConfig.bgClass} ${statusConfig.textClass}`}
+          >
+            {statusConfig.label}
+          </span>
+        </div>
+
+        {/* Study & Info */}
+        <div className="mt-4 space-y-2 text-left">
+          <div className="flex items-center gap-2 justify-start">
+            <span className="text-xs text-text-muted">Study:</span>
+            <span className="text-sm font-medium text-text-primary">
+              {study?.name || 'Unknown Study'}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-4 text-xs text-text-muted justify-start">
+            <span className="flex items-center gap-1">
+              <Calendar className="w-3.5 h-3.5" />
+              Submitted {formatDate(referral.submittedAt)}
+            </span>
+            {referral.lastContactedAt && (
+              <span className="flex items-center gap-1">
+                <Clock className="w-3.5 h-3.5" />
+                Contacted {formatDate(referral.lastContactedAt)}
+              </span>
+            )}
           </div>
         </div>
 
-        {/* Status Badge */}
-        <span
-          className={`px-2.5 py-1 rounded-full text-xs font-medium ${statusConfig.bgClass} ${statusConfig.textClass}`}
-        >
-          {statusConfig.label}
-        </span>
-      </div>
-
-      {/* Study & Info */}
-      <div className="mt-4 space-y-2">
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-text-muted">Study:</span>
-          <span className="text-sm font-medium text-text-primary">
-            {study?.name || 'Unknown Study'}
-          </span>
-        </div>
-
-        <div className="flex items-center gap-4 text-xs text-text-muted">
-          <span className="flex items-center gap-1">
-            <Calendar className="w-3.5 h-3.5" />
-            Submitted {formatDate(referral.submittedAt)}
-          </span>
-          {referral.lastContactedAt && (
-            <span className="flex items-center gap-1">
-              <Clock className="w-3.5 h-3.5" />
-              Contacted {formatDate(referral.lastContactedAt)}
+        {/* Assigned User */}
+        {assignedUser && (
+          <div className="mt-3 flex items-center gap-2 justify-start">
+            <Avatar
+              firstName={assignedUser.firstName}
+              lastName={assignedUser.lastName}
+              size="xs"
+            />
+            <span className="text-xs text-text-muted">
+              Assigned to {assignedUser.firstName}
             </span>
-          )}
-        </div>
-      </div>
+          </div>
+        )}
 
-      {/* Assigned User */}
-      {assignedUser && (
-        <div className="mt-3 flex items-center gap-2">
-          <Avatar
-            firstName={assignedUser.firstName}
-            lastName={assignedUser.lastName}
-            size="xs"
-          />
-          <span className="text-xs text-text-muted">
-            Assigned to {assignedUser.firstName}
-          </span>
-        </div>
-      )}
-
-      {/* Actions */}
-      <div className="mt-4 pt-4 border-t border-glass-border flex items-center justify-between">
+        {/* Actions */}
+        <div className="mt-4 pt-4 border-t border-glass-border flex items-center justify-between">
         <div className="flex items-center gap-2">
           <motion.button
             onClick={(e) => {
@@ -204,8 +206,9 @@ export function ReferralCard({
           <Eye className="w-4 h-4" />
           View
         </motion.button>
+        </div>
       </div>
-    </>
+    </div>
   );
 
   if (viewMode === 'list') {
@@ -277,7 +280,7 @@ export function ReferralCard({
           </div>
 
           {/* Assigned */}
-          <div className="w-10 hidden lg:flex justify-center">
+          <div className="w-16 hidden lg:flex justify-center">
             {assignedUser ? (
               <Avatar
                 firstName={assignedUser.firstName}
@@ -290,7 +293,7 @@ export function ReferralCard({
           </div>
 
           {/* Actions */}
-          <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+          <div className="w-24 flex items-center justify-end gap-1" onClick={(e) => e.stopPropagation()}>
             <motion.button
               onClick={() => onCall?.(referral.id)}
               className="p-2 rounded-lg text-text-secondary hover:text-mint hover:bg-mint/10 transition-colors"
@@ -350,8 +353,8 @@ export function ReferralListHeader() {
       <div className="w-32 hidden lg:block">Study</div>
       <div className="w-32">Status</div>
       <div className="w-24 hidden md:block text-right">Submitted</div>
-      <div className="w-10 hidden lg:block text-center">Assigned</div>
-      <div className="w-28">Actions</div>
+      <div className="w-16 hidden lg:block text-center">Assignee</div>
+      <div className="w-24 text-right">Actions</div>
     </div>
   );
 }
