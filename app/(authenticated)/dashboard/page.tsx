@@ -56,27 +56,27 @@ export default function DashboardPage() {
     return 'Good evening';
   };
 
-  // Stats data
+  // Stats data with accent colors
   const stats = [
     {
       title: 'Total Referrals',
       value: getActiveReferralsCount(),
       icon: <Users className="w-6 h-6 text-mint" />,
-      iconBgColor: 'bg-mint/10',
+      accentColor: 'mint' as const,
       trend: { value: 12, direction: 'up' as const },
     },
     {
       title: 'Appointments This Week',
       value: getAppointmentCountThisWeek(),
       icon: <Calendar className="w-6 h-6 text-purple-500" />,
-      iconBgColor: 'bg-purple-500/10',
+      accentColor: 'purple' as const,
       trend: { value: 8, direction: 'up' as const },
     },
     {
       title: 'Signed ICFs (Monthly)',
       value: getSignedICFCount(),
-      icon: <CheckCircle className="w-6 h-6 text-green-500" />,
-      iconBgColor: 'bg-green-500/10',
+      icon: <CheckCircle className="w-6 h-6 text-mint" />,
+      accentColor: 'mint' as const,
       trend: { value: 15, direction: 'up' as const },
     },
     {
@@ -84,7 +84,7 @@ export default function DashboardPage() {
       value: getConversionRate(),
       suffix: '%',
       icon: <TrendingUp className="w-6 h-6 text-vista-blue" />,
-      iconBgColor: 'bg-vista-blue/10',
+      accentColor: 'blue' as const,
       trend: { value: 2, direction: 'up' as const },
     },
   ];
@@ -143,7 +143,7 @@ export default function DashboardPage() {
               value={stat.value}
               suffix={stat.suffix}
               icon={stat.icon}
-              iconBgColor={stat.iconBgColor}
+              accentColor={stat.accentColor}
               trend={stat.trend}
               delay={0.1 + index * 0.05}
             />
@@ -197,7 +197,7 @@ export default function DashboardPage() {
                       .map((referral) => (
                         <div
                           key={referral.id}
-                          className="flex items-center justify-between p-3 rounded-xl bg-bg-tertiary/50 hover:bg-bg-tertiary transition-colors cursor-pointer"
+                          className="flex items-center justify-between p-3 rounded-xl bg-white/50 dark:bg-white/5 hover:bg-white/70 dark:hover:bg-white/10 transition-colors cursor-pointer border border-white/60 dark:border-white/10"
                         >
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-full bg-mint/20 flex items-center justify-center text-mint font-semibold">
@@ -225,7 +225,7 @@ export default function DashboardPage() {
                     {overdueReferrals.slice(0, 2).map((referral) => (
                       <div
                         key={referral.id}
-                        className="flex items-center justify-between p-3 rounded-xl bg-bg-tertiary/50 hover:bg-bg-tertiary transition-colors cursor-pointer"
+                        className="flex items-center justify-between p-3 rounded-xl bg-white/50 dark:bg-white/5 hover:bg-white/70 dark:hover:bg-white/10 transition-colors cursor-pointer border border-white/60 dark:border-white/10"
                       >
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 rounded-full bg-warning/20 flex items-center justify-center text-warning font-semibold">
