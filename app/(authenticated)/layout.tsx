@@ -6,7 +6,8 @@ import { ThemeProvider } from '@/lib/context/ThemeContext';
 import { AuthProvider, useAuth } from '@/lib/context/AuthContext';
 import { ProTierProvider, useProTier } from '@/lib/context/ProTierContext';
 import { ToastProvider } from '@/components/ui/Toast';
-import { Sidebar, Header } from '@/components/layout';
+import { AppSidebar, Header } from '@/components/layout';
+import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { UpgradeModal } from '@/components/ui/UpgradeModal';
 import { Confetti } from '@/components/ui/Confetti';
 import { GradientBackground } from '@/components/ui/GradientBackground';
@@ -39,22 +40,17 @@ function AuthenticatedLayoutContent({ children }: { children: React.ReactNode })
         onClose={() => setShowUpgradeModal(false)}
       />
 
-      <div className="relative flex h-screen overflow-hidden">
-        {/* Sidebar */}
-        <div className="relative flex-shrink-0 z-10">
-          <Sidebar />
-        </div>
-
-        {/* Main Content Area */}
-        <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative z-10">
+      <SidebarProvider defaultOpen={true}>
+        <AppSidebar />
+        <SidebarInset className="relative z-10">
           <Header />
           <main className="flex-1 overflow-y-auto p-6">
             <div className="max-w-7xl mx-auto">
               {children}
             </div>
           </main>
-        </div>
-      </div>
+        </SidebarInset>
+      </SidebarProvider>
     </>
   );
 }
