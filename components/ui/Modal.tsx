@@ -81,7 +81,7 @@ export function Modal({
           >
             {/* Header */}
             {(title || showCloseButton) && (
-              <div className="flex items-center justify-between px-6 py-4 border-b border-glass-border">
+              <div className="relative z-10 flex items-center justify-between px-6 py-4 border-b border-glass-border">
                 {title && (
                   <h2 className="text-xl font-semibold text-text-primary">
                     {title}
@@ -102,7 +102,7 @@ export function Modal({
             )}
 
             {/* Body */}
-            <div className="p-6 overflow-y-auto max-h-[calc(90vh-8rem)]">
+            <div className="relative z-10 p-6 overflow-y-auto max-h-[calc(90vh-8rem)]">
               {children}
             </div>
           </motion.div>

@@ -551,6 +551,41 @@ textarea,
     0 24px 80px rgba(0, 0, 0, 0.12),
     0 8px 32px rgba(0, 0, 0, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Gradient decorations for modal */
+.glass-modal::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  right: -15%;
+  width: 50%;
+  height: 60%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(83, 202, 151, 0.15) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.glass-modal::after {
+  content: '';
+  position: absolute;
+  bottom: -20%;
+  left: -10%;
+  width: 45%;
+  height: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(121, 145, 198, 0.12) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
 }
 
 .dark .glass-modal {
@@ -564,6 +599,22 @@ textarea,
     0 24px 80px rgba(0, 0, 0, 0.4),
     0 8px 32px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.dark .glass-modal::before {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(83, 202, 151, 0.1) 0%,
+    transparent 70%
+  );
+}
+
+.dark .glass-modal::after {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(121, 145, 198, 0.08) 0%,
+    transparent 70%
+  );
 }
 
 /* Glass modal metric card - for stat cards inside modals */
