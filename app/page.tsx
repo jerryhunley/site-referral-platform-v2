@@ -69,7 +69,7 @@ function LoginForm() {
         </motion.div>
 
         {/* Form Container */}
-        <div className="flex-1 flex items-center justify-center px-8 pb-8">
+        <div className="flex-1 flex items-center justify-center px-8 pb-8 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -112,6 +112,7 @@ function LoginForm() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 autoComplete="email"
+                className="glass-input"
               />
 
               <Input
@@ -122,6 +123,7 @@ function LoginForm() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 autoComplete="current-password"
+                className="glass-input"
               />
 
               <Button
