@@ -18,3 +18,11 @@ export { AnimatedHeroSVG } from './AnimatedHeroSVG';
 export { ProFeatureGate } from './ProFeatureGate';
 export { UpgradeModal } from './UpgradeModal';
 export { Confetti } from './Confetti';
+
+// shadcn/ui components
+export * from './dialog';
+export * from './dropdown-menu';
+export * from './select';
+export { Skeleton } from './skeleton';
+export * from './sheet';
+export { Separator } from './separator';
