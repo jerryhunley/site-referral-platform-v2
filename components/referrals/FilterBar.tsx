@@ -330,7 +330,7 @@ export function FilterBar({
             onClick={() => onViewModeChange('grid')}
             className={`p-2 rounded-lg transition-colors ${
               viewMode === 'grid'
-                ? 'bg-mint text-white'
+                ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900'
                 : 'text-text-muted hover:text-text-primary'
             }`}
           >
@@ -340,7 +340,7 @@ export function FilterBar({
             onClick={() => onViewModeChange('list')}
             className={`p-2 rounded-lg transition-colors ${
               viewMode === 'list'
-                ? 'bg-mint text-white'
+                ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900'
                 : 'text-text-muted hover:text-text-primary'
             }`}
           >

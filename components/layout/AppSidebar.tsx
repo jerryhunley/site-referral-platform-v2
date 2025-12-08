@@ -104,12 +104,12 @@ export function AppSidebar() {
                     className={cn(
                       'rounded-2xl transition-all duration-200',
                       isActive
-                        ? 'bg-mint text-white shadow-md shadow-mint/25 hover:bg-mint hover:text-white data-[active=true]:bg-mint data-[active=true]:text-white'
+                        ? 'bg-gray-900 text-white shadow-md shadow-gray-900/25 hover:bg-gray-900 hover:text-white data-[active=true]:bg-gray-900 data-[active=true]:text-white dark:bg-white dark:text-gray-900 dark:shadow-white/10 dark:hover:bg-white dark:hover:text-gray-900 dark:data-[active=true]:bg-white dark:data-[active=true]:text-gray-900'
                         : 'text-text-secondary hover:bg-white/60 dark:hover:bg-white/10 hover:text-text-primary'
                     )}
                   >
                     <Link href={item.href}>
-                      <Icon className={cn('w-5 h-5', isActive && 'text-white')} />
+                      <Icon className={cn('w-5 h-5', isActive && 'text-white dark:text-gray-900')} />
                       <span className="font-medium">{item.label}</span>
                       {/* PRO Badge */}
                       {!isCollapsed && showProBadge && (
@@ -143,7 +143,7 @@ export function AppSidebar() {
           isCollapsed ? "justify-center" : "gap-3 pl-2"
         )}>
           {/* Avatar */}
-          <div className="w-8 h-8 rounded-full bg-mint/20 flex items-center justify-center text-mint font-semibold text-sm shrink-0">
+          <div className="w-8 h-8 rounded-full bg-gray-900/15 flex items-center justify-center text-gray-900 font-semibold text-sm shrink-0 dark:bg-white/20 dark:text-white">
             {user ? getUserInitials(user) : 'U'}
           </div>
 

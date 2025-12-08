@@ -116,7 +116,7 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
           <Button
             variant="primary"
             size="lg"
-            className="w-full bg-gradient-to-r from-mint to-vista-blue hover:from-mint/90 hover:to-vista-blue/90"
+            className="w-full"
             leftIcon={<Sparkles className="w-5 h-5" />}
             onClick={handleUpgrade}
           >
