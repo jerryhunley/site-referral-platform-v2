@@ -1,5 +1,5 @@
 export { GlassCard } from './GlassCard';
-export { Button } from './Button';
+export { Button, buttonVariants } from './Button';
 export { Input } from './Input';
 export { Badge } from './Badge';
 export { ThemeToggle } from './ThemeToggle';
