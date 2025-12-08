@@ -13,7 +13,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          'bg-gray-900 text-white hover:bg-gray-800 focus:ring-gray-900/50 shadow-sm hover:shadow-md dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100 dark:focus:ring-white/50',
+          'bg-[#1A2B28] text-white hover:bg-[#243835] focus:ring-[#1A2B28]/50 shadow-sm hover:shadow-md dark:bg-[#E8F0EE] dark:text-[#1A2B28] dark:hover:bg-[#D4E4E0] dark:focus:ring-[#E8F0EE]/50',
         secondary:
           'glass-button text-text-primary border border-glass-border hover:border-mint/30 focus:ring-mint/30',
         ghost:

@@ -15,9 +15,10 @@
   --mint-dark: #42A279;
   --mint-glow: rgba(83, 202, 151, 0.3);
 
-  /* Button - Accessible dark teal for interactive elements (4.5:1+ contrast) */
-  --btn-primary: #0F766E;
-  --btn-primary-hover: #115E59;
+  /* Enterprise Button - Brand-tinted neutral (12:1+ contrast, WCAG AAA) */
+  /* Dark with subtle mint undertone - sophisticated & accessible */
+  --btn-primary: #1A2B28;
+  --btn-primary-hover: #243835;
 
   /* Neutrals - Light Mode */
   --bg-primary: #F8F8F8;
