@@ -70,30 +70,25 @@ export function AppSidebar() {
     <Sidebar
       variant="floating"
       collapsible="icon"
-      className={cn(
-        'h-[calc(100vh-24px)] my-3 ml-3',
-        // Override shadcn defaults with glassmorphic styling
-        '[&_[data-sidebar=sidebar]]:floating-sidebar',
-        '[&_[data-sidebar=sidebar]]:!bg-transparent',
-        '[&_[data-sidebar=sidebar]]:!rounded-2xl'
-      )}
+      className="h-[calc(100vh-24px)] my-3 ml-3"
     >
       {/* Logo Section */}
-      <SidebarHeader className="px-4 py-5">
-        <div className="flex items-center justify-between">
+      <SidebarHeader className="px-4 py-4">
+        <div className={cn(
+          "flex items-center",
+          isCollapsed ? "justify-center" : "justify-start pl-2"
+        )}>
           {!isCollapsed ? (
-            <Logo size="md" />
+            <Logo size="sm" />
           ) : (
-            <div className="flex justify-center w-full">
-              <Logo size="sm" showText={false} />
-            </div>
+            <Logo size="sm" showText={false} />
           )}
         </div>
       </SidebarHeader>
 
       {/* Navigation */}
       <SidebarContent className="px-3">
-        <SidebarGroup>
+        <SidebarGroup className="p-0">
           <SidebarMenu>
             {navItems.map((item) => {
               const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
@@ -142,17 +137,20 @@ export function AppSidebar() {
       <SidebarToggleButton />
 
       {/* User Section */}
-      <SidebarFooter className="p-4">
-        <div className="flex items-center gap-3">
+      <SidebarFooter className="px-4 py-3">
+        <div className={cn(
+          "flex items-center",
+          isCollapsed ? "justify-center" : "gap-3 pl-2"
+        )}>
           {/* Avatar */}
-          <div className="w-10 h-10 rounded-full bg-mint/20 flex items-center justify-center text-mint font-semibold flex-shrink-0">
+          <div className="w-8 h-8 rounded-full bg-mint/20 flex items-center justify-center text-mint font-semibold text-sm shrink-0">
             {user ? getUserInitials(user) : 'U'}
           </div>
 
           {!isCollapsed && (
             <>
               <div className="flex-1 min-w-0 overflow-hidden">
-                <p className="font-medium text-text-primary truncate">
+                <p className="font-medium text-text-primary truncate text-sm">
                   {user ? getUserFullName(user) : 'User'}
                 </p>
                 <p className="text-xs text-text-muted truncate">

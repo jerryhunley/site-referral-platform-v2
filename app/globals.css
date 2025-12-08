@@ -9,11 +9,11 @@
    ======================================== */
 
 :root {
-  /* Primary - Mint */
-  --mint: #53CA97;
-  --mint-light: #75D5AC;
-  --mint-dark: #42A279;
-  --mint-glow: rgba(83, 202, 151, 0.3);
+  /* Primary - Mint (Accessible teal - 4.5:1+ contrast with white) */
+  --mint: #0D9488;
+  --mint-light: #14B8A6;
+  --mint-dark: #0F766E;
+  --mint-glow: rgba(13, 148, 136, 0.3);
 
   /* Neutrals - Light Mode */
   --bg-primary: #F8F8F8;
@@ -28,13 +28,13 @@
   --slate-gray: #678283;
 
   /* Gradient Background Colors - Soft pastels */
-  --gradient-mint: rgba(83, 202, 151, 0.12);
+  --gradient-mint: rgba(13, 148, 136, 0.12);
   --gradient-blue: rgba(121, 145, 198, 0.10);
   --gradient-pink: rgba(244, 190, 220, 0.08);
   --gradient-peach: rgba(254, 215, 190, 0.06);
 
   /* Semantic */
-  --success: #53CA97;
+  --success: #0D9488;
   --warning: #F59E0B;
   --error: #EF4444;
   --info: #7991C6;
