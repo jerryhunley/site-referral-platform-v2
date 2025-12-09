@@ -1762,3 +1762,49 @@ export function getOverdueReferrals(daysSinceUpdate: number = 2): Referral[] {
     return updated < cutoff;
   });
 }
+
+// Get referrals with unread inbound SMS messages
+export interface UnreadSMSInfo {
+  referral: Referral;
+  lastMessage: Referral['messages'][0];
+  unreadCount: number;
+}
+
+export function getUnreadSMSMessages(): UnreadSMSInfo[] {
+  const unreadMessages: UnreadSMSInfo[] = [];
+
+  mockReferrals.forEach((referral) => {
+    if (!referral.messages || referral.messages.length === 0) return;
+
+    // Find the last message
+    const sortedMessages = [...referral.messages].sort(
+      (a, b) => new Date(b.sentAt).getTime() - new Date(a.sentAt).getTime()
+    );
+    const lastMessage = sortedMessages[0];
+
+    // If the last message is inbound (patient sent it), it's considered unread
+    // since we haven't responded yet (no outbound message after it)
+    if (lastMessage.direction === 'inbound') {
+      // Count consecutive inbound messages at the end (all unread)
+      let unreadCount = 0;
+      for (const m of sortedMessages) {
+        if (m.direction === 'inbound') {
+          unreadCount++;
+        } else {
+          break; // Stop at first outbound message
+        }
+      }
+
+      unreadMessages.push({
+        referral,
+        lastMessage,
+        unreadCount: Math.max(1, unreadCount),
+      });
+    }
+  });
+
+  // Sort by most recent message first
+  return unreadMessages.sort(
+    (a, b) => new Date(b.lastMessage.sentAt).getTime() - new Date(a.lastMessage.sentAt).getTime()
+  );
+}

@@ -13,7 +13,8 @@ import {
   ArrowRight,
   Clock,
   Phone,
-  Plus
+  Plus,
+  MessageSquare
 } from 'lucide-react';
 import { DailyDigestModal } from '@/components/dashboard/DailyDigestModal';
 import { StatsCard } from '@/components/dashboard/StatsCard';
@@ -27,6 +28,7 @@ import {
   getActiveReferralsCount,
   getConversionRate,
   getOverdueReferrals,
+  getUnreadSMSMessages,
 } from '@/lib/mock-data/referrals';
 import { mockStudies } from '@/lib/mock-data/studies';
 import { getTodaysAppointments, getAppointmentCountThisWeek } from '@/lib/mock-data/appointments';
@@ -93,6 +95,21 @@ export default function DashboardPage() {
   const recentActivity = getRecentActivity(15);
   const newReferrals = getNewReferralsCount();
   const overdueReferrals = getOverdueReferrals(2);
+  const unreadSMSMessages = getUnreadSMSMessages();
+
+  // Helper to format time ago
+  const formatTimeAgo = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / (1000 * 60));
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+    if (diffMins < 60) return `${diffMins}m ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    return `${diffDays}d ago`;
+  };
 
   return (
     <>
@@ -252,6 +269,66 @@ export default function DashboardPage() {
                   <div className="text-center py-8">
                     <CheckCircle className="w-12 h-12 text-mint mx-auto mb-3" />
                     <p className="text-text-secondary">All caught up! Great work.</p>
+                  </div>
+                )}
+              </GlassCard>
+            </motion.div>
+
+            {/* Unread SMS Messages */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.4 }}
+            >
+              <GlassCard padding="lg" animate={false}>
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-lg font-semibold text-text-primary flex items-center gap-2">
+                    <MessageSquare className="w-5 h-5 text-vista-blue" />
+                    Unread Messages
+                  </h2>
+                  {unreadSMSMessages.length > 0 && (
+                    <span className="px-2.5 py-1 rounded-full bg-vista-blue/10 text-vista-blue text-sm font-medium">
+                      {unreadSMSMessages.length} unread
+                    </span>
+                  )}
+                </div>
+
+                {unreadSMSMessages.length > 0 ? (
+                  <div className="space-y-3">
+                    {unreadSMSMessages.slice(0, 4).map(({ referral, lastMessage }) => (
+                      <div
+                        key={referral.id}
+                        className="flex items-start gap-3 p-3 cursor-pointer glass-list-item"
+                      >
+                        <div className="relative shrink-0">
+                          <div className="w-10 h-10 rounded-full bg-vista-blue/20 flex items-center justify-center text-vista-blue font-semibold">
+                            {referral.firstName[0]}{referral.lastName[0]}
+                          </div>
+                          <div className="absolute -top-1 -right-1 w-4 h-4 bg-vista-blue rounded-full flex items-center justify-center">
+                            <span className="text-[10px] text-white font-bold">1</span>
+                          </div>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between gap-2">
+                            <p className="font-medium text-text-primary truncate">
+                              {referral.firstName} {referral.lastName}
+                            </p>
+                            <span className="text-xs text-text-muted shrink-0">
+                              {formatTimeAgo(lastMessage.sentAt)}
+                            </span>
+                          </div>
+                          <p className="text-sm text-text-secondary line-clamp-2 mt-0.5">
+                            {lastMessage.content}
+                          </p>
+                        </div>
+                        <ArrowRight className="w-4 h-4 text-vista-blue shrink-0 mt-1" />
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8">
+                    <MessageSquare className="w-12 h-12 text-text-muted/50 mx-auto mb-3" />
+                    <p className="text-text-secondary">No unread messages</p>
                   </div>
                 )}
               </GlassCard>
