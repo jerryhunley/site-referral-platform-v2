@@ -69,10 +69,10 @@ export function ProFeatureGate({
                 </p>
               )}
 
-              {/* Upgrade button - enterprise brand-tinted neutral */}
+              {/* Upgrade button - radial gradient mint */}
               <motion.button
                 onClick={() => setShowUpgradeModal(true)}
-                className="px-6 py-2.5 rounded-xl bg-[#1A2B28] text-white font-medium shadow-lg shadow-[#1A2B28]/30 hover:bg-[#243835] hover:shadow-[#1A2B28]/50 transition-all dark:bg-[#E8F0EE] dark:text-[#1A2B28] dark:shadow-[#E8F0EE]/20 dark:hover:bg-[#D4E4E0]"
+                className="px-6 py-2.5 rounded-xl bg-[radial-gradient(circle_at_bottom_right,#53CA97_0%,#42a279_50%)] text-white font-medium shadow-lg shadow-mint/30 hover:bg-[radial-gradient(circle_at_bottom_right,#5ED4A3_0%,#4AAE85_50%)] hover:shadow-mint/50 transition-all"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >

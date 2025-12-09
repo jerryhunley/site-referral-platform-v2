@@ -27,7 +27,7 @@ import {
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
-const SIDEBAR_WIDTH = "14rem"
+const SIDEBAR_WIDTH = "16rem"
 const SIDEBAR_WIDTH_MOBILE = "18rem"
 const SIDEBAR_WIDTH_ICON = "3.5rem"
 const SIDEBAR_KEYBOARD_SHORTCUT = "b"
@@ -262,8 +262,10 @@ const Sidebar = React.forwardRef<
           <div
             data-sidebar="sidebar"
             className={cn(
-              "flex h-full w-full flex-col",
-              variant === "floating" && "floating-sidebar rounded-2xl",
+              "flex h-full flex-col",
+              variant === "floating"
+                ? "w-[calc(var(--sidebar-width)_-_theme(spacing.4))] floating-sidebar rounded-2xl"
+                : "w-full",
               variant === "sidebar" && "bg-sidebar",
               variant === "inset" && "bg-sidebar"
             )}

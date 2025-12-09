@@ -104,7 +104,7 @@ export function AppSidebar() {
                     className={cn(
                       'rounded-2xl transition-all duration-200',
                       isActive
-                        ? 'bg-[#1A2B28] text-white shadow-md shadow-[#1A2B28]/25 hover:bg-[#1A2B28] hover:text-white data-[active=true]:bg-[#1A2B28] data-[active=true]:text-white dark:bg-[#E8F0EE] dark:text-[#1A2B28] dark:shadow-[#E8F0EE]/10 dark:hover:bg-[#E8F0EE] dark:hover:text-[#1A2B28] dark:data-[active=true]:bg-[#E8F0EE] dark:data-[active=true]:text-[#1A2B28]'
+                        ? 'bg-[radial-gradient(circle_at_bottom_right,#53CA97_0%,#42a279_50%)] text-white shadow-md shadow-mint/25 hover:bg-[radial-gradient(circle_at_bottom_right,#5ED4A3_0%,#4AAE85_50%)] hover:text-white data-[active=true]:bg-[radial-gradient(circle_at_bottom_right,#53CA97_0%,#42a279_50%)] data-[active=true]:text-white'
                         : 'text-text-secondary hover:bg-white/60 dark:hover:bg-white/10 hover:text-text-primary'
                     )}
                   >
