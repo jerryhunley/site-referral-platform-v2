@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Lottie from 'lottie-react';
 import {
   CheckCircle,
   Clock,
@@ -14,6 +15,7 @@ import {
   Home,
   TrendingUp,
 } from 'lucide-react';
+import finishedSessionAnimation from '@/public/animations/finished-work-session.json';
 import { useRouter } from 'next/navigation';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
@@ -149,8 +151,17 @@ export function SessionReport({
         animate={{ opacity: 1, y: 0 }}
         className="text-center"
       >
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-mint/20 mb-4">
-          <CheckCircle className="w-8 h-8 text-mint" />
+        <div className="w-16 h-16 mb-4 mx-auto">
+          <Lottie
+            animationData={finishedSessionAnimation}
+            loop={true}
+            renderer="svg"
+            rendererSettings={{
+              preserveAspectRatio: 'xMidYMid meet',
+              progressiveLoad: false,
+            }}
+            className="w-full h-full"
+          />
         </div>
         <h1 className="text-2xl font-bold text-text-primary">Session Complete!</h1>
         <p className="text-text-secondary mt-1">

@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing - Site Referral Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --mint: #53CA97;
+      --mint-light: #5ED4A3;
+      --mint-dark: #42a279;
+      --bg-primary: #F7F9FB;
+      --bg-secondary: #FFFFFF;
+      --bg-tertiary: #EEF2F6;
+      --text-primary: #1A2B28;
+      --text-secondary: #5A6B68;
+      --text-muted: #8A9A97;
+      --glass-border: rgba(0, 0, 0, 0.08);
+      --glass-bg: rgba(255, 255, 255, 0.7);
+      --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Gradient background */
+    .bg-gradient {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(ellipse at 20% 0%, rgba(83, 202, 151, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 100%, rgba(83, 202, 151, 0.08) 0%, transparent 50%),
+        linear-gradient(180deg, #F7F9FB 0%, #EEF2F6 100%);
+      z-index: -1;
+    }
+
+    /* Header */
+    header {
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--mint) 0%, var(--mint-dark) 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    nav {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    nav a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--text-primary);
+    }
+
+    .btn-login {
+      padding: 0.5rem 1.25rem;
+      border-radius: 9999px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--glass-border);
+      color: var(--text-primary);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .btn-login:hover {
+      background: var(--bg-tertiary);
+      border-color: var(--mint);
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 4rem 2rem 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+    }
+
+    /* Billing Toggle */
+    .billing-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    .billing-toggle span {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+
+    .billing-toggle span.active {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .toggle-switch {
+      width: 56px;
+      height: 28px;
+      background: #D1D9E0;
+      border-radius: 14px;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.3s;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .toggle-switch.annual {
+      background: var(--mint);
+    }
+
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      background: white;
+      border-radius: 50%;
+      top: 3px;
+      left: 3px;
+      transition: transform 0.3s;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    }
+
+    .toggle-switch.annual::after {
+      transform: translateX(28px);
+    }
+
+    .save-badge {
+      background: rgba(83, 202, 151, 0.2);
+      color: var(--mint);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    /* Pricing Cards */
+    .pricing-section {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem 4rem;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    @media (max-width: 1200px) {
+      .pricing-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+    }
+
+    .pricing-card {
+      background: var(--bg-secondary);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 2rem;
+      position: relative;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: var(--card-shadow);
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+    }
+
+    .pricing-card.popular {
+      border: 2px solid var(--mint);
+      background: linear-gradient(135deg, rgba(83, 202, 151, 0.08) 0%, var(--bg-secondary) 100%);
+      box-shadow: 0 8px 32px rgba(83, 202, 151, 0.15);
+    }
+
+    .popular-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--mint) 0%, var(--mint-dark) 100%);
+      color: white;
+      padding: 0.35rem 1rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .card-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .tier-name {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .tier-desc {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .price-container {
+      margin-bottom: 1.5rem;
+    }
+
+    .price {
+      display: flex;
+      align-items: baseline;
+      gap: 0.25rem;
+    }
+
+    .currency {
+      font-size: 1.5rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .amount {
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+
+    .period {
+      font-size: 1rem;
+      color: var(--text-muted);
+    }
+
+    .annual-price {
+      font-size: 0.85rem;
+      color: var(--mint);
+      margin-top: 0.5rem;
+      display: none;
+    }
+
+    .annual-price.show {
+      display: block;
+    }
+
+    .monthly-note {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 0.875rem 1.5rem;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, var(--mint) 0%, var(--mint-dark) 100%);
+      border: none;
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--mint-light) 0%, var(--mint) 100%);
+      box-shadow: 0 8px 20px rgba(83, 202, 151, 0.3);
+    }
+
+    .btn-secondary {
+      width: 100%;
+      padding: 0.875rem 1.5rem;
+      border-radius: 9999px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--glass-border);
+      color: var(--text-primary);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-secondary:hover {
+      background: #E4EAF0;
+      border-color: var(--mint);
+    }
+
+    .features-list {
+      list-style: none;
+    }
+
+    .features-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.5rem 0;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .features-list li::before {
+      content: '';
+      width: 18px;
+      height: 18px;
+      min-width: 18px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2353CA97'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z'/%3E%3C/svg%3E") center/contain no-repeat;
+    }
+
+    .features-list li.highlight {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    /* Custom/Contact Card */
+    .pricing-card.contact {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .contact-icon {
+      width: 64px;
+      height: 64px;
+      background: rgba(83, 202, 151, 0.1);
+      border-radius: 16px;
+      margin: 0 auto 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Feature Comparison */
+    .comparison-section {
+      max-width: 1200px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+    }
+
+    .comparison-section h2 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--bg-secondary);
+      backdrop-filter: blur(20px);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--card-shadow);
+    }
+
+    .comparison-table th,
+    .comparison-table td {
+      padding: 1rem 1.5rem;
+      text-align: left;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .comparison-table th {
+      background: var(--bg-tertiary);
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .comparison-table th:not(:first-child) {
+      text-align: center;
+    }
+
+    .comparison-table td:not(:first-child) {
+      text-align: center;
+    }
+
+    .comparison-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .comparison-table td {
+      color: var(--text-secondary);
+    }
+
+    .feature-name {
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .check {
+      color: var(--mint);
+      font-size: 1.25rem;
+    }
+
+    .dash {
+      color: var(--text-muted);
+    }
+
+    /* Trust Section */
+    .trust-section {
+      text-align: center;
+      padding: 4rem 2rem;
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--glass-border);
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .trust-badges {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .trust-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .trust-badge-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(83, 202, 151, 0.1);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .trust-badge span {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    /* FAQ Section */
+    .faq-section {
+      max-width: 800px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+    }
+
+    .faq-section h2 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .faq-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+    }
+
+    .faq-question {
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--text-primary);
+      transition: background 0.2s;
+    }
+
+    .faq-question:hover {
+      background: var(--bg-tertiary);
+    }
+
+    .faq-question::after {
+      content: '+';
+      font-size: 1.5rem;
+      color: var(--mint);
+      transition: transform 0.3s;
+    }
+
+    .faq-item.open .faq-question::after {
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      padding: 0 1.5rem;
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.3s;
+      color: var(--text-secondary);
+    }
+
+    .faq-item.open .faq-answer {
+      padding: 0 1.5rem 1.25rem;
+      max-height: 200px;
+    }
+
+    /* CTA Section */
+    .cta-section {
+      text-align: center;
+      padding: 4rem 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .cta-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .cta-section p {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .cta-buttons .btn-primary {
+      width: auto;
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+    }
+
+    .cta-buttons .btn-secondary {
+      width: auto;
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+    }
+
+    /* Footer */
+    footer {
+      padding: 3rem 2rem;
+      border-top: 1px solid var(--glass-border);
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .footer-copyright {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      nav {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .comparison-table {
+        font-size: 0.85rem;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        padding: 0.75rem;
+      }
+
+      .footer-content {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-gradient"></div>
+
+  <!-- Header -->
+  <header>
+    <a href="/" class="logo">
+      <div class="logo-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      SiteReferral
+    </a>
+    <nav>
+      <a href="#">Features</a>
+      <a href="#">Pricing</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+      <button class="btn-login">Log In</button>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Pricing built for modern research sites</h1>
+    <p>Powerful patient recruitment tools. Transparent pricing. No hidden fees.</p>
+
+    <!-- Billing Toggle -->
+    <div class="billing-toggle">
+      <span class="monthly-label active">Monthly</span>
+      <div class="toggle-switch" onclick="toggleBilling()" id="billingToggle"></div>
+      <span class="annual-label">Annual</span>
+      <span class="save-badge">Save up to 15%</span>
+    </div>
+  </section>
+
+  <!-- Pricing Cards -->
+  <section class="pricing-section">
+    <div class="pricing-grid">
+      <!-- Essentials -->
+      <div class="pricing-card">
+        <div class="card-header">
+          <div class="tier-name">Essentials</div>
+          <div class="tier-desc">For growing sites</div>
+        </div>
+        <div class="price-container">
+          <div class="price">
+            <span class="currency">$</span>
+            <span class="amount" data-monthly="149" data-annual="129">149</span>
+            <span class="period">/mo</span>
+          </div>
+          <div class="annual-price">Billed annually at $1,548/year</div>
+          <div class="monthly-note">Billed monthly</div>
+        </div>
+        <button class="btn-secondary">Start Free Trial</button>
+        <ul class="features-list">
+          <li class="highlight">100 referrals/month</li>
+          <li>3 active studies</li>
+          <li>200 SMS messages/month</li>
+          <li>Basic dashboard & reporting</li>
+          <li>Working Session dialer</li>
+          <li>Email support</li>
+          <li>CSV import</li>
+        </ul>
+      </div>
+
+      <!-- Professional -->
+      <div class="pricing-card popular">
+        <div class="popular-badge">Most Popular</div>
+        <div class="card-header">
+          <div class="tier-name">Professional</div>
+          <div class="tier-desc">For busy coordinators</div>
+        </div>
+        <div class="price-container">
+          <div class="price">
+            <span class="currency">$</span>
+            <span class="amount" data-monthly="349" data-annual="299">349</span>
+            <span class="period">/mo</span>
+          </div>
+          <div class="annual-price">Billed annually at $3,588/year</div>
+          <div class="monthly-note">Billed monthly</div>
+        </div>
+        <button class="btn-primary">Start Free Trial</button>
+        <ul class="features-list">
+          <li class="highlight">500 referrals/month</li>
+          <li class="highlight">10 active studies</li>
+          <li>1,000 SMS messages/month</li>
+          <li>Full analytics dashboard</li>
+          <li>AI-powered insights</li>
+          <li>Bulk SMS campaigns</li>
+          <li>Notes & activity timeline</li>
+          <li>Priority email support</li>
+          <li>Custom SMS templates</li>
+        </ul>
+      </div>
+
+      <!-- Enterprise -->
+      <div class="pricing-card">
+        <div class="card-header">
+          <div class="tier-name">Enterprise</div>
+          <div class="tier-desc">For high-volume sites</div>
+        </div>
+        <div class="price-container">
+          <div class="price">
+            <span class="currency">$</span>
+            <span class="amount" data-monthly="649" data-annual="549">649</span>
+            <span class="period">/mo</span>
+          </div>
+          <div class="annual-price">Billed annually at $6,588/year</div>
+          <div class="monthly-note">Billed monthly</div>
+        </div>
+        <button class="btn-primary">Start Free Trial</button>
+        <ul class="features-list">
+          <li class="highlight">Unlimited referrals</li>
+          <li class="highlight">Unlimited studies</li>
+          <li class="highlight">Unlimited SMS</li>
+          <li>Advanced AI insights</li>
+          <li>Full analytics suite</li>
+          <li>Bulk operations</li>
+          <li>Phone & email support</li>
+          <li>Custom integrations</li>
+          <li>Dedicated success manager</li>
+          <li>HIPAA BAA included</li>
+          <li>99.9% SLA guarantee</li>
+        </ul>
+      </div>
+
+      <!-- Custom -->
+      <div class="pricing-card contact">
+        <div class="contact-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#53CA97" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <div class="card-header">
+          <div class="tier-name">Custom</div>
+          <div class="tier-desc">Multi-site networks</div>
+        </div>
+        <div class="price-container">
+          <div class="price">
+            <span class="amount" style="font-size: 2rem;">Let's talk</span>
+          </div>
+          <div class="monthly-note">Volume discounts available</div>
+        </div>
+        <button class="btn-secondary">Contact Sales</button>
+        <ul class="features-list">
+          <li>Multi-site dashboard</li>
+          <li>Volume discounts</li>
+          <li>Custom onboarding</li>
+          <li>API access</li>
+          <li>White-label options</li>
+          <li>Custom reporting</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Section -->
+  <section class="trust-section">
+    <div class="trust-badges">
+      <div class="trust-badge">
+        <div class="trust-badge-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#53CA97" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+        </div>
+        <span>HIPAA Compliant</span>
+      </div>
+      <div class="trust-badge">
+        <div class="trust-badge-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#53CA97" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+        </div>
+        <span>256-bit Encryption</span>
+      </div>
+      <div class="trust-badge">
+        <div class="trust-badge-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#53CA97" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </div>
+        <span>SOC 2 Type II</span>
+      </div>
+      <div class="trust-badge">
+        <div class="trust-badge-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#53CA97" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <span>99.9% Uptime SLA</span>
+      </div>
+    </div>
+    <p style="color: var(--text-secondary); margin-top: 1rem; font-weight: 500;">Trusted by 500+ research sites worldwide</p>
+  </section>
+
+  <!-- Feature Comparison -->
+  <section class="comparison-section">
+    <h2>Compare Plans</h2>
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Essentials</th>
+          <th>Professional</th>
+          <th>Enterprise</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="feature-name">Monthly Referrals</td>
+          <td>100</td>
+          <td>500</td>
+          <td>Unlimited</td>
+        </tr>
+        <tr>
+          <td class="feature-name">Active Studies</td>
+          <td>3</td>
+          <td>10</td>
+          <td>Unlimited</td>
+        </tr>
+        <tr>
+          <td class="feature-name">SMS Messages</td>
+          <td>200/mo</td>
+          <td>1,000/mo</td>
+          <td>Unlimited</td>
+        </tr>
+        <tr>
+          <td class="feature-name">Working Session Dialer</td>
+          <td><span class="check">&#10003;</span></td>
+          <td><span class="check">&#10003;</span></td>
+          <td><span class="check">&#10003;</span></td>
+        </tr>
+        <tr>
+          <td class="feature-name">Dashboard & Reporting</td>
+          <td>Basic</td>
+          <td>Full</td>
+          <td>Advanced</td>
+        </tr>
+        <tr>
+          <td class="feature-name">AI Insights</td>
+          <td><span class="dash">-</span></td>
+          <td><span class="check">&#10003;</span></td>
+          <td>Advanced</td>
+        </tr>
+        <tr>
+          <td class="feature-name">Bulk SMS Campaigns</td>
+          <td><span class="dash">-</span></td>
+          <td><span class="check">&#10003;</span></td>
+          <td><span class="check">&#10003;</span></td>
+        </tr>
+        <tr>
+          <td class="feature-name">Custom SMS Templates</td>
+          <td><span class="dash">-</span></td>
+          <td><span class="check">&#10003;</span></td>
+          <td><span class="check">&#10003;</span></td>
+        </tr>
+        <tr>
+          <td class="feature-name">CSV Import</td>
+          <td><span class="check">&#10003;</span></td>
+          <td><span class="check">&#10003;</span></td>
+          <td><span class="check">&#10003;</span></td>
+        </tr>
+        <tr>
+          <td class="feature-name">Custom Integrations</td>
+          <td><span class="dash">-</span></td>
+          <td><span class="dash">-</span></td>
+          <td><span class="check">&#10003;</span></td>
+        </tr>
+        <tr>
+          <td class="feature-name">Dedicated Success Manager</td>
+          <td><span class="dash">-</span></td>
+          <td><span class="dash">-</span></td>
+          <td><span class="check">&#10003;</span></td>
+        </tr>
+        <tr>
+          <td class="feature-name">HIPAA BAA</td>
+          <td>Add-on</td>
+          <td>Add-on</td>
+          <td>Included</td>
+        </tr>
+        <tr>
+          <td class="feature-name">Support</td>
+          <td>Email</td>
+          <td>Priority Email</td>
+          <td>Phone & Email</td>
+        </tr>
+        <tr>
+          <td class="feature-name">SLA Guarantee</td>
+          <td><span class="dash">-</span></td>
+          <td><span class="dash">-</span></td>
+          <td>99.9%</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        Can I change plans anytime?
+      </div>
+      <div class="faq-answer">
+        Yes! You can upgrade or downgrade your plan at any time. When upgrading, you'll be charged the prorated difference immediately. When downgrading, the change takes effect at your next billing cycle.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        Is there a free trial?
+      </div>
+      <div class="faq-answer">
+        Absolutely! All paid plans come with a 14-day free trial. No credit card required to start. You'll have full access to all features in your selected plan during the trial period.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        What payment methods do you accept?
+      </div>
+      <div class="faq-answer">
+        We accept all major credit cards (Visa, Mastercard, American Express), ACH bank transfers, and wire transfers for annual Enterprise plans. All payments are processed securely through Stripe.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        Is my data HIPAA compliant?
+      </div>
+      <div class="faq-answer">
+        Yes, all plans are built on HIPAA-compliant infrastructure. Enterprise plans include a Business Associate Agreement (BAA) at no additional cost. Essentials and Professional plans can add a BAA for a small monthly fee.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        Do you offer discounts for academic or nonprofit sites?
+      </div>
+      <div class="faq-answer">
+        Yes! We offer special pricing for academic research institutions and nonprofit organizations. Contact our sales team to learn more about our academic and nonprofit programs.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        What happens if I exceed my plan limits?
+      </div>
+      <div class="faq-answer">
+        We'll notify you when you're approaching your limits. If you exceed them, we'll reach out to discuss upgrading to a plan that better fits your needs. We won't cut off access - we work with you to find the right solution.
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <h2>Ready to streamline your recruitment?</h2>
+    <p>Join hundreds of research sites using SiteReferral to enroll patients faster.</p>
+    <div class="cta-buttons">
+      <button class="btn-primary">Start Your Free Trial</button>
+      <button class="btn-secondary">Schedule a Demo</button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Security</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="footer-copyright">
+        &copy; 2025 SiteReferral. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    let isAnnual = false;
+
+    function toggleBilling() {
+      isAnnual = !isAnnual;
+      const toggle = document.getElementById('billingToggle');
+      const amounts = document.querySelectorAll('.amount[data-monthly]');
+      const annualPrices = document.querySelectorAll('.annual-price');
+      const monthlyNotes = document.querySelectorAll('.monthly-note');
+      const monthlyLabel = document.querySelector('.monthly-label');
+      const annualLabel = document.querySelector('.annual-label');
+
+      toggle.classList.toggle('annual', isAnnual);
+      monthlyLabel.classList.toggle('active', !isAnnual);
+      annualLabel.classList.toggle('active', isAnnual);
+
+      amounts.forEach(amount => {
+        amount.textContent = isAnnual ? amount.dataset.annual : amount.dataset.monthly;
+      });
+
+      annualPrices.forEach(el => el.classList.toggle('show', isAnnual));
+      monthlyNotes.forEach(el => el.style.display = isAnnual ? 'none' : 'block');
+    }
+
+    function toggleFaq(element) {
+      const item = element.parentElement;
+      const isOpen = item.classList.contains('open');
+
+      // Close all other items
+      document.querySelectorAll('.faq-item').forEach(faq => {
+        faq.classList.remove('open');
+      });
+
+      // Toggle current item
+      if (!isOpen) {
+        item.classList.add('open');
+      }
+    }
+  </script>
+</body>
+</html>
