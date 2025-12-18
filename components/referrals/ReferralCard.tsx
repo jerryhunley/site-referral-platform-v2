@@ -8,7 +8,6 @@ import {
   Eye,
   Calendar,
   Clock,
-  MoreHorizontal,
 } from 'lucide-react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Badge } from '@/components/ui/Badge';
@@ -74,45 +73,43 @@ export function ReferralCard({
   const statusConfig = statusConfigs[referral.status];
 
   const cardContent = (
-    <div className="text-left relative">
-      {/* Selection Checkbox */}
-      {onSelect && (
-        <div
-          className="absolute top-0 left-0 z-10"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <Checkbox
-            checked={isSelected}
-            onChange={(e) => onSelect(referral.id, e.target.checked)}
-          />
-        </div>
-      )}
-
-      {/* Content wrapper with consistent left margin when checkbox present */}
-      <div className={onSelect ? 'ml-8' : ''}>
-        {/* Header */}
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3">
-            <Avatar
-              firstName={referral.firstName}
-              lastName={referral.lastName}
-              size="lg"
+    <div className="text-left">
+      {/* Top row: Checkbox (left) + Status Badge (right) */}
+      <div className="flex items-center justify-between mb-3">
+        {/* Selection Checkbox */}
+        {onSelect ? (
+          <div onClick={(e) => e.stopPropagation()}>
+            <Checkbox
+              checked={isSelected}
+              onChange={(e) => onSelect(referral.id, e.target.checked)}
             />
-            <div className="text-left">
-              <h3 className="font-semibold text-text-primary text-left">
-                {referral.firstName} {referral.lastName}
-              </h3>
-              <p className="text-sm text-text-secondary text-left">{formatPhone(referral.phone)}</p>
-            </div>
           </div>
+        ) : (
+          <div />
+        )}
 
-          {/* Status Badge */}
-          <span
-            className={`px-2.5 py-1 rounded-full text-xs font-medium shrink-0 ${statusConfig.bgClass} ${statusConfig.textClass}`}
-          >
-            {statusConfig.label}
-          </span>
+        {/* Status Badge */}
+        <span
+          className={`px-2.5 py-1 rounded-full text-xs font-medium ${statusConfig.bgClass} ${statusConfig.textClass}`}
+        >
+          {statusConfig.label}
+        </span>
+      </div>
+
+      {/* Avatar + Name + Phone */}
+      <div className="flex items-center gap-3">
+        <Avatar
+          firstName={referral.firstName}
+          lastName={referral.lastName}
+          size="lg"
+        />
+        <div className="text-left min-w-0 flex-1">
+          <h3 className="font-semibold text-text-primary truncate">
+            {referral.firstName} {referral.lastName}
+          </h3>
+          <p className="text-sm text-text-secondary">{formatPhone(referral.phone)}</p>
         </div>
+      </div>
 
         {/* Study & Info */}
         <div className="mt-4 space-y-2 text-left">
@@ -207,7 +204,6 @@ export function ReferralCard({
           View
         </motion.button>
         </div>
-      </div>
     </div>
   );
 

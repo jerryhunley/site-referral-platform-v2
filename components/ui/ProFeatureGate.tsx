@@ -30,50 +30,67 @@ export function ProFeatureGate({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, scale: 1.02 }}
             transition={{ duration: 0.3 }}
-            className="relative"
+            className="relative overflow-hidden rounded-2xl shadow-xl"
           >
-            {/* Blurred content preview */}
-            <div className="blur-[6px] pointer-events-none select-none opacity-50 dark:opacity-20">
-              {children}
-            </div>
+            {/* Immersive gradient background */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background: `
+                  radial-gradient(ellipse 200% 150% at 20% -20%, var(--color-mint) 0%, rgba(16, 185, 129, 0.6) 30%, transparent 70%),
+                  radial-gradient(ellipse 180% 120% at 80% 120%, rgb(5, 150, 105) 0%, rgba(16, 185, 129, 0.4) 40%, transparent 70%),
+                  radial-gradient(ellipse 150% 150% at 110% 30%, var(--color-vista-blue) 0%, rgba(59, 130, 246, 0.3) 40%, transparent 70%),
+                  radial-gradient(ellipse 120% 100% at -10% 80%, rgb(147, 51, 234) 0%, rgba(147, 51, 234, 0.2) 30%, transparent 60%),
+                  radial-gradient(ellipse 100% 100% at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                  linear-gradient(160deg, var(--color-mint) 0%, rgb(16, 185, 129) 25%, rgb(20, 184, 166) 50%, var(--color-vista-blue) 75%, rgb(6, 95, 70) 100%)
+                `
+              }}
+            />
 
-            {/* Frosted glass overlay - uses CSS vars for light/dark glass styling */}
-            <div className="absolute inset-0 rounded-2xl flex flex-col items-center justify-center p-6 backdrop-blur-xl bg-glass-bg border border-glass-border">
+            {/* Flowing color orbs */}
+            <div className="absolute -top-20 -left-20 w-80 h-80 bg-mint/50 rounded-full blur-[80px]" />
+            <div className="absolute -top-10 left-1/3 w-72 h-72 bg-vista-blue/40 rounded-full blur-[100px]" />
+            <div className="absolute top-1/4 -right-20 w-80 h-80 bg-vista-blue/50 rounded-full blur-[90px]" />
+            <div className="absolute -bottom-20 -left-10 w-72 h-72 bg-purple-500/35 rounded-full blur-[100px]" />
+            <div className="absolute bottom-1/4 right-1/3 w-56 h-56 bg-white/15 rounded-full blur-[60px]" />
+
+            {/* Content overlay */}
+            <div className="relative flex flex-col items-center justify-center p-8 min-h-[320px]">
               {/* Lock icon with glow */}
               <motion.div
                 className="relative mb-4"
-                animate={{ y: [0, -4, 0] }}
-                transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+                animate={{ y: [0, -6, 0] }}
+                transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
               >
-                <div className="absolute inset-0 bg-mint/30 rounded-full blur-xl" />
-                <div className="relative p-4 rounded-2xl bg-mint/10 border border-mint/30">
-                  <Lock className="w-8 h-8 text-mint" />
+                <div className="absolute inset-0 bg-white/30 rounded-full blur-2xl scale-150" />
+                <div className="relative p-4 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30">
+                  <Lock className="w-8 h-8 text-white" />
                 </div>
               </motion.div>
 
               {/* Pro badge */}
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-mint/10 border border-mint/30 mb-3">
-                <Sparkles className="w-3.5 h-3.5 text-mint" />
-                <span className="text-xs font-semibold text-mint uppercase tracking-wider">
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 mb-3">
+                <Sparkles className="w-3.5 h-3.5 text-white" />
+                <span className="text-xs font-semibold text-white uppercase tracking-wider">
                   Pro Feature
                 </span>
               </div>
 
               {/* Feature info */}
-              <h3 className="text-lg font-semibold text-text-primary mb-1 text-center">
+              <h3 className="text-lg font-semibold text-white mb-1 text-center">
                 {featureName}
               </h3>
               {description && (
-                <p className="text-sm text-text-secondary mb-4 text-center max-w-xs">
+                <p className="text-sm text-white/80 mb-5 text-center max-w-xs">
                   {description}
                 </p>
               )}
 
-              {/* Upgrade button - radial gradient mint */}
+              {/* Upgrade button - white with gradient text effect on hover */}
               <motion.button
                 onClick={() => setShowUpgradeModal(true)}
-                className="px-6 py-2.5 rounded-xl bg-[radial-gradient(circle_at_bottom_right,#53CA97_0%,#42a279_50%)] text-white font-medium shadow-lg shadow-mint/30 hover:bg-[radial-gradient(circle_at_bottom_right,#5ED4A3_0%,#4AAE85_50%)] hover:shadow-mint/50 transition-all"
-                whileHover={{ scale: 1.02 }}
+                className="px-6 py-2.5 rounded-xl bg-white text-emerald-700 font-semibold shadow-lg shadow-black/20 hover:bg-white/95 hover:shadow-xl hover:shadow-black/25 transition-all"
+                whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.98 }}
               >
                 Upgrade to Pro
