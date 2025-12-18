@@ -47,12 +47,15 @@ export function ProFeatureGate({
               }}
             />
 
+            {/* Dark mode saturation boost */}
+            <div className="absolute inset-0 bg-black/0 dark:bg-black/20" />
+
             {/* Flowing color orbs */}
-            <div className="absolute -top-20 -left-20 w-80 h-80 bg-mint/50 rounded-full blur-[80px]" />
-            <div className="absolute -top-10 left-1/3 w-72 h-72 bg-vista-blue/40 rounded-full blur-[100px]" />
-            <div className="absolute top-1/4 -right-20 w-80 h-80 bg-vista-blue/50 rounded-full blur-[90px]" />
-            <div className="absolute -bottom-20 -left-10 w-72 h-72 bg-purple-500/35 rounded-full blur-[100px]" />
-            <div className="absolute bottom-1/4 right-1/3 w-56 h-56 bg-white/15 rounded-full blur-[60px]" />
+            <div className="absolute -top-20 -left-20 w-80 h-80 bg-mint/50 dark:bg-mint/70 rounded-full blur-[80px]" />
+            <div className="absolute -top-10 left-1/3 w-72 h-72 bg-vista-blue/40 dark:bg-vista-blue/60 rounded-full blur-[100px]" />
+            <div className="absolute top-1/4 -right-20 w-80 h-80 bg-vista-blue/50 dark:bg-vista-blue/70 rounded-full blur-[90px]" />
+            <div className="absolute -bottom-20 -left-10 w-72 h-72 bg-purple-500/35 dark:bg-purple-500/55 rounded-full blur-[100px]" />
+            <div className="absolute bottom-1/4 right-1/3 w-56 h-56 bg-white/15 dark:bg-white/25 rounded-full blur-[60px]" />
 
             {/* Content overlay */}
             <div className="relative flex flex-col items-center justify-center p-8 min-h-[320px]">

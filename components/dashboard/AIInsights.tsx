@@ -89,14 +89,17 @@ function AIInsightsContent() {
         }}
       />
 
+      {/* Dark mode saturation boost */}
+      <div className="absolute inset-0 bg-black/0 dark:bg-black/20" />
+
       {/* Flowing color orbs - larger and more blurred for immersive feel */}
-      <div className="absolute -top-20 -left-20 w-80 h-80 bg-mint/50 rounded-full blur-[80px]" />
-      <div className="absolute -top-10 left-1/3 w-72 h-72 bg-vista-blue/40 rounded-full blur-[100px]" />
-      <div className="absolute top-1/4 -right-20 w-80 h-80 bg-vista-blue/50 rounded-full blur-[90px]" />
-      <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-teal-400/30 rounded-full blur-[70px]" />
-      <div className="absolute -bottom-20 -left-10 w-72 h-72 bg-purple-500/35 rounded-full blur-[100px]" />
-      <div className="absolute bottom-1/4 right-1/3 w-56 h-56 bg-white/15 rounded-full blur-[60px]" />
-      <div className="absolute top-1/3 left-1/2 w-48 h-48 bg-cyan-400/25 rounded-full blur-[80px]" />
+      <div className="absolute -top-20 -left-20 w-80 h-80 bg-mint/50 dark:bg-mint/70 rounded-full blur-[80px]" />
+      <div className="absolute -top-10 left-1/3 w-72 h-72 bg-vista-blue/40 dark:bg-vista-blue/60 rounded-full blur-[100px]" />
+      <div className="absolute top-1/4 -right-20 w-80 h-80 bg-vista-blue/50 dark:bg-vista-blue/70 rounded-full blur-[90px]" />
+      <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-teal-400/30 dark:bg-teal-400/50 rounded-full blur-[70px]" />
+      <div className="absolute -bottom-20 -left-10 w-72 h-72 bg-purple-500/35 dark:bg-purple-500/55 rounded-full blur-[100px]" />
+      <div className="absolute bottom-1/4 right-1/3 w-56 h-56 bg-white/15 dark:bg-white/25 rounded-full blur-[60px]" />
+      <div className="absolute top-1/3 left-1/2 w-48 h-48 bg-cyan-400/25 dark:bg-cyan-400/45 rounded-full blur-[80px]" />
 
       {/* Content */}
       <div className="relative p-5">
