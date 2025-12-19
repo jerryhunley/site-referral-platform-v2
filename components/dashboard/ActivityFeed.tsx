@@ -108,8 +108,8 @@ export function ActivityFeed({
                 onClick={() => setFilter(option.value)}
                 className={`px-2 py-1 text-xs rounded-lg transition-colors ${
                   filter === option.value
-                    ? 'bg-mint text-white'
-                    : 'text-text-secondary hover:bg-bg-tertiary'
+                    ? 'bg-white/50 dark:bg-white/15 text-text-primary backdrop-blur-sm shadow-sm'
+                    : 'text-text-secondary glass-hover'
                 }`}
               >
                 {option.label}
@@ -141,7 +141,7 @@ export function ActivityFeed({
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
                     transition={{ delay: index * 0.02 }}
-                    className="flex items-start gap-3 p-3 rounded-xl hover:bg-bg-tertiary transition-colors group cursor-pointer"
+                    className="flex items-start gap-3 p-3 rounded-xl glass-hover group cursor-pointer"
                   >
                     {/* User Avatar */}
                     <div className="flex-shrink-0 w-8 h-8 rounded-full bg-bg-tertiary flex items-center justify-center text-xs font-medium text-text-secondary">

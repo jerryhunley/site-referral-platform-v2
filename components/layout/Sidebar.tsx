@@ -81,12 +81,12 @@ export function Sidebar() {
                     flex items-center gap-3 px-3 py-2 rounded-2xl
                     transition-all duration-200 relative
                     ${isActive
-                      ? 'bg-mint text-white shadow-md shadow-mint/25'
-                      : 'text-text-secondary hover:bg-white/60 dark:hover:bg-white/10 hover:text-text-primary'
+                      ? 'glass-nav-active text-mint font-semibold'
+                      : 'text-text-secondary hover:bg-white/40 dark:hover:bg-white/10 hover:text-text-primary'
                     }
                   `}
                 >
-                  <Icon className={`w-5 h-5 flex-shrink-0 ${isActive ? 'text-white' : ''}`} />
+                  <Icon className={`w-5 h-5 flex-shrink-0 ${isActive ? 'text-mint' : ''}`} />
                   <AnimatePresence mode="wait">
                     {!isCollapsed && (
                       <motion.span

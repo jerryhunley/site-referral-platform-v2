@@ -129,7 +129,7 @@ export function NotificationsPanel() {
       {/* Bell Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 text-text-muted hover:text-text-primary hover:bg-bg-tertiary rounded-xl transition-colors"
+        className="relative p-2 text-text-muted hover:text-text-primary glass-hover rounded-xl transition-colors"
       >
         <Bell className="w-5 h-5" />
         {unreadCount > 0 && (
@@ -150,7 +150,7 @@ export function NotificationsPanel() {
             initial={{ opacity: 0, y: 10, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
-            className="absolute right-0 top-full mt-2 w-96 bg-bg-primary border border-glass-border rounded-2xl shadow-2xl overflow-hidden z-50"
+            className="absolute right-0 top-full mt-2 w-96 glass-panel rounded-2xl overflow-hidden z-50"
           >
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-glass-border">
@@ -194,7 +194,7 @@ export function NotificationsPanel() {
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: 10 }}
-                        className={`relative p-4 hover:bg-bg-tertiary/50 transition-colors ${
+                        className={`relative p-4 glass-hover ${
                           !notification.read ? 'bg-mint/5' : ''
                         }`}
                       >

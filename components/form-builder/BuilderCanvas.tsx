@@ -56,10 +56,11 @@ function SortableField({
       ref={setNodeRef}
       style={style}
       className={cn(
-        'relative group p-4 rounded-xl border-2 transition-all duration-150',
+        'relative group p-4 rounded-xl border transition-all duration-150',
+        'backdrop-blur-sm',
         isSelected
-          ? 'border-mint bg-mint/5'
-          : 'border-glass-border bg-bg-secondary/50 hover:border-mint/50',
+          ? 'border-white/60 dark:border-white/20 bg-white/50 dark:bg-white/10 shadow-[0_0_0_1px_rgba(255,255,255,0.4),0_4px_16px_rgba(0,0,0,0.06)]'
+          : 'border-white/40 dark:border-white/10 bg-white/30 dark:bg-white/8 hover:bg-white/40 dark:hover:bg-white/12 hover:border-white/50 dark:hover:border-white/15',
         isDragging && 'opacity-50 z-50'
       )}
       onClick={onSelect}
@@ -71,7 +72,7 @@ function SortableField({
         className={cn(
           'absolute left-2 top-1/2 -translate-y-1/2 p-1.5 rounded-lg',
           'cursor-grab active:cursor-grabbing opacity-0 group-hover:opacity-100 transition-opacity',
-          'hover:bg-bg-tertiary'
+          'hover:bg-white/40 dark:hover:bg-white/10'
         )}
       >
         <GripVertical className="w-4 h-4 text-text-muted" />
@@ -89,7 +90,7 @@ function SortableField({
             e.stopPropagation();
             onEdit();
           }}
-          className="p-1.5 rounded-lg hover:bg-bg-tertiary text-text-muted hover:text-mint transition-colors"
+          className="p-1.5 rounded-lg hover:bg-white/40 dark:hover:bg-white/10 text-text-muted hover:text-mint transition-colors"
           title="Edit field"
         >
           <Pencil className="w-4 h-4" />
@@ -99,7 +100,7 @@ function SortableField({
             e.stopPropagation();
             onDuplicate();
           }}
-          className="p-1.5 rounded-lg hover:bg-bg-tertiary text-text-muted hover:text-text-primary transition-colors"
+          className="p-1.5 rounded-lg hover:bg-white/40 dark:hover:bg-white/10 text-text-muted hover:text-text-primary transition-colors"
           title="Duplicate field"
         >
           <Copy className="w-4 h-4" />
@@ -137,7 +138,7 @@ function EmptyCanvasState() {
         isOver ? 'border-mint bg-mint/5' : 'border-glass-border'
       )}
     >
-      <div className="w-16 h-16 rounded-full bg-bg-tertiary flex items-center justify-center mb-4">
+      <div className="w-16 h-16 rounded-full bg-white/40 dark:bg-white/10 backdrop-blur-sm flex items-center justify-center mb-4">
         <Plus className="w-8 h-8 text-text-muted" />
       </div>
       <p className="text-text-primary font-medium mb-1">Start building your form</p>

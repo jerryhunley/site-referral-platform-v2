@@ -79,8 +79,11 @@ function DraggableFieldCard({ fieldType }: DraggableFieldCardProps) {
       {...listeners}
       className={cn(
         'flex flex-col items-center gap-2 p-3 rounded-xl cursor-grab active:cursor-grabbing',
-        'bg-bg-secondary border border-glass-border',
-        'hover:border-mint hover:bg-mint/5 transition-all duration-150',
+        'bg-white/35 dark:bg-white/10 backdrop-blur-sm border border-white/50 dark:border-white/10',
+        'hover:bg-white/50 dark:hover:bg-white/15 hover:border-white/70 dark:hover:border-white/15',
+        'hover:shadow-[0_4px_16px_rgba(0,0,0,0.06),0_0_0_1px_rgba(255,255,255,0.4)]',
+        'dark:hover:shadow-[0_4px_16px_rgba(0,0,0,0.2),0_0_0_1px_rgba(255,255,255,0.1)]',
+        'transition-all duration-150',
         isDragging && 'opacity-50 scale-95'
       )}
     >
@@ -157,7 +160,7 @@ export function FieldPalette() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search fields..."
-            className="w-full pl-9 pr-4 py-2 rounded-lg bg-bg-tertiary border border-glass-border text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint transition-colors"
+            className="w-full pl-9 pr-4 py-2 rounded-lg bg-white/40 dark:bg-white/10 backdrop-blur-sm border border-white/50 dark:border-white/10 text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint transition-colors"
           />
         </div>
       </div>
@@ -165,7 +168,7 @@ export function FieldPalette() {
       {/* Category Tabs */}
       {!searchQuery.trim() && (
         <div className="px-3 py-2 border-b border-glass-border">
-          <div className="flex gap-1 p-1 bg-bg-tertiary/50 rounded-lg">
+          <div className="flex gap-1 p-1 bg-white/30 dark:bg-white/10 backdrop-blur-sm rounded-lg">
             {categories.map((cat) => (
               <button
                 key={cat.key}
@@ -173,8 +176,8 @@ export function FieldPalette() {
                 className={cn(
                   'flex-1 py-1.5 px-2 rounded-md text-xs font-medium transition-all',
                   activeCategory === cat.key
-                    ? 'bg-bg-secondary text-text-primary shadow-sm'
-                    : 'text-text-muted hover:text-text-secondary'
+                    ? 'bg-white/60 dark:bg-white/15 text-text-primary shadow-sm backdrop-blur-sm'
+                    : 'text-text-muted hover:text-text-secondary hover:bg-white/30 dark:hover:bg-white/10'
                 )}
               >
                 {cat.label}

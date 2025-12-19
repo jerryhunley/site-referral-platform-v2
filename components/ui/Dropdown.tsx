@@ -167,7 +167,7 @@ export function Dropdown({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.15 }}
-              className="absolute z-50 w-full mt-1.5 py-1.5 bg-bg-primary/95 dark:bg-bg-secondary/95 backdrop-blur-xl border border-glass-border rounded-xl shadow-xl overflow-hidden"
+              className="absolute z-50 w-full mt-1.5 py-1.5 glass-panel rounded-xl overflow-hidden"
             >
               {searchable && (
                 <div className="px-3 pb-2">
