@@ -42,7 +42,7 @@ export function ProgressBar({
     <div className={`w-full ${className}`}>
       <div
         className={`
-          w-full bg-bg-tertiary rounded-full overflow-hidden
+          w-full bg-white/40 dark:bg-white/10 backdrop-blur-sm rounded-full overflow-hidden
           ${sizeClasses[size]}
         `}
       >

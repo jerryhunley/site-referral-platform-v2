@@ -258,7 +258,7 @@ export function SessionReport({
                         </span>
                         <span className="text-xs text-text-muted">{percentage}%</span>
                       </div>
-                      <div className="h-2 bg-bg-tertiary rounded-full overflow-hidden">
+                      <div className="h-2 bg-white/40 dark:bg-white/10 backdrop-blur-sm rounded-full overflow-hidden">
                         <motion.div
                           initial={{ width: 0 }}
                           animate={{ width: `${percentage}%` }}
@@ -299,7 +299,7 @@ export function SessionReport({
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.1 * index }}
-                    className="flex items-center gap-3 p-3 rounded-xl bg-bg-tertiary/50"
+                    className="flex items-center gap-3 p-3 rounded-xl bg-white/40 dark:bg-white/10 backdrop-blur-sm"
                   >
                     <Avatar
                       firstName={lead?.firstName || '?'}
@@ -348,7 +348,7 @@ export function SessionReport({
                   return (
                     <span
                       key={id}
-                      className="px-2 py-1 text-xs bg-bg-tertiary rounded-lg text-text-muted"
+                      className="px-2 py-1 text-xs bg-white/40 dark:bg-white/10 backdrop-blur-sm rounded-lg text-text-muted"
                     >
                       {lead ? `${lead.firstName} ${lead.lastName}` : 'Unknown'}
                     </span>

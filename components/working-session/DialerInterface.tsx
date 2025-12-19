@@ -120,7 +120,7 @@ export function DialerInterface({
               className={`p-4 rounded-full transition-colors ${
                 isMuted
                   ? 'bg-warning/20 text-warning'
-                  : 'bg-bg-tertiary text-text-secondary hover:text-text-primary'
+                  : 'bg-white/40 dark:bg-white/10 backdrop-blur-sm text-text-secondary hover:text-text-primary hover:bg-white/50 dark:hover:bg-white/15'
               }`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -144,7 +144,7 @@ export function DialerInterface({
               className={`p-4 rounded-full transition-colors ${
                 isSpeakerOn
                   ? 'bg-vista-blue/20 text-vista-blue'
-                  : 'bg-bg-tertiary text-text-secondary hover:text-text-primary'
+                  : 'bg-white/40 dark:bg-white/10 backdrop-blur-sm text-text-secondary hover:text-text-primary hover:bg-white/50 dark:hover:bg-white/15'
               }`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -167,7 +167,7 @@ export function DialerInterface({
       {/* Quick Info */}
       <div className="grid grid-cols-3 gap-4 pt-6 border-t border-glass-border">
         <div className="text-center">
-          <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-bg-tertiary mb-2">
+          <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-white/40 dark:bg-white/10 backdrop-blur-sm mb-2">
             <Calendar className="w-5 h-5 text-text-muted" />
           </div>
           <p className="text-xs text-text-muted">Submitted</p>
@@ -180,7 +180,7 @@ export function DialerInterface({
         </div>
 
         <div className="text-center">
-          <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-bg-tertiary mb-2">
+          <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-white/40 dark:bg-white/10 backdrop-blur-sm mb-2">
             <Clock className="w-5 h-5 text-text-muted" />
           </div>
           <p className="text-xs text-text-muted">Last Contact</p>
@@ -195,7 +195,7 @@ export function DialerInterface({
         </div>
 
         <div className="text-center">
-          <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-bg-tertiary mb-2">
+          <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-white/40 dark:bg-white/10 backdrop-blur-sm mb-2">
             <MessageSquare className="w-5 h-5 text-text-muted" />
           </div>
           <p className="text-xs text-text-muted">Messages</p>

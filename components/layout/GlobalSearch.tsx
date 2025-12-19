@@ -150,11 +150,11 @@ export function GlobalSearch() {
       {/* Search Trigger Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className="flex items-center gap-2 px-3 py-2 text-sm text-text-muted bg-bg-tertiary/50 hover:bg-bg-tertiary rounded-xl transition-colors"
+        className="flex items-center gap-2 px-3 py-2 text-sm text-text-muted bg-white/40 dark:bg-white/10 backdrop-blur-sm hover:bg-white/50 dark:hover:bg-white/15 rounded-xl transition-colors"
       >
         <Search className="w-4 h-4" />
         <span className="hidden md:inline">Search...</span>
-        <kbd className="hidden md:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-xs bg-bg-secondary rounded">
+        <kbd className="hidden md:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-xs bg-white/50 dark:bg-white/10 rounded">
           <Command className="w-3 h-3" />K
         </kbd>
       </button>
@@ -179,7 +179,7 @@ export function GlobalSearch() {
               exit={{ opacity: 0, scale: 0.95, y: -20 }}
               className="fixed top-[20%] left-1/2 -translate-x-1/2 z-50 w-full max-w-xl"
             >
-              <div className="mx-4 bg-bg-primary border border-glass-border rounded-2xl shadow-2xl overflow-hidden">
+              <div className="mx-4 glass-panel rounded-2xl shadow-2xl overflow-hidden">
                 {/* Search Input */}
                 <div className="flex items-center gap-3 p-4 border-b border-glass-border">
                   <Search className="w-5 h-5 text-text-muted" />
@@ -217,7 +217,7 @@ export function GlobalSearch() {
                           className={`w-full flex items-center gap-3 p-3 rounded-xl text-left transition-colors ${
                             index === selectedIndex
                               ? 'bg-mint/10'
-                              : 'hover:bg-bg-tertiary'
+                              : 'glass-hover'
                           }`}
                         >
                           {result.type === 'referral' ? (
@@ -227,7 +227,7 @@ export function GlobalSearch() {
                               size="sm"
                             />
                           ) : result.icon ? (
-                            <div className="p-2 rounded-lg bg-bg-tertiary">
+                            <div className="p-2 rounded-lg bg-white/40 dark:bg-white/10 backdrop-blur-sm">
                               <result.icon className="w-4 h-4 text-text-muted" />
                             </div>
                           ) : null}
@@ -242,7 +242,7 @@ export function GlobalSearch() {
                             )}
                           </div>
                           <div className="flex items-center gap-2 text-xs text-text-muted">
-                            <span className="px-2 py-0.5 rounded bg-bg-tertiary capitalize">
+                            <span className="px-2 py-0.5 rounded bg-white/40 dark:bg-white/10 backdrop-blur-sm capitalize">
                               {result.type}
                             </span>
                             <ArrowRight className="w-4 h-4" />
@@ -264,7 +264,7 @@ export function GlobalSearch() {
                           <button
                             key={i}
                             onClick={() => setQuery(search)}
-                            className="w-full flex items-center gap-2 p-2 rounded-lg text-left text-text-secondary hover:bg-bg-tertiary transition-colors"
+                            className="w-full flex items-center gap-2 p-2 rounded-lg text-left text-text-secondary glass-hover transition-colors"
                           >
                             <Clock className="w-4 h-4 text-text-muted" />
                             {search}
@@ -283,17 +283,17 @@ export function GlobalSearch() {
                 <div className="flex items-center justify-between px-4 py-2 border-t border-glass-border text-xs text-text-muted">
                   <div className="flex items-center gap-4">
                     <span className="flex items-center gap-1">
-                      <kbd className="px-1.5 py-0.5 bg-bg-tertiary rounded">↵</kbd>
+                      <kbd className="px-1.5 py-0.5 bg-white/40 dark:bg-white/10 rounded">↵</kbd>
                       to select
                     </span>
                     <span className="flex items-center gap-1">
-                      <kbd className="px-1.5 py-0.5 bg-bg-tertiary rounded">↑</kbd>
-                      <kbd className="px-1.5 py-0.5 bg-bg-tertiary rounded">↓</kbd>
+                      <kbd className="px-1.5 py-0.5 bg-white/40 dark:bg-white/10 rounded">↑</kbd>
+                      <kbd className="px-1.5 py-0.5 bg-white/40 dark:bg-white/10 rounded">↓</kbd>
                       to navigate
                     </span>
                   </div>
                   <span className="flex items-center gap-1">
-                    <kbd className="px-1.5 py-0.5 bg-bg-tertiary rounded">esc</kbd>
+                    <kbd className="px-1.5 py-0.5 bg-white/40 dark:bg-white/10 rounded">esc</kbd>
                     to close
                   </span>
                 </div>

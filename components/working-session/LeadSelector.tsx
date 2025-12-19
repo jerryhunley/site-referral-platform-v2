@@ -182,11 +182,11 @@ export function LeadSelector({ onStartSession }: LeadSelectorProps) {
                   <button
                     onClick={() => setShowStatusPicker(!showStatusPicker)}
                     className={`
-                      flex items-center gap-2 px-4 py-2.5
-                      bg-bg-secondary/50 dark:bg-bg-tertiary/50
-                      border border-glass-border
+                      flex items-center gap-2 px-3 py-2
+                      bg-white/40 dark:bg-white/10 backdrop-blur-sm
+                      border border-white/50 dark:border-white/10
                       rounded-xl
-                      text-text-primary
+                      text-sm text-text-primary
                       transition-all duration-200
                       hover:border-mint/50
                       ${showStatusPicker ? 'ring-2 ring-mint/50 border-mint' : ''}
@@ -340,7 +340,7 @@ export function LeadSelector({ onStartSession }: LeadSelectorProps) {
                     max={50}
                     value={maxLeads}
                     onChange={(e) => setMaxLeads(Math.min(50, Math.max(1, parseInt(e.target.value) || 15)))}
-                    className="w-24 px-4 py-2.5 bg-bg-secondary/50 dark:bg-bg-tertiary/50 border border-glass-border rounded-xl text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/50"
+                    className="w-20 px-3 py-2 bg-white/40 dark:bg-white/10 backdrop-blur-sm border border-white/50 dark:border-white/10 rounded-xl text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/50"
                   />
                 </div>
               </div>
@@ -444,7 +444,7 @@ export function LeadSelector({ onStartSession }: LeadSelectorProps) {
                     flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all
                     ${isSelected
                       ? 'bg-mint/10 ring-1 ring-mint/30'
-                      : 'hover:bg-bg-tertiary'
+                      : 'glass-hover'
                     }
                   `}
                 >

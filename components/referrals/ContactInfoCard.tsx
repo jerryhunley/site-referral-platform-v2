@@ -65,7 +65,7 @@ function CopyButton({ text, label }: CopyButtonProps) {
     <Tooltip content={copied ? 'Copied!' : `Copy ${label}`}>
       <motion.button
         onClick={handleCopy}
-        className="p-1.5 rounded-lg text-text-muted hover:text-text-primary hover:bg-bg-tertiary transition-colors"
+        className="p-1.5 rounded-lg text-text-muted hover:text-text-primary glass-hover transition-colors"
         whileTap={{ scale: 0.9 }}
       >
         {copied ? (
@@ -135,7 +135,7 @@ export function ContactInfoCard({ referral }: ContactInfoCardProps) {
             transition={{ delay: index * 0.05 }}
             className="flex items-start gap-3"
           >
-            <div className={`p-2 rounded-xl ${item.bgColor || 'bg-bg-tertiary'}`}>
+            <div className={`p-2 rounded-xl ${item.bgColor || 'bg-white/40 dark:bg-white/10 backdrop-blur-sm'}`}>
               <item.icon className={`w-4 h-4 ${item.color || 'text-text-secondary'}`} />
             </div>
 
@@ -164,7 +164,7 @@ export function ContactInfoCard({ referral }: ContactInfoCardProps) {
                       <Tooltip content={`Open ${item.label.toLowerCase()}`}>
                         <a
                           href={item.action}
-                          className="p-1.5 rounded-lg text-text-muted hover:text-text-primary hover:bg-bg-tertiary transition-colors"
+                          className="p-1.5 rounded-lg text-text-muted hover:text-text-primary glass-hover transition-colors"
                         >
                           <ExternalLink className="w-4 h-4" />
                         </a>

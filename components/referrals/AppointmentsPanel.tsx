@@ -111,7 +111,7 @@ export function AppointmentsPanel({
           className={`flex items-start gap-3 p-3 rounded-xl transition-colors ${
             isTodayAppointment && !isPastAppointment
               ? 'bg-mint/10 ring-1 ring-mint/30'
-              : 'hover:bg-bg-tertiary'
+              : 'glass-hover'
           }`}
         >
           {/* Icon */}
@@ -152,7 +152,7 @@ export function AppointmentsPanel({
                 onClick={() =>
                   setActiveMenuId(activeMenuId === appointment.id ? null : appointment.id)
                 }
-                className="p-1.5 rounded-lg text-text-muted hover:text-text-primary hover:bg-bg-tertiary opacity-0 group-hover:opacity-100 transition-all"
+                className="p-1.5 rounded-lg text-text-muted hover:text-text-primary glass-hover opacity-0 group-hover:opacity-100 transition-all"
               >
                 <MoreHorizontal className="w-4 h-4" />
               </button>
@@ -163,14 +163,14 @@ export function AppointmentsPanel({
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
-                    className="absolute right-0 top-full mt-1 py-1 bg-bg-primary border border-glass-border rounded-xl shadow-lg z-10 min-w-[140px]"
+                    className="absolute right-0 top-full mt-1 py-1 glass-panel rounded-xl shadow-lg z-10 min-w-[140px]"
                   >
                     <button
                       onClick={() => {
                         onReschedule(appointment.id);
                         setActiveMenuId(null);
                       }}
-                      className="w-full flex items-center gap-2 px-3 py-2 text-sm text-text-primary hover:bg-bg-tertiary transition-colors"
+                      className="w-full flex items-center gap-2 px-3 py-2 text-sm text-text-primary glass-hover transition-colors"
                     >
                       <Edit2 className="w-4 h-4" />
                       Reschedule

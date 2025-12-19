@@ -147,7 +147,7 @@ export function SMSPanel({ messages, onSend, referralName }: SMSPanelProps) {
             <div key={dateKey}>
               {/* Date Separator */}
               <div className="flex items-center justify-center mb-3">
-                <span className="px-3 py-1 text-xs text-text-muted bg-bg-tertiary rounded-full">
+                <span className="px-3 py-1 text-xs text-text-muted bg-white/40 dark:bg-white/10 backdrop-blur-sm rounded-full">
                   {formatDate(dayMessages[0].sentAt)}
                 </span>
               </div>
@@ -168,7 +168,7 @@ export function SMSPanel({ messages, onSend, referralName }: SMSPanelProps) {
                       className={`max-w-[80%] px-4 py-2 rounded-2xl ${
                         message.direction === 'outbound'
                           ? 'bg-mint text-white rounded-br-md'
-                          : 'bg-bg-tertiary text-text-primary rounded-bl-md'
+                          : 'bg-white/50 dark:bg-white/10 backdrop-blur-sm text-text-primary rounded-bl-md'
                       }`}
                     >
                       <p className="text-sm whitespace-pre-wrap">{message.content}</p>
@@ -218,7 +218,7 @@ export function SMSPanel({ messages, onSend, referralName }: SMSPanelProps) {
                   <button
                     key={template.value}
                     onClick={() => handleTemplateSelect(template.value)}
-                    className="p-2 text-left text-sm rounded-xl bg-bg-tertiary hover:bg-bg-secondary transition-colors"
+                    className="p-2 text-left text-sm rounded-xl bg-white/40 dark:bg-white/10 backdrop-blur-sm hover:bg-white/50 dark:hover:bg-white/15 transition-colors"
                   >
                     <span className="font-medium text-text-primary">
                       {template.label}
@@ -236,7 +236,7 @@ export function SMSPanel({ messages, onSend, referralName }: SMSPanelProps) {
             className={`p-2 rounded-xl transition-colors ${
               showTemplates
                 ? 'bg-mint/20 text-mint'
-                : 'bg-bg-tertiary text-text-secondary hover:text-text-primary'
+                : 'bg-white/40 dark:bg-white/10 backdrop-blur-sm text-text-secondary hover:text-text-primary hover:bg-white/50 dark:hover:bg-white/15'
             }`}
           >
             <ChevronDown
@@ -257,8 +257,8 @@ export function SMSPanel({ messages, onSend, referralName }: SMSPanelProps) {
               rows={1}
               className="
                 w-full px-4 py-2.5
-                bg-bg-tertiary/50
-                border border-glass-border
+                bg-white/40 dark:bg-white/10 backdrop-blur-sm
+                border border-white/50 dark:border-white/10
                 rounded-xl
                 text-text-primary text-sm
                 placeholder:text-text-muted

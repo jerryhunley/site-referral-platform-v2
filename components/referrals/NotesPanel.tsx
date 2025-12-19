@@ -223,7 +223,7 @@ export function NotesPanel({
                       <div className="flex items-start gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                         <button
                           onClick={() => handleStartEdit(note)}
-                          className="p-1.5 rounded-lg text-text-muted hover:text-text-primary hover:bg-bg-tertiary transition-colors"
+                          className="p-1.5 rounded-lg text-text-muted hover:text-text-primary glass-hover transition-colors"
                         >
                           <Edit2 className="w-4 h-4" />
                         </button>
