@@ -92,7 +92,7 @@ export function ProFeatureGate({
               {/* Upgrade button - white with black text */}
               <motion.button
                 onClick={() => setShowUpgradeModal(true)}
-                className="px-6 py-2.5 rounded-xl bg-white text-black font-semibold shadow-lg shadow-black/20 hover:bg-white/95 hover:shadow-xl hover:shadow-black/25 transition-all"
+                className="px-5 py-2 rounded-xl bg-white text-black text-sm font-semibold shadow-lg shadow-black/20 hover:bg-white/95 hover:shadow-xl hover:shadow-black/25 transition-all"
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.98 }}
               >

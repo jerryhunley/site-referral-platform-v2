@@ -134,11 +134,11 @@ export function Dropdown({
           onClick={() => !disabled && setIsOpen(!isOpen)}
           disabled={disabled}
           className={`
-            w-full px-4 py-2.5
+            w-full px-3 py-1.5
             bg-bg-secondary/50 dark:bg-bg-tertiary/50
             border border-glass-border
             rounded-xl
-            text-left
+            text-left text-sm
             transition-all duration-200
             focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint
             disabled:opacity-50 disabled:cursor-not-allowed
@@ -147,7 +147,7 @@ export function Dropdown({
           `}
         >
           <div className="flex items-center justify-between gap-2">
-            <div className="flex-1 flex flex-wrap gap-1.5 min-h-[1.5rem]">
+            <div className="flex-1 flex flex-wrap gap-1 min-h-5">
               {displayValue || (
                 <span className="text-text-muted">{placeholder}</span>
               )}
@@ -167,7 +167,7 @@ export function Dropdown({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.15 }}
-              className="absolute z-50 w-full mt-2 py-2 bg-bg-primary/95 dark:bg-bg-secondary/95 backdrop-blur-xl border border-glass-border rounded-xl shadow-xl overflow-hidden"
+              className="absolute z-50 w-full mt-1.5 py-1.5 bg-bg-primary/95 dark:bg-bg-secondary/95 backdrop-blur-xl border border-glass-border rounded-xl shadow-xl overflow-hidden"
             >
               {searchable && (
                 <div className="px-3 pb-2">
@@ -196,7 +196,7 @@ export function Dropdown({
                         type="button"
                         onClick={() => handleSelect(option.value)}
                         className={`
-                          w-full px-4 py-2.5 text-left text-sm
+                          w-full px-3 py-2 text-left text-sm
                           flex items-center justify-between gap-2
                           transition-colors duration-150
                           ${isSelected

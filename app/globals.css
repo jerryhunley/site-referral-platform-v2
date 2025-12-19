@@ -377,12 +377,12 @@ textarea,
 
 .dark .glassmorphic-bg::before {
   background:
-    /* Large flowing radial gradients for depth - more visible in dark mode */
-    radial-gradient(ellipse 120% 80% at 10% -10%, rgba(83, 202, 151, 0.16) 0%, rgba(83, 202, 151, 0.08) 40%, transparent 70%),
-    radial-gradient(ellipse 100% 70% at 90% 10%, rgba(121, 145, 198, 0.14) 0%, rgba(121, 145, 198, 0.06) 40%, transparent 65%),
-    radial-gradient(ellipse 90% 80% at 80% 90%, rgba(121, 145, 198, 0.12) 0%, rgba(121, 145, 198, 0.05) 45%, transparent 70%),
-    radial-gradient(ellipse 100% 60% at 0% 70%, rgba(121, 145, 198, 0.12) 0%, rgba(121, 145, 198, 0.05) 40%, transparent 65%),
-    radial-gradient(ellipse 80% 50% at 50% 50%, rgba(20, 184, 166, 0.08) 0%, transparent 50%),
+    /* Large flowing radial gradients for depth - subtle dark mode */
+    radial-gradient(ellipse 120% 80% at 10% -10%, rgba(83, 202, 151, 0.12) 0%, rgba(83, 202, 151, 0.06) 40%, transparent 70%),
+    radial-gradient(ellipse 100% 70% at 90% 10%, rgba(121, 145, 198, 0.10) 0%, rgba(121, 145, 198, 0.04) 40%, transparent 65%),
+    radial-gradient(ellipse 90% 80% at 80% 90%, rgba(121, 145, 198, 0.09) 0%, rgba(121, 145, 198, 0.04) 45%, transparent 70%),
+    radial-gradient(ellipse 100% 60% at 0% 70%, rgba(121, 145, 198, 0.09) 0%, rgba(121, 145, 198, 0.04) 40%, transparent 65%),
+    radial-gradient(ellipse 80% 50% at 50% 50%, rgba(20, 184, 166, 0.06) 0%, transparent 50%),
     linear-gradient(160deg, #0D1117 0%, #0F1419 50%, #0D1117 100%);
 }
 
@@ -467,31 +467,31 @@ textarea,
 }
 
 .dark .gradient-orb-1 {
-  background: rgba(121, 145, 198, 0.12);
+  background: rgba(121, 145, 198, 0.09);
 }
 
 .dark .gradient-orb-2 {
-  background: rgba(121, 145, 198, 0.10);
+  background: rgba(121, 145, 198, 0.07);
 }
 
 .dark .gradient-orb-3 {
-  background: rgba(20, 184, 166, 0.10);
+  background: rgba(20, 184, 166, 0.07);
 }
 
 .dark .gradient-orb-4 {
-  background: rgba(121, 145, 198, 0.10);
+  background: rgba(121, 145, 198, 0.07);
 }
 
 .dark .gradient-orb-5 {
-  background: rgba(121, 145, 198, 0.08);
+  background: rgba(121, 145, 198, 0.06);
 }
 
 .dark .gradient-orb-6 {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .dark .gradient-orb-7 {
-  background: rgba(121, 145, 198, 0.12);
+  background: rgba(121, 145, 198, 0.09);
 }
 
 @keyframes orb-float-1 {

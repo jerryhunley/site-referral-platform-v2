@@ -135,7 +135,7 @@ export default function DashboardPage() {
               Here&apos;s what&apos;s happening with your referrals today.
             </p>
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-2">
             <Button
               variant="secondary"
               leftIcon={<Plus className="w-4 h-4" />}

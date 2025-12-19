@@ -58,7 +58,7 @@ export function Header({ title = 'Dashboard' }: HeaderProps) {
 
           {/* User Avatar - uses original mint for brand accent */}
           <button
-            className="w-9 h-9 rounded-xl bg-mint/15 flex items-center justify-center text-mint font-semibold text-sm hover:bg-mint/25 transition-colors"
+            className="w-8 h-8 rounded-xl bg-mint/15 flex items-center justify-center text-mint font-semibold text-sm hover:bg-mint/25 transition-colors"
             aria-label="User menu"
           >
             {user ? getUserInitials(user) : 'U'}

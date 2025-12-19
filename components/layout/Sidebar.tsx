@@ -78,7 +78,7 @@ export function Sidebar() {
                 <Link
                   href={item.href}
                   className={`
-                    flex items-center gap-3 px-3 py-2.5 rounded-2xl
+                    flex items-center gap-3 px-3 py-2 rounded-2xl
                     transition-all duration-200 relative
                     ${isActive
                       ? 'bg-mint text-white shadow-md shadow-mint/25'
@@ -146,7 +146,7 @@ export function Sidebar() {
       <div className="p-4 mt-auto">
         <div className="flex items-center gap-3">
           {/* Avatar */}
-          <div className="w-10 h-10 rounded-full bg-mint/20 flex items-center justify-center text-mint font-semibold flex-shrink-0">
+          <div className="w-9 h-9 rounded-full bg-mint/20 flex items-center justify-center text-mint font-semibold flex-shrink-0">
             {user ? getUserInitials(user) : 'U'}
           </div>
 

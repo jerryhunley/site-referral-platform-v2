@@ -25,10 +25,10 @@ const buttonVariants = cva(
         link: 'text-mint underline-offset-4 hover:underline bg-transparent',
       },
       size: {
-        sm: 'px-3 py-1.5 text-sm gap-1.5',
-        md: 'px-4 py-2.5 text-base gap-2',
-        lg: 'px-6 py-3 text-lg gap-2.5',
-        icon: 'h-10 w-10',
+        sm: 'px-2.5 py-1 text-sm gap-1.5',
+        md: 'px-3.5 py-1.5 text-sm gap-2',
+        lg: 'px-5 py-2 text-base gap-2',
+        icon: 'h-8 w-8',
       },
     },
     defaultVariants: {
