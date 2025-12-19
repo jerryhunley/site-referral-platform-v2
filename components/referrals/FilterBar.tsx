@@ -15,6 +15,7 @@ import {
 import { Button } from '@/components/ui/Button';
 import { Dropdown, type DropdownOption } from '@/components/ui/Dropdown';
 import { GlassCard } from '@/components/ui/GlassCard';
+import { AdvancedFiltersPanel } from './AdvancedFiltersPanel';
 import { mockStudies } from '@/lib/mock-data/studies';
 import { mockUsers } from '@/lib/mock-data/users';
 import type { ReferralStatus } from '@/lib/types';
@@ -73,7 +74,7 @@ export function FilterBar({
   totalCount,
   filteredCount,
 }: FilterBarProps) {
-  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [showAdvancedPanel, setShowAdvancedPanel] = useState(false);
   const [showStatusPicker, setShowStatusPicker] = useState(false);
 
   const hasActiveFilters =
@@ -297,9 +298,9 @@ export function FilterBar({
 
         {/* Advanced Filters Toggle */}
         <Button
-          variant={showAdvanced ? 'secondary' : 'ghost'}
+          variant={showAdvancedPanel ? 'secondary' : 'ghost'}
           leftIcon={<SlidersHorizontal className="w-4 h-4" />}
-          onClick={() => setShowAdvanced(!showAdvanced)}
+          onClick={() => setShowAdvancedPanel(true)}
           className="relative"
         >
           More
@@ -387,48 +388,11 @@ export function FilterBar({
         </motion.div>
       )}
 
-      {/* Advanced Filters Panel */}
-      <AnimatePresence>
-        {showAdvanced && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            <GlassCard padding="md" className="mt-2">
-              <div className="flex items-end gap-4">
-                {/* Assigned To */}
-                <div className="w-56">
-                  <label className="block text-sm font-medium text-text-secondary mb-1.5">
-                    Assigned To
-                  </label>
-                  <Dropdown
-                    options={userOptions}
-                    value={filters.assignedTo}
-                    onChange={(value) =>
-                      onFiltersChange({ ...filters, assignedTo: value as string[] })
-                    }
-                    placeholder="Anyone"
-                    multiple
-                  />
-                </div>
-
-                {/* Reset Button */}
-                {hasActiveFilters && (
-                  <Button
-                    variant="ghost"
-                    leftIcon={<RotateCcw className="w-4 h-4" />}
-                    onClick={handleReset}
-                  >
-                    Reset All Filters
-                  </Button>
-                )}
-              </div>
-            </GlassCard>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Advanced Filters Panel (Slide-out) */}
+      <AdvancedFiltersPanel
+        isOpen={showAdvancedPanel}
+        onClose={() => setShowAdvancedPanel(false)}
+      />
 
       {/* Results Count */}
       <div className="flex items-center justify-between text-sm text-text-secondary">

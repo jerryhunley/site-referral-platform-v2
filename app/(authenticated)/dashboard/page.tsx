@@ -14,7 +14,7 @@ import {
   Clock,
   Phone,
   Plus,
-  MessageSquare
+  MessageSquare,
 } from 'lucide-react';
 import { DailyDigestModal } from '@/components/dashboard/DailyDigestModal';
 import { StatsCard } from '@/components/dashboard/StatsCard';

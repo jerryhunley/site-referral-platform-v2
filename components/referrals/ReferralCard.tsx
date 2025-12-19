@@ -55,6 +55,13 @@ function formatPhone(phone: string): string {
   return phone;
 }
 
+// Check if referral has unread messages (last message is inbound)
+function hasUnreadMessages(referral: Referral): boolean {
+  if (!referral.messages || referral.messages.length === 0) return false;
+  const lastMessage = referral.messages[referral.messages.length - 1];
+  return lastMessage.direction === 'inbound';
+}
+
 export function ReferralCard({
   referral,
   isSelected = false,
@@ -67,6 +74,7 @@ export function ReferralCard({
   delay = 0,
 }: ReferralCardProps) {
   const study = mockStudies.find((s) => s.id === referral.studyId);
+  const hasUnread = hasUnreadMessages(referral);
   const assignedUser = referral.assignedTo
     ? mockUsers.find((u) => u.id === referral.assignedTo)
     : null;
@@ -169,12 +177,17 @@ export function ReferralCard({
               e.stopPropagation();
               onSMS?.(referral.id);
             }}
-            className="p-2 rounded-lg text-text-secondary hover:text-vista-blue hover:bg-vista-blue/10 transition-colors"
+            className="relative p-2 rounded-lg text-text-secondary hover:text-vista-blue hover:bg-vista-blue/10 transition-colors"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             title="Send SMS"
           >
             <MessageSquare className="w-4 h-4" />
+            {hasUnread && (
+              <span className="absolute -top-0.5 -right-0.5 flex items-center justify-center w-4 h-4 text-[10px] font-bold text-white bg-red-500 rounded-full">
+                1
+              </span>
+            )}
           </motion.button>
 
           <motion.button
@@ -299,11 +312,16 @@ export function ReferralCard({
             </motion.button>
             <motion.button
               onClick={() => onSMS?.(referral.id)}
-              className="p-2 rounded-lg text-text-secondary hover:text-vista-blue hover:bg-vista-blue/10 transition-colors"
+              className="relative p-2 rounded-lg text-text-secondary hover:text-vista-blue hover:bg-vista-blue/10 transition-colors"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
             >
               <MessageSquare className="w-4 h-4" />
+              {hasUnread && (
+                <span className="absolute -top-0.5 -right-0.5 flex items-center justify-center w-4 h-4 text-[10px] font-bold text-white bg-red-500 rounded-full">
+                  1
+                </span>
+              )}
             </motion.button>
             <motion.button
               onClick={() => onView?.(referral.id)}

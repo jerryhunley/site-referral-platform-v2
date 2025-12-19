@@ -7,14 +7,14 @@ import {
   Users,
   Calendar,
   AlertCircle,
-  TrendingUp,
+  MessageSquare,
   Phone,
   Eye,
   ChevronRight
 } from 'lucide-react';
 import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
-import { getNewReferralsCount, getOverdueReferrals, getConversionRate } from '@/lib/mock-data/referrals';
+import { getNewReferralsCount, getOverdueReferrals, getUnreadSMSMessages } from '@/lib/mock-data/referrals';
 import { getTodaysAppointments } from '@/lib/mock-data/appointments';
 
 interface DailyDigestModalProps {
@@ -44,7 +44,7 @@ export function DailyDigestModal({ isOpen, onClose }: DailyDigestModalProps) {
   const newReferrals = getNewReferralsCount();
   const todaysAppointments = getTodaysAppointments();
   const overdueReferrals = getOverdueReferrals(2);
-  const conversionRate = getConversionRate();
+  const unreadMessages = getUnreadSMSMessages();
 
   const handleClose = () => {
     if (dontShowToday) {
@@ -91,12 +91,12 @@ export function DailyDigestModal({ isOpen, onClose }: DailyDigestModalProps) {
       description: 'overdue follow-ups',
     },
     {
-      label: 'Conversion Rate',
-      value: `${conversionRate}%`,
-      icon: TrendingUp,
+      label: 'New Messages',
+      value: unreadMessages.length,
+      icon: MessageSquare,
       color: 'text-vista-blue',
       bgColor: 'bg-vista-blue/10',
-      description: 'this month',
+      description: 'unread',
     },
   ];
 
