@@ -142,7 +142,7 @@ function formBuilderReducer(
           updatedAt: new Date().toISOString(),
         },
         selectedFieldId: newField.id,
-        isConfigPanelOpen: true,
+        // Config panel stays closed - user must click Edit explicitly
         hasUnsavedChanges: true,
         undoStack: saveToUndoStack(state.form),
         redoStack: [],
@@ -320,7 +320,14 @@ function formBuilderReducer(
       return {
         ...state,
         selectedFieldId: action.payload,
-        isConfigPanelOpen: action.payload !== null,
+        // Config panel stays closed - user must click Edit explicitly
+      };
+
+    case 'OPEN_CONFIG_PANEL':
+      return {
+        ...state,
+        selectedFieldId: action.payload,
+        isConfigPanelOpen: true,
       };
 
     case 'SET_SELECTED_PAGE':
@@ -568,6 +575,7 @@ interface FormBuilderContextValue {
   updateField: (fieldId: string, updates: Partial<FieldConfig>) => void;
   duplicateField: (fieldId: string) => void;
   selectField: (fieldId: string | null) => void;
+  openConfigPanel: (fieldId: string) => void;
   reorderFields: (pageIndex: number, fieldIds: string[]) => void;
   moveFieldToPage: (fieldId: string, targetPageIndex: number, targetIndex?: number) => void;
 
@@ -652,6 +660,10 @@ export function FormBuilderProvider({ children, initialForm }: FormBuilderProvid
 
   const selectField = useCallback((fieldId: string | null) => {
     dispatch({ type: 'SELECT_FIELD', payload: fieldId });
+  }, []);
+
+  const openConfigPanel = useCallback((fieldId: string) => {
+    dispatch({ type: 'OPEN_CONFIG_PANEL', payload: fieldId });
   }, []);
 
   const reorderFields = useCallback((pageIndex: number, fieldIds: string[]) => {
@@ -755,6 +767,7 @@ export function FormBuilderProvider({ children, initialForm }: FormBuilderProvid
         updateField,
         duplicateField,
         selectField,
+        openConfigPanel,
         reorderFields,
         moveFieldToPage,
         addPage,

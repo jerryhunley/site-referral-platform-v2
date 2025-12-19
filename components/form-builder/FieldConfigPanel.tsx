@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Plus, Trash2, GripVertical } from 'lucide-react';
+import { X, Plus, Trash2, GripVertical, Eye } from 'lucide-react';
 import { useFormBuilder } from '@/lib/context/FormBuilderContext';
-import { FIELD_REGISTRY, type FieldOption, type FieldWidth } from '@/lib/types/form-builder';
+import { FIELD_REGISTRY, type FieldOption, type FieldWidth, type ConditionalGroup } from '@/lib/types/form-builder';
 import { cn } from '@/lib/utils';
+import { ConditionBuilder } from './ConditionBuilder';
+import { createConditionGroup } from '@/lib/utils/condition-evaluator';
 
 export function FieldConfigPanel() {
   const { state, updateField, selectField } = useFormBuilder();
@@ -100,6 +102,32 @@ export function FieldConfigPanel() {
   const isFreeFormText = field?.type === 'free_form_text';
   const hasOptions = field && ['single_choice', 'multiple_choice', 'best_time_to_call'].includes(field.type);
 
+  // Get available fields for conditional visibility (exclude current field)
+  const currentPage = state.form.pages[state.selectedPageIndex];
+  const availableFieldsForConditions = currentPage?.fieldIds
+    .map((id) => state.form.fields[id])
+    .filter((f) => f && f.id !== selectedFieldId && !['divider', 'page_break', 'submit_button', 'next_button', 'free_form_text'].includes(f.type)) || [];
+
+  const handleConditionChange = (group: ConditionalGroup) => {
+    if (selectedFieldId) {
+      updateField(selectedFieldId, { conditionalVisibility: group });
+    }
+  };
+
+  const handleAddCondition = () => {
+    if (selectedFieldId) {
+      updateField(selectedFieldId, {
+        conditionalVisibility: createConditionGroup(),
+      });
+    }
+  };
+
+  const handleRemoveConditions = () => {
+    if (selectedFieldId) {
+      updateField(selectedFieldId, { conditionalVisibility: undefined });
+    }
+  };
+
   return (
     <AnimatePresence>
       {isConfigPanelOpen && field && (
@@ -115,11 +143,11 @@ export function FieldConfigPanel() {
 
           {/* Panel */}
           <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
+            initial={{ x: '100%', opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: '100%', opacity: 0 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed right-0 top-0 bottom-0 w-96 bg-bg-secondary border-l border-glass-border shadow-xl z-50 flex flex-col"
+            className="fixed right-6 top-24 bottom-6 w-96 glass-panel rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-glass-border">
@@ -131,7 +159,7 @@ export function FieldConfigPanel() {
               </div>
               <button
                 onClick={handleClose}
-                className="p-2 rounded-lg hover:bg-bg-tertiary text-text-muted hover:text-text-primary transition-colors"
+                className="p-2 rounded-lg glass-hover text-text-muted hover:text-text-primary transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -149,7 +177,7 @@ export function FieldConfigPanel() {
                     type="text"
                     value={field.label}
                     onChange={(e) => handleLabelChange(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl bg-bg-tertiary border border-glass-border text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-white/40 dark:bg-white/10 backdrop-blur-sm border border-white/50 dark:border-white/10 text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint transition-colors"
                   />
                 </div>
               )}
@@ -164,7 +192,7 @@ export function FieldConfigPanel() {
                     type="text"
                     value={field.label}
                     onChange={(e) => handleLabelChange(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl bg-bg-tertiary border border-glass-border text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-white/40 dark:bg-white/10 backdrop-blur-sm border border-white/50 dark:border-white/10 text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint transition-colors"
                   />
                 </div>
               )}
@@ -179,7 +207,7 @@ export function FieldConfigPanel() {
                     value={field.content || ''}
                     onChange={(e) => handleContentChange(e.target.value)}
                     rows={4}
-                    className="w-full px-4 py-3 rounded-xl bg-bg-tertiary border border-glass-border text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint transition-colors resize-none"
+                    className="w-full px-4 py-3 rounded-xl bg-white/40 dark:bg-white/10 backdrop-blur-sm border border-white/50 dark:border-white/10 text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint transition-colors resize-none"
                     placeholder="Enter your text..."
                   />
                 </div>
@@ -195,7 +223,7 @@ export function FieldConfigPanel() {
                     type="text"
                     value={field.placeholder || ''}
                     onChange={(e) => handlePlaceholderChange(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl bg-bg-tertiary border border-glass-border text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-white/40 dark:bg-white/10 backdrop-blur-sm border border-white/50 dark:border-white/10 text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint transition-colors"
                     placeholder="Enter placeholder text..."
                   />
                 </div>
@@ -211,7 +239,7 @@ export function FieldConfigPanel() {
                     type="text"
                     value={field.helperText || ''}
                     onChange={(e) => handleHelperTextChange(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl bg-bg-tertiary border border-glass-border text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-white/40 dark:bg-white/10 backdrop-blur-sm border border-white/50 dark:border-white/10 text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint transition-colors"
                     placeholder="Add helper text..."
                   />
                 </div>
@@ -227,7 +255,7 @@ export function FieldConfigPanel() {
                     onClick={() => handleRequiredChange(!field.required)}
                     className={cn(
                       'relative w-11 h-6 rounded-full transition-colors',
-                      field.required ? 'bg-mint' : 'bg-bg-tertiary'
+                      field.required ? 'bg-mint' : 'bg-white/40 dark:bg-white/10'
                     )}
                   >
                     <span
@@ -255,7 +283,7 @@ export function FieldConfigPanel() {
                           'flex-1 py-2 rounded-lg text-sm font-medium transition-colors',
                           field.width === width
                             ? 'bg-mint text-white'
-                            : 'bg-bg-tertiary text-text-secondary hover:text-text-primary'
+                            : 'bg-white/40 dark:bg-white/10 text-text-secondary hover:text-text-primary hover:bg-white/50 dark:hover:bg-white/15'
                         )}
                       >
                         {width === 'full' ? 'Full' : width === 'half' ? '1/2' : '1/3'}
@@ -284,7 +312,7 @@ export function FieldConfigPanel() {
                     {localOptions.map((option, index) => (
                       <div
                         key={option.id}
-                        className="flex items-center gap-2 p-2 rounded-lg bg-bg-tertiary border border-glass-border"
+                        className="flex items-center gap-2 p-2 rounded-lg bg-white/40 dark:bg-white/10 backdrop-blur-sm border border-white/50 dark:border-white/10"
                       >
                         <GripVertical className="w-4 h-4 text-text-muted cursor-grab" />
                         <input
@@ -306,6 +334,53 @@ export function FieldConfigPanel() {
                       </div>
                     ))}
                   </div>
+                </div>
+              )}
+
+              {/* Conditional Visibility */}
+              {!isLayoutElement && (
+                <div className="pt-4 border-t border-glass-border">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Eye className="w-4 h-4 text-mint" />
+                    <h3 className="text-sm font-semibold text-text-primary">
+                      Conditional Visibility
+                    </h3>
+                  </div>
+
+                  {availableFieldsForConditions.length === 0 ? (
+                    <p className="text-xs text-text-muted">
+                      Add other fields to the form first to set up conditional visibility.
+                    </p>
+                  ) : field.conditionalVisibility ? (
+                    <div className="space-y-3">
+                      <ConditionBuilder
+                        group={field.conditionalVisibility}
+                        availableFields={availableFieldsForConditions}
+                        onChange={handleConditionChange}
+                        maxDepth={4}
+                      />
+                      <button
+                        onClick={handleRemoveConditions}
+                        className="flex items-center gap-1 text-xs text-error hover:text-error/80 transition-colors"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                        Remove all conditions
+                      </button>
+                    </div>
+                  ) : (
+                    <div>
+                      <p className="text-xs text-text-muted mb-2">
+                        Show this field only when certain conditions are met.
+                      </p>
+                      <button
+                        onClick={handleAddCondition}
+                        className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-mint bg-mint/10 hover:bg-mint/20 rounded-lg transition-colors"
+                      >
+                        <Plus className="w-4 h-4" />
+                        Add Conditions
+                      </button>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

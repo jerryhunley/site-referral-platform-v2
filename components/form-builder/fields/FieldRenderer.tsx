@@ -2,6 +2,7 @@
 
 import { type FieldConfig, type FormStyling } from '@/lib/types/form-builder';
 import { cn } from '@/lib/utils';
+import { shouldShowField } from '@/lib/utils/condition-evaluator';
 
 // Import all field components
 import { ShortTextField } from './ShortTextField';
@@ -33,6 +34,7 @@ interface FieldRendererProps {
   onChange?: (value: unknown) => void;
   error?: string;
   styling?: FormStyling;
+  formValues?: Record<string, unknown>; // All form values for conditional visibility
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -63,7 +65,15 @@ const fieldComponents: Record<string, FieldComponent> = {
 };
 
 export function FieldRenderer(props: FieldRendererProps) {
-  const { field, styling } = props;
+  const { field, styling, formValues = {} } = props;
+
+  // Check conditional visibility
+  const isVisible = shouldShowField(field, formValues);
+
+  // If field has conditions and is not visible, don't render
+  if (!isVisible) {
+    return null;
+  }
 
   const FieldComponent = fieldComponents[field.type];
 
@@ -75,11 +85,11 @@ export function FieldRenderer(props: FieldRendererProps) {
     );
   }
 
-  // Width classes based on field configuration
+  // Width classes based on field configuration (accounting for gap-4 = 1rem)
   const widthClasses = {
     full: 'w-full',
-    half: 'w-full sm:w-1/2',
-    third: 'w-full sm:w-1/3',
+    half: 'w-full sm:w-[calc(50%-0.5rem)]',
+    third: 'w-full sm:w-[calc(33.333%-0.667rem)]',
   };
 
   return (

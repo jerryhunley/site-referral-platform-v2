@@ -20,6 +20,13 @@ import { useFormBuilder } from '@/lib/context/FormBuilderContext';
 import { type FieldConfig } from '@/lib/types/form-builder';
 import { FieldRenderer } from './fields/FieldRenderer';
 
+// Width classes for flex layout
+const widthClasses = {
+  full: 'w-full',
+  half: 'w-full sm:w-[calc(50%-0.5rem)]',
+  third: 'w-full sm:w-[calc(33.333%-0.667rem)]',
+};
+
 interface SortableFieldProps {
   field: FieldConfig;
   isSelected: boolean;
@@ -56,7 +63,8 @@ function SortableField({
       ref={setNodeRef}
       style={style}
       className={cn(
-        'relative group p-4 rounded-xl border transition-all duration-150',
+        widthClasses[field.width],
+        'relative group p-4 rounded-lg border transition-all duration-150',
         'backdrop-blur-sm',
         isSelected
           ? 'border-white/60 dark:border-white/20 bg-white/50 dark:bg-white/10 shadow-[0_0_0_1px_rgba(255,255,255,0.4),0_4px_16px_rgba(0,0,0,0.06)]'
@@ -175,6 +183,7 @@ export function BuilderCanvas() {
   const {
     state,
     selectField,
+    openConfigPanel,
     removeField,
     duplicateField,
     setSelectedPage,
@@ -187,8 +196,8 @@ export function BuilderCanvas() {
   const fields = currentPage?.fieldIds.map((id) => state.form.fields[id]).filter(Boolean) || [];
 
   const handleEdit = (fieldId: string) => {
-    // Select field opens the config panel
-    selectField(fieldId);
+    // Open config panel explicitly when Edit is clicked
+    openConfigPanel(fieldId);
   };
 
   return (
@@ -257,7 +266,7 @@ export function BuilderCanvas() {
             items={fields.map((f) => f.id)}
             strategy={verticalListSortingStrategy}
           >
-            <div className="space-y-4">
+            <div className="flex flex-wrap gap-4">
               {fields.map((field) => (
                 <SortableField
                   key={field.id}

@@ -85,6 +85,45 @@ export interface FieldOption {
   value: string;
 }
 
+// ========================================
+// Conditional Logic Types
+// ========================================
+
+// Operators for comparing field values
+export type ConditionOperator =
+  | 'equals'
+  | 'not_equals'
+  | 'contains'
+  | 'not_contains'
+  | 'is_empty'
+  | 'is_not_empty'
+  | 'greater_than'
+  | 'less_than'
+  | 'greater_than_or_equals'
+  | 'less_than_or_equals'
+  | 'starts_with'
+  | 'ends_with'
+  | 'is_checked'
+  | 'is_not_checked'
+  | 'includes_any'
+  | 'includes_all';
+
+// A single condition comparing a field value
+export interface FieldCondition {
+  id: string;
+  sourceFieldId: string; // Field to check
+  operator: ConditionOperator;
+  value?: string | number | boolean | string[]; // Value to compare against
+}
+
+// A group of conditions that can be nested up to 4 levels deep
+export interface ConditionalGroup {
+  id: string;
+  logic: 'and' | 'or'; // How conditions in this group combine
+  conditions: FieldCondition[];
+  nestedGroups: ConditionalGroup[]; // For nesting (up to 4 levels)
+}
+
 // Field configuration
 export interface FieldConfig {
   id: string;
@@ -103,6 +142,8 @@ export interface FieldConfig {
   // For BMI calculator
   heightUnit?: 'inches' | 'cm';
   weightUnit?: 'lbs' | 'kg';
+  // Conditional visibility - when should this field be shown
+  conditionalVisibility?: ConditionalGroup;
 }
 
 // Form page (for wizard mode)
@@ -179,6 +220,7 @@ export type FormBuilderAction =
   | { type: 'REORDER_FIELDS'; payload: { pageIndex: number; fieldIds: string[] } }
   | { type: 'MOVE_FIELD_TO_PAGE'; payload: { fieldId: string; targetPageIndex: number; targetIndex?: number } }
   | { type: 'SELECT_FIELD'; payload: string | null }
+  | { type: 'OPEN_CONFIG_PANEL'; payload: string }
   | { type: 'SET_SELECTED_PAGE'; payload: number }
   | { type: 'ADD_PAGE'; payload?: { afterIndex?: number; title?: string } }
   | { type: 'REMOVE_PAGE'; payload: number }

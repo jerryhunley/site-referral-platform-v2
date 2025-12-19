@@ -6,6 +6,7 @@ import { X, RotateCcw, CheckCircle, AlertCircle } from 'lucide-react';
 import { useFormBuilder } from '@/lib/context/FormBuilderContext';
 import { FieldRenderer } from './fields/FieldRenderer';
 import { cn } from '@/lib/utils';
+import { shouldShowField } from '@/lib/utils/condition-evaluator';
 
 type FormValues = Record<string, unknown>;
 type FormErrors = Record<string, string>;
@@ -44,6 +45,11 @@ export function FormTestPanel() {
     const errors: FormErrors = {};
 
     fields.forEach((field) => {
+      // Skip validation for hidden fields
+      if (!shouldShowField(field, formValues)) {
+        return;
+      }
+
       if (field.required) {
         const value = formValues[field.id];
         if (value === undefined || value === null || value === '' ||
@@ -232,7 +238,7 @@ export function FormTestPanel() {
                       <p className="text-text-muted">No fields on this page</p>
                     </div>
                   ) : (
-                    <div className="space-y-4">
+                    <div className="flex flex-wrap gap-4">
                       {fields.map((field) => (
                         <FieldRenderer
                           key={field.id}
@@ -242,6 +248,7 @@ export function FormTestPanel() {
                           onChange={(value) => handleFieldChange(field.id, value)}
                           error={formErrors[field.id]}
                           styling={form.styling}
+                          formValues={formValues}
                         />
                       ))}
                     </div>

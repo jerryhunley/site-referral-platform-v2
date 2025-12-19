@@ -78,7 +78,7 @@ function DraggableFieldCard({ fieldType }: DraggableFieldCardProps) {
       {...attributes}
       {...listeners}
       className={cn(
-        'flex flex-col items-center gap-2 p-3 rounded-xl cursor-grab active:cursor-grabbing',
+        'flex flex-col items-center gap-2 p-3 rounded-lg cursor-grab active:cursor-grabbing',
         'bg-white/35 dark:bg-white/10 backdrop-blur-sm border border-white/50 dark:border-white/10',
         'hover:bg-white/50 dark:hover:bg-white/15 hover:border-white/70 dark:hover:border-white/15',
         'hover:shadow-[0_4px_16px_rgba(0,0,0,0.06),0_0_0_1px_rgba(255,255,255,0.4)]',
@@ -87,7 +87,7 @@ function DraggableFieldCard({ fieldType }: DraggableFieldCardProps) {
         isDragging && 'opacity-50 scale-95'
       )}
     >
-      <div className="w-10 h-10 rounded-lg bg-mint/10 flex items-center justify-center">
+      <div className="w-10 h-10 rounded-full bg-mint/10 flex items-center justify-center">
         <Icon className="w-5 h-5 text-mint" />
       </div>
       <span className="text-xs font-medium text-text-primary text-center leading-tight">

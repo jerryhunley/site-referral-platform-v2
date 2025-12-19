@@ -53,11 +53,11 @@ export function FormSettingsPanel() {
 
           {/* Panel */}
           <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
+            initial={{ x: '100%', opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: '100%', opacity: 0 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed right-0 top-0 bottom-0 w-96 bg-bg-secondary border-l border-glass-border shadow-xl z-50 flex flex-col"
+            className="fixed right-6 top-24 bottom-6 w-96 glass-panel rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-glass-border">
@@ -71,7 +71,7 @@ export function FormSettingsPanel() {
               </div>
               <button
                 onClick={handleClose}
-                className="p-2 rounded-lg hover:bg-bg-tertiary text-text-muted hover:text-text-primary transition-colors"
+                className="p-2 rounded-lg glass-hover text-text-muted hover:text-text-primary transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -93,7 +93,7 @@ export function FormSettingsPanel() {
                         'flex-1 py-2.5 rounded-xl text-sm font-medium transition-colors',
                         form.mode === mode
                           ? 'bg-mint text-white'
-                          : 'bg-bg-tertiary text-text-secondary hover:text-text-primary'
+                          : 'bg-white/40 dark:bg-white/10 text-text-secondary hover:text-text-primary hover:bg-white/50 dark:hover:bg-white/15'
                       )}
                     >
                       {mode === 'inline' ? 'Single Page' : 'Multi-Step Wizard'}
@@ -116,7 +116,7 @@ export function FormSettingsPanel() {
                   value={form.description || ''}
                   onChange={(e) => updateFormDescription(e.target.value)}
                   rows={2}
-                  className="w-full px-4 py-3 rounded-xl bg-bg-tertiary border border-glass-border text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint transition-colors resize-none text-sm"
+                  className="w-full px-4 py-3 rounded-xl bg-white/40 dark:bg-white/10 backdrop-blur-sm border border-white/50 dark:border-white/10 text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint transition-colors resize-none text-sm"
                   placeholder="Add a description for your form..."
                 />
               </div>
@@ -178,7 +178,7 @@ export function FormSettingsPanel() {
                           'flex-1 py-2 text-sm font-medium transition-colors',
                           styling.fieldRadius === size
                             ? 'bg-mint text-white'
-                            : 'bg-bg-tertiary text-text-secondary hover:text-text-primary',
+                            : 'bg-white/40 dark:bg-white/10 text-text-secondary hover:text-text-primary hover:bg-white/50 dark:hover:bg-white/15',
                           size === 'sm' && 'rounded-lg',
                           size === 'md' && 'rounded-xl',
                           size === 'lg' && 'rounded-2xl',
@@ -205,7 +205,7 @@ export function FormSettingsPanel() {
                           'flex-1 py-2 rounded-xl text-sm font-medium transition-colors capitalize',
                           styling.fieldSpacing === size
                             ? 'bg-mint text-white'
-                            : 'bg-bg-tertiary text-text-secondary hover:text-text-primary'
+                            : 'bg-white/40 dark:bg-white/10 text-text-secondary hover:text-text-primary hover:bg-white/50 dark:hover:bg-white/15'
                         )}
                       >
                         {size}
@@ -228,7 +228,7 @@ export function FormSettingsPanel() {
                           'flex-1 py-2 rounded-xl text-sm font-medium transition-colors capitalize',
                           styling.labelPosition === position
                             ? 'bg-mint text-white'
-                            : 'bg-bg-tertiary text-text-secondary hover:text-text-primary'
+                            : 'bg-white/40 dark:bg-white/10 text-text-secondary hover:text-text-primary hover:bg-white/50 dark:hover:bg-white/15'
                         )}
                       >
                         {position === 'top' ? 'Above Field' : 'Inline'}
@@ -246,7 +246,7 @@ export function FormSettingsPanel() {
                     onClick={() => updateStyling({ useGlassEffect: !styling.useGlassEffect })}
                     className={cn(
                       'relative w-11 h-6 rounded-full transition-colors',
-                      styling.useGlassEffect ? 'bg-mint' : 'bg-bg-tertiary'
+                      styling.useGlassEffect ? 'bg-mint' : 'bg-white/40 dark:bg-white/10'
                     )}
                   >
                     <span
@@ -270,7 +270,7 @@ export function FormSettingsPanel() {
                         onClick={() => updateStyling({ showProgressBar: !styling.showProgressBar })}
                         className={cn(
                           'relative w-11 h-6 rounded-full transition-colors',
-                          styling.showProgressBar ? 'bg-mint' : 'bg-bg-tertiary'
+                          styling.showProgressBar ? 'bg-mint' : 'bg-white/40 dark:bg-white/10'
                         )}
                       >
                         <span
@@ -297,7 +297,7 @@ export function FormSettingsPanel() {
                                 'flex-1 py-2 rounded-xl text-sm font-medium transition-colors capitalize',
                                 styling.progressBarStyle === style
                                   ? 'bg-mint text-white'
-                                  : 'bg-bg-tertiary text-text-secondary hover:text-text-primary'
+                                  : 'bg-white/40 dark:bg-white/10 text-text-secondary hover:text-text-primary hover:bg-white/50 dark:hover:bg-white/15'
                               )}
                             >
                               {style}
