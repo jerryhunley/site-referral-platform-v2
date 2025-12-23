@@ -91,7 +91,7 @@ export function AppSidebar() {
       {/* Navigation */}
       <SidebarContent className="px-3">
         <SidebarGroup className="p-0">
-          <SidebarMenu>
+          <SidebarMenu className="space-y-1.5">
             {navItems.map((item) => {
               const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
               const Icon = item.icon;
@@ -112,7 +112,7 @@ export function AppSidebar() {
                   >
                     <Link href={item.href}>
                       <Icon className={cn('w-5 h-5', isActive && 'text-white dark:text-[#1A2B28]')} />
-                      <span className="font-medium">{item.label}</span>
+                      <span className="text-sm font-medium">{item.label}</span>
                       {/* PRO Badge */}
                       {!isCollapsed && showProBadge && (
                         <span className="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-gradient-to-r from-amber-500/20 to-yellow-500/20 border border-amber-500/30 ml-auto">
