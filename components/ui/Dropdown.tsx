@@ -21,6 +21,7 @@ interface DropdownProps {
   disabled?: boolean;
   error?: string;
   className?: string;
+  size?: 'sm' | 'md';
 }
 
 export function Dropdown({
@@ -34,6 +35,7 @@ export function Dropdown({
   disabled = false,
   error,
   className = '',
+  size = 'md',
 }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -134,26 +136,29 @@ export function Dropdown({
           onClick={() => !disabled && setIsOpen(!isOpen)}
           disabled={disabled}
           className={`
-            w-full px-3 py-1.5
-            bg-bg-secondary/50 dark:bg-bg-tertiary/50
-            border border-glass-border
-            rounded-xl
-            text-left text-sm
+            w-full
+            ${size === 'sm' ? 'px-3 py-1.5' : 'px-3 py-1.5'}
+            ${size === 'sm'
+              ? 'bg-white/80 dark:bg-white/20 border-white/90 dark:border-white/25 hover:bg-white/90 dark:hover:bg-white/25'
+              : 'bg-white/30 dark:bg-white/10 backdrop-blur-sm border-glass-border'}
+            border
+            ${size === 'sm' ? 'rounded-full' : 'rounded-xl'}
+            text-left ${size === 'sm' ? 'text-xs' : 'text-sm'}
             transition-all duration-200
-            focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint
+            focus:outline-none focus:ring-1 focus:ring-mint/50
             disabled:opacity-50 disabled:cursor-not-allowed
             ${error ? 'border-error focus:ring-error/50 focus:border-error' : ''}
-            ${isOpen ? 'ring-2 ring-mint/50 border-mint' : ''}
+            ${isOpen ? 'ring-1 ring-mint/50' : ''}
           `}
         >
           <div className="flex items-center justify-between gap-2">
-            <div className="flex-1 flex flex-wrap gap-1 min-h-5">
+            <div className={`flex-1 flex flex-wrap gap-1 ${size === 'sm' ? 'min-h-4' : 'min-h-5'}`}>
               {displayValue || (
                 <span className="text-text-muted">{placeholder}</span>
               )}
             </div>
             <ChevronDown
-              className={`w-4 h-4 text-text-muted transition-transform duration-200 ${
+              className={`${size === 'sm' ? 'w-3.5 h-3.5' : 'w-4 h-4'} text-text-muted transition-transform duration-200 ${
                 isOpen ? 'rotate-180' : ''
               }`}
             />
@@ -167,17 +172,17 @@ export function Dropdown({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.15 }}
-              className="absolute z-50 w-full mt-1.5 py-1.5 glass-panel rounded-xl overflow-hidden"
+              className="absolute z-50 w-full mt-1.5 py-1.5 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border border-glass-border rounded-xl shadow-xl overflow-hidden"
             >
               {searchable && (
-                <div className="px-3 pb-2">
+                <div className="p-3">
                   <input
                     ref={inputRef}
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search..."
-                    className="w-full px-3 py-2 bg-bg-tertiary/50 border border-glass-border rounded-lg text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-mint/50"
+                    className="w-full px-2.5 py-1.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-xs text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-mint/50"
                   />
                 </div>
               )}
@@ -197,19 +202,32 @@ export function Dropdown({
                         onClick={() => handleSelect(option.value)}
                         className={`
                           w-full px-3 py-2 text-left text-sm
-                          flex items-center justify-between gap-2
+                          flex items-center gap-3
                           transition-colors duration-150
                           ${isSelected
-                            ? 'bg-mint/10 text-mint'
-                            : 'text-text-primary hover:bg-bg-tertiary'
+                            ? 'bg-mint/10'
+                            : 'hover:bg-gray-100 dark:hover:bg-gray-800/50'
                           }
                         `}
                       >
-                        <span className="flex items-center gap-2">
+                        {/* Checkbox indicator */}
+                        <div
+                          className={`
+                            w-4 h-4 rounded border-2 shrink-0
+                            flex items-center justify-center
+                            transition-colors duration-150
+                            ${isSelected
+                              ? 'bg-mint border-mint'
+                              : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800'
+                            }
+                          `}
+                        >
+                          {isSelected && <Check className="w-3 h-3 text-white" strokeWidth={3} />}
+                        </div>
+                        <span className="flex items-center gap-2 text-text-primary">
                           {option.icon}
                           {option.label}
                         </span>
-                        {isSelected && <Check className="w-4 h-4" />}
                       </button>
                     );
                   })

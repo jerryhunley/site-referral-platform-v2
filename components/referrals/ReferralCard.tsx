@@ -8,6 +8,8 @@ import {
   Eye,
   Calendar,
   Clock,
+  ChevronUp,
+  ChevronDown,
 } from 'lucide-react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Badge } from '@/components/ui/Badge';
@@ -223,18 +225,20 @@ export function ReferralCard({
   if (viewMode === 'list') {
     return (
       <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay, duration: 0.2 }}
-        className="relative"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay, duration: 0.15 }}
       >
         <div
           onClick={() => onView?.(referral.id)}
           className={`
-            flex items-center gap-4 p-4
-            glass-list-item
-            cursor-pointer transition-all duration-200
-            ${isSelected ? 'ring-2 ring-mint' : ''}
+            flex items-center gap-4 px-5 py-3.5
+            cursor-pointer transition-all duration-150
+            border-b border-white/20 dark:border-white/5 last:border-b-0
+            ${isSelected
+              ? 'bg-mint/10 dark:bg-mint/15'
+              : 'hover:bg-white/30 dark:hover:bg-white/5'
+            }
           `}
         >
           {/* Selection Checkbox */}
@@ -356,17 +360,96 @@ export function ReferralCard({
   );
 }
 
-// Compact list header for list view
-export function ReferralListHeader() {
+// Sortable column header
+type SortKey = 'name' | 'study' | 'status' | 'submitted' | 'assignee';
+type SortDirection = 'asc' | 'desc';
+
+interface ReferralListHeaderProps {
+  sortBy?: SortKey;
+  sortDirection?: SortDirection;
+  onSort?: (key: SortKey) => void;
+  isAllSelected?: boolean;
+  isPartialSelected?: boolean;
+  onSelectAll?: () => void;
+}
+
+function SortArrow({ active, direction }: { active: boolean; direction: SortDirection }) {
   return (
-    <div className="flex items-center gap-4 px-4 py-2 text-xs font-medium text-text-muted uppercase tracking-wider">
-      <div className="w-5" /> {/* Checkbox space */}
+    <span className={`ml-1 inline-flex flex-col text-[8px] leading-none ${active ? 'text-mint' : 'text-text-muted/50'}`}>
+      <ChevronUp className={`w-3 h-3 -mb-1 ${active && direction === 'asc' ? 'text-mint' : ''}`} />
+      <ChevronDown className={`w-3 h-3 ${active && direction === 'desc' ? 'text-mint' : ''}`} />
+    </span>
+  );
+}
+
+// Compact list header for list view
+export function ReferralListHeader({
+  sortBy,
+  sortDirection = 'asc',
+  onSort,
+  isAllSelected = false,
+  isPartialSelected = false,
+  onSelectAll,
+}: ReferralListHeaderProps) {
+  const columnClass = "flex items-center gap-0.5 cursor-pointer hover:text-text-primary transition-colors select-none";
+
+  return (
+    <div className="flex items-center gap-4 px-5 py-3 text-[11px] font-semibold text-text-muted uppercase tracking-wider border-b border-white/30 dark:border-white/10">
+      {/* Bulk Select Checkbox */}
+      <div className="w-5" onClick={(e) => e.stopPropagation()}>
+        <Checkbox
+          checked={isAllSelected}
+          indeterminate={isPartialSelected && !isAllSelected}
+          onChange={() => onSelectAll?.()}
+        />
+      </div>
       <div className="w-10" /> {/* Avatar space */}
-      <div className="flex-1">Name</div>
-      <div className="w-32 hidden lg:block">Study</div>
-      <div className="w-32">Status</div>
-      <div className="w-24 hidden md:block text-right">Submitted</div>
-      <div className="w-16 hidden lg:block text-center">Assignee</div>
+
+      {/* Name - Sortable */}
+      <div
+        className={`flex-1 ${columnClass}`}
+        onClick={() => onSort?.('name')}
+      >
+        <span>Name</span>
+        <SortArrow active={sortBy === 'name'} direction={sortBy === 'name' ? sortDirection : 'asc'} />
+      </div>
+
+      {/* Study - Sortable */}
+      <div
+        className={`w-32 hidden lg:flex ${columnClass}`}
+        onClick={() => onSort?.('study')}
+      >
+        <span>Study</span>
+        <SortArrow active={sortBy === 'study'} direction={sortBy === 'study' ? sortDirection : 'asc'} />
+      </div>
+
+      {/* Status - Sortable */}
+      <div
+        className={`w-32 ${columnClass}`}
+        onClick={() => onSort?.('status')}
+      >
+        <span>Status</span>
+        <SortArrow active={sortBy === 'status'} direction={sortBy === 'status' ? sortDirection : 'asc'} />
+      </div>
+
+      {/* Submitted - Sortable */}
+      <div
+        className={`w-24 hidden md:flex justify-end ${columnClass}`}
+        onClick={() => onSort?.('submitted')}
+      >
+        <span>Submitted</span>
+        <SortArrow active={sortBy === 'submitted'} direction={sortBy === 'submitted' ? sortDirection : 'asc'} />
+      </div>
+
+      {/* Assignee - Sortable */}
+      <div
+        className={`w-16 hidden lg:flex justify-center ${columnClass}`}
+        onClick={() => onSort?.('assignee')}
+      >
+        <span>Assignee</span>
+        <SortArrow active={sortBy === 'assignee'} direction={sortBy === 'assignee' ? sortDirection : 'asc'} />
+      </div>
+
       <div className="w-24 text-right">Actions</div>
     </div>
   );
