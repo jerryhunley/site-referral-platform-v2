@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   X,
@@ -570,27 +571,27 @@ function FieldSelector({ value, onChange, excludeIds = [] }: FieldSelectorProps)
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          'flex items-center gap-2 px-3 py-2 rounded-lg w-full text-left',
-          'bg-gray-100 dark:bg-gray-800',
-          'border border-gray-200 dark:border-gray-700',
-          'hover:border-gray-300 dark:hover:border-gray-600 transition-colors',
-          isOpen && 'ring-2 ring-mint/40 border-mint'
+          'flex items-center gap-2 px-3 py-1.5 rounded-full w-full text-left',
+          'bg-white/80 dark:bg-white/20',
+          'border border-white/90 dark:border-white/25',
+          'hover:bg-white hover:border-white hover:shadow-[0_2px_8px_rgba(255,255,255,0.5)] dark:hover:bg-white/30 dark:hover:shadow-[0_2px_8px_rgba(255,255,255,0.08)] transition-all',
+          isOpen && 'ring-2 ring-mint/40'
         )}
       >
         {selectedField ? (
           <>
-            <selectedField.icon className="w-4 h-4 text-text-secondary" />
-            <span className="text-sm text-text-primary flex-1">{selectedField.label}</span>
+            <selectedField.icon className="w-3.5 h-3.5 text-text-secondary" />
+            <span className="text-xs font-medium text-text-primary flex-1">{selectedField.label}</span>
           </>
         ) : (
           <>
-            <Search className="w-4 h-4 text-text-muted" />
-            <span className="text-sm text-text-muted flex-1">Select field...</span>
+            <Search className="w-3.5 h-3.5 text-text-muted" />
+            <span className="text-xs font-medium text-text-muted flex-1">Select field...</span>
           </>
         )}
         <ChevronDown
           className={cn(
-            'w-4 h-4 text-text-muted transition-transform',
+            'w-3.5 h-3.5 text-text-muted transition-transform',
             isOpen && 'rotate-180'
           )}
         />
@@ -603,28 +604,28 @@ function FieldSelector({ value, onChange, excludeIds = [] }: FieldSelectorProps)
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.15 }}
-            className="absolute top-full left-0 right-0 mt-2 z-60 max-h-80 overflow-hidden flex flex-col rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 shadow-lg"
+            className="absolute top-full left-0 right-0 mt-2 z-60 max-h-80 overflow-hidden flex flex-col rounded-xl glass-dropdown"
           >
             {/* Search input */}
-            <div className="p-2.5 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
+            <div className="p-2">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
                 <input
                   ref={inputRef}
                   type="text"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search..."
-                  className="w-full pl-9 pr-3 py-2 text-sm bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg text-text-primary placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-mint/40 focus:border-mint"
+                  className="w-full pl-8 pr-3 py-1.5 text-xs bg-white/80 dark:bg-white/20 border border-white/90 dark:border-white/25 rounded-full text-text-primary placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-mint/40"
                 />
               </div>
             </div>
 
             {/* Field list */}
-            <div className="flex-1 overflow-y-auto p-2.5 space-y-3">
+            <div className="flex-1 overflow-y-auto p-2 space-y-2">
               {Object.entries(filteredGroupedFields).map(([category, fields]) => (
                 <div key={category}>
-                  <p className="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-2 mb-1.5">
+                  <p className="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-2 mb-1">
                     {category}
                   </p>
                   <div className="space-y-0.5">
@@ -637,17 +638,17 @@ function FieldSelector({ value, onChange, excludeIds = [] }: FieldSelectorProps)
                           setSearch('');
                         }}
                         className={cn(
-                          'flex items-center gap-2.5 w-full px-2.5 py-2 rounded-lg text-left',
-                          'hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors',
-                          value === field.id && 'bg-mint/10 dark:bg-mint/20'
+                          'flex items-center gap-2 w-full px-2 py-1.5 rounded-lg text-left',
+                          'hover:bg-mint/10 dark:hover:bg-mint/15 transition-all',
+                          value === field.id && 'bg-mint/15 dark:bg-mint/20'
                         )}
                       >
-                        <div className="w-7 h-7 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                          <field.icon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                        <div className="w-6 h-6 rounded-full bg-white/80 dark:bg-white/20 border border-white/90 dark:border-white/25 flex items-center justify-center">
+                          <field.icon className="w-3 h-3 text-gray-500 dark:text-gray-400" />
                         </div>
-                        <span className="text-sm text-text-primary flex-1">{field.label}</span>
+                        <span className="text-xs font-medium text-text-primary flex-1">{field.label}</span>
                         {value === field.id && (
-                          <Check className="w-4 h-4 text-mint" />
+                          <Check className="w-3.5 h-3.5 text-mint" />
                         )}
                       </button>
                     ))}
@@ -683,7 +684,7 @@ function OperatorSelector({ operators, value, onChange }: OperatorSelectorProps)
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="px-3 py-2 text-sm rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/40 focus:border-mint transition-colors cursor-pointer hover:border-gray-300 dark:hover:border-gray-600"
+      className="px-3 py-1.5 text-xs font-medium rounded-full bg-white/80 dark:bg-white/20 border border-white/90 dark:border-white/25 text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/40 transition-colors cursor-pointer hover:bg-white hover:border-white hover:shadow-[0_2px_8px_rgba(255,255,255,0.5)] dark:hover:bg-white/30 dark:hover:shadow-[0_2px_8px_rgba(255,255,255,0.08)]"
     >
       {operators.map((op) => (
         <option key={op.value} value={op.value}>
@@ -720,7 +721,7 @@ function ValueInput({ field, operator, value, onChange }: ValueInputProps) {
   if (field.valueType === 'multi-select' && field.options) {
     const selectedValues = Array.isArray(value) ? value : [];
     return (
-      <div className="flex flex-wrap gap-1.5 p-2.5 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 min-h-[42px]">
+      <div className="flex flex-wrap gap-1 p-2 rounded-xl bg-white/50 dark:bg-white/10 border border-white/90 dark:border-white/25 min-h-9">
         {field.options.map((opt) => {
           const isSelected = selectedValues.includes(opt.value);
           return (
@@ -734,10 +735,10 @@ function ValueInput({ field, operator, value, onChange }: ValueInputProps) {
                 onChange(newValues);
               }}
               className={cn(
-                'px-2.5 py-1 text-xs font-medium rounded-md transition-colors',
+                'px-2 py-0.5 text-[10px] font-medium rounded-full transition-colors',
                 isSelected
                   ? 'bg-mint text-white shadow-sm'
-                  : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                  : 'bg-white/80 dark:bg-white/20 text-gray-600 dark:text-gray-300 border border-white/90 dark:border-white/25 hover:bg-white hover:border-white hover:shadow-[0_2px_8px_rgba(255,255,255,0.5)] dark:hover:bg-white/30 dark:hover:shadow-[0_2px_8px_rgba(255,255,255,0.08)]'
               )}
             >
               {opt.label}
@@ -754,7 +755,7 @@ function ValueInput({ field, operator, value, onChange }: ValueInputProps) {
       <select
         value={value as string}
         onChange={(e) => onChange(e.target.value)}
-        className="px-3 py-2 text-sm rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/40 focus:border-mint transition-colors cursor-pointer hover:border-gray-300 dark:hover:border-gray-600"
+        className="px-3 py-1.5 text-xs font-medium rounded-full bg-white/80 dark:bg-white/20 border border-white/90 dark:border-white/25 text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/40 transition-colors cursor-pointer hover:bg-white hover:border-white hover:shadow-[0_2px_8px_rgba(255,255,255,0.5)] dark:hover:bg-white/30 dark:hover:shadow-[0_2px_8px_rgba(255,255,255,0.08)]"
       >
         <option value="">Select value...</option>
         {field.options.map((opt) => (
@@ -773,7 +774,7 @@ function ValueInput({ field, operator, value, onChange }: ValueInputProps) {
         type="date"
         value={value as string}
         onChange={(e) => onChange(e.target.value)}
-        className="px-3 py-2 text-sm rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/40 focus:border-mint transition-colors"
+        className="px-3 py-1.5 text-xs font-medium rounded-full bg-white/80 dark:bg-white/20 border border-white/90 dark:border-white/25 text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/40 transition-colors"
       />
     );
   }
@@ -786,7 +787,7 @@ function ValueInput({ field, operator, value, onChange }: ValueInputProps) {
         value={value as string}
         onChange={(e) => onChange(e.target.value)}
         placeholder="Enter value..."
-        className="px-3 py-2 text-sm rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-text-primary placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-mint/40 focus:border-mint transition-colors"
+        className="px-3 py-1.5 text-xs font-medium rounded-full bg-white/80 dark:bg-white/20 border border-white/90 dark:border-white/25 text-text-primary placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-mint/40 transition-colors"
       />
     );
   }
@@ -798,7 +799,7 @@ function ValueInput({ field, operator, value, onChange }: ValueInputProps) {
       value={value as string}
       onChange={(e) => onChange(e.target.value)}
       placeholder="Enter value..."
-      className="px-3 py-2 text-sm rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-text-primary placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-mint/40 focus:border-mint transition-colors"
+      className="px-3 py-1.5 text-xs font-medium rounded-full bg-white/80 dark:bg-white/20 border border-white/90 dark:border-white/25 text-text-primary placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-mint/40 transition-colors"
     />
   );
 }
@@ -852,12 +853,19 @@ function ConditionRow({
           >
             {logic.toUpperCase()}
           </button>
-          <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
+          <div
+            className="flex-1 h-px"
+            style={{
+              backgroundImage: 'radial-gradient(circle, rgb(156 163 175 / 0.5) 1px, transparent 1px)',
+              backgroundSize: '8px 1px',
+              backgroundRepeat: 'repeat-x',
+            }}
+          />
         </div>
       )}
 
       {/* Condition inputs */}
-      <div className="flex items-start gap-2 p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700">
+      <div className="flex items-start gap-2">
         <div className="flex-1 space-y-2">
           {/* Field selector */}
           <FieldSelector
@@ -888,10 +896,10 @@ function ConditionRow({
         {/* Remove button */}
         <button
           onClick={onRemove}
-          className="p-2 rounded-lg text-gray-400 hover:text-error hover:bg-error/10 transition-colors"
+          className="p-1.5 rounded-full text-text-primary glass-button hover:text-error hover:scale-105 active:scale-95 transition-all"
           title="Remove filter"
         >
-          <Trash2 className="w-4 h-4" />
+          <Trash2 className="w-3.5 h-3.5" />
         </button>
       </div>
     </div>
@@ -959,12 +967,19 @@ function FilterGroupComponent({
           >
             {groupLogic.toUpperCase()}
           </button>
-          <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
+          <div
+            className="flex-1 h-px"
+            style={{
+              backgroundImage: 'radial-gradient(circle, rgb(156 163 175 / 0.5) 1px, transparent 1px)',
+              backgroundSize: '8px 1px',
+              backgroundRepeat: 'repeat-x',
+            }}
+          />
         </div>
       )}
 
       {/* Group container */}
-      <div className="p-4 rounded-xl bg-white dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700 space-y-3 shadow-sm">
+      <div className="p-4 glass-card-inset space-y-3">
         {/* Conditions */}
         {group.conditions.map((condition, index) => (
           <ConditionRow
@@ -978,22 +993,32 @@ function FilterGroupComponent({
           />
         ))}
 
+        {/* Dotted divider */}
+        <div
+          className="h-px"
+          style={{
+            backgroundImage: 'radial-gradient(circle, rgb(156 163 175 / 0.5) 1px, transparent 1px)',
+            backgroundSize: '8px 1px',
+            backgroundRepeat: 'repeat-x',
+          }}
+        />
+
         {/* Add condition button */}
-        <div className="flex items-center gap-2 pt-3 border-t border-gray-100 dark:border-gray-700">
+        <div className="flex items-center gap-2">
           <button
             onClick={handleAddCondition}
-            className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-mint hover:bg-mint/10 rounded-lg transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-text-primary glass-button rounded-full hover:scale-105 active:scale-95 transition-all"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-3.5 h-3.5" />
             Add filter
           </button>
 
           {onRemove && group.conditions.length > 0 && (
             <button
               onClick={onRemove}
-              className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-400 hover:text-error hover:bg-error/10 rounded-lg transition-colors ml-auto"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-text-primary glass-button rounded-full hover:text-error hover:scale-105 active:scale-95 transition-all ml-auto"
             >
-              <Trash2 className="w-4 h-4" />
+              <Trash2 className="w-3.5 h-3.5" />
               Remove group
             </button>
           )}
@@ -1058,7 +1083,15 @@ export function AdvancedFiltersPanel({ isOpen, onClose }: AdvancedFiltersPanelPr
     0
   );
 
-  return (
+  // Use portal to render at document body level
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
         <>
@@ -1067,7 +1100,7 @@ export function AdvancedFiltersPanel({ isOpen, onClose }: AdvancedFiltersPanelPr
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed top-0 left-0 right-0 bottom-0 bg-black/30 dark:bg-black/50 backdrop-blur-sm z-40"
+            className="fixed inset-0 bg-black/30 dark:bg-black/50 backdrop-blur-sm z-40"
             onClick={onClose}
           />
 
@@ -1077,10 +1110,10 @@ export function AdvancedFiltersPanel({ isOpen, onClose }: AdvancedFiltersPanelPr
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: '100%', opacity: 0 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed right-6 top-24 bottom-6 w-[480px] bg-white dark:bg-gray-900 rounded-2xl z-50 flex flex-col overflow-hidden border border-gray-200 dark:border-gray-700 shadow-2xl"
+            className="fixed right-6 top-6 bottom-6 w-1/3 min-w-[400px] max-w-[600px] glass-modal-panel z-50 flex flex-col overflow-hidden"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
+            <div className="flex items-center justify-between px-6 py-4">
               <div>
                 <h2 className="text-lg font-semibold text-text-primary">
                   Advanced Filters
@@ -1093,14 +1126,26 @@ export function AdvancedFiltersPanel({ isOpen, onClose }: AdvancedFiltersPanelPr
               </div>
               <button
                 onClick={onClose}
-                className="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-400 hover:text-text-primary transition-colors"
+                className="p-2 rounded-xl text-text-secondary hover:text-text-primary glass-button hover:scale-105 active:scale-95 transition-all"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
+            {/* Header divider */}
+            <div className="mx-6 py-2">
+              <div
+                className="h-px"
+                style={{
+                  backgroundImage: 'radial-gradient(circle, rgb(156 163 175 / 0.5) 1px, transparent 1px)',
+                  backgroundSize: '8px 1px',
+                  backgroundRepeat: 'repeat-x',
+                }}
+              />
+            </div>
+
             {/* Content */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50/50 dark:bg-gray-900">
+            <div className="flex-1 overflow-y-auto p-6 space-y-4">
               {/* Filter Groups */}
               {filters.groups.map((group, index) => (
                 <FilterGroupComponent
@@ -1121,31 +1166,43 @@ export function AdvancedFiltersPanel({ isOpen, onClose }: AdvancedFiltersPanelPr
               {/* Add Group Button */}
               <button
                 onClick={handleAddGroup}
-                className="flex items-center justify-center gap-2 w-full px-4 py-3 text-sm font-medium text-vista-blue bg-vista-blue/10 hover:bg-vista-blue/15 dark:bg-vista-blue/20 dark:hover:bg-vista-blue/25 rounded-lg border border-vista-blue/20 dark:border-vista-blue/30 transition-colors"
+                className="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-xs font-medium text-text-primary glass-button rounded-full hover:scale-105 active:scale-95 transition-all"
               >
-                <Plus className="w-4 h-4" />
+                <Plus className="w-3.5 h-3.5" />
                 Add filter group
               </button>
             </div>
 
+            {/* Footer divider */}
+            <div className="mx-6 py-2">
+              <div
+                className="h-px"
+                style={{
+                  backgroundImage: 'radial-gradient(circle, rgb(156 163 175 / 0.5) 1px, transparent 1px)',
+                  backgroundSize: '8px 1px',
+                  backgroundRepeat: 'repeat-x',
+                }}
+              />
+            </div>
+
             {/* Footer */}
-            <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between bg-white dark:bg-gray-800/50">
+            <div className="px-6 py-4 flex items-center justify-between">
               <button
                 onClick={handleClearAll}
-                className="px-4 py-2 text-sm font-medium text-gray-500 hover:text-error transition-colors"
+                className="px-4 py-1.5 text-xs font-medium text-text-primary glass-button rounded-full hover:text-error hover:scale-105 active:scale-95 transition-all"
               >
                 Clear all
               </button>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 <button
                   onClick={onClose}
-                  className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  className="px-4 py-1.5 text-xs font-medium text-text-primary glass-button rounded-full hover:scale-105 active:scale-95 transition-all"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={onClose}
-                  className="px-6 py-2.5 text-sm font-medium text-white bg-mint hover:bg-mint-dark rounded-lg shadow-sm transition-colors"
+                  className="px-5 py-1.5 text-xs font-medium text-white bg-mint hover:bg-mint-dark rounded-full shadow-sm hover:scale-105 active:scale-95 transition-all"
                 >
                   Apply Filters
                 </button>
@@ -1154,6 +1211,7 @@ export function AdvancedFiltersPanel({ isOpen, onClose }: AdvancedFiltersPanelPr
           </motion.div>
         </>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }
