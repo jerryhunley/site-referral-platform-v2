@@ -285,7 +285,7 @@ export function ReferralCard({
           </div>
 
           {/* Submitted */}
-          <div className="w-24 hidden md:block text-right">
+          <div className="w-24 mr-4 hidden md:block text-right">
             <span className="text-sm text-text-muted">
               {formatDate(referral.submittedAt)}
             </span>
@@ -395,7 +395,7 @@ export function ReferralListHeader({
 
   return (
     <div className="relative">
-      <div className="flex items-center gap-4 px-5 py-3 text-[11px] font-semibold text-text-muted uppercase tracking-wider">
+      <div className="flex items-center gap-4 px-5 py-3 text-xs font-medium text-text-muted">
         {/* Bulk Select Checkbox */}
       <div className="w-5" onClick={(e) => e.stopPropagation()}>
         <Checkbox
@@ -435,7 +435,7 @@ export function ReferralListHeader({
 
       {/* Submitted - Sortable */}
       <div
-        className={`w-24 hidden md:flex justify-end ${columnClass}`}
+        className={`w-24 mr-4 hidden md:flex justify-end ${columnClass}`}
         onClick={() => onSort?.('submitted')}
       >
         <span>Submitted</span>
