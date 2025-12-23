@@ -680,18 +680,252 @@ interface OperatorSelectorProps {
 }
 
 function OperatorSelector({ operators, value, onChange }: OperatorSelectorProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const selectedOperator = operators.find((op) => op.value === value);
+
+  // Click outside to close
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return (
-    <select
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className="px-3 py-1.5 text-xs font-medium rounded-full bg-white/80 dark:bg-white/20 border border-white/90 dark:border-white/25 text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/40 transition-colors cursor-pointer hover:bg-white hover:border-white hover:shadow-[0_2px_8px_rgba(255,255,255,0.5)] dark:hover:bg-white/30 dark:hover:shadow-[0_2px_8px_rgba(255,255,255,0.08)]"
-    >
-      {operators.map((op) => (
-        <option key={op.value} value={op.value}>
-          {op.label}
-        </option>
-      ))}
-    </select>
+    <div ref={containerRef} className="relative">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={cn(
+          'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-left',
+          'bg-white/80 dark:bg-white/20',
+          'border border-white/90 dark:border-white/25',
+          'hover:bg-white hover:border-white hover:shadow-[0_2px_8px_rgba(255,255,255,0.5)] dark:hover:bg-white/30 dark:hover:shadow-[0_2px_8px_rgba(255,255,255,0.08)] transition-all',
+          isOpen && 'ring-2 ring-mint/40'
+        )}
+      >
+        <span className="text-xs font-medium text-text-primary whitespace-nowrap">
+          {selectedOperator?.label || 'Select...'}
+        </span>
+        <ChevronDown
+          className={cn(
+            'w-3 h-3 text-text-muted transition-transform shrink-0',
+            isOpen && 'rotate-180'
+          )}
+        />
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.15 }}
+            className="absolute top-full left-0 mt-2 z-60 min-w-[140px] overflow-hidden flex flex-col rounded-xl glass-dropdown"
+          >
+            <div className="p-2 space-y-0.5">
+              {operators.map((op) => (
+                <button
+                  key={op.value}
+                  onClick={() => {
+                    onChange(op.value);
+                    setIsOpen(false);
+                  }}
+                  className={cn(
+                    'flex items-center gap-2 w-full px-2 py-1.5 rounded-lg text-left',
+                    'hover:bg-mint/10 dark:hover:bg-mint/15 transition-all',
+                    value === op.value && 'bg-mint/15 dark:bg-mint/20'
+                  )}
+                >
+                  <span className="text-xs font-medium text-text-primary flex-1 whitespace-nowrap">{op.label}</span>
+                  {value === op.value && (
+                    <Check className="w-3.5 h-3.5 text-mint shrink-0" />
+                  )}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+// ===========================================
+// Option Select Dropdown Component
+// ===========================================
+
+interface OptionSelectProps {
+  options: { value: string; label: string }[];
+  value: string | string[];
+  onChange: (value: string | string[]) => void;
+  multiple?: boolean;
+  placeholder?: string;
+}
+
+function OptionSelect({ options, value, onChange, multiple = false, placeholder = 'Select...' }: OptionSelectProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [search, setSearch] = useState('');
+  const containerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const selectedValues = multiple ? (Array.isArray(value) ? value : []) : [];
+  const selectedValue = !multiple ? (value as string) : '';
+
+  const filteredOptions = useMemo(() => {
+    if (!search) return options;
+    const searchLower = search.toLowerCase();
+    return options.filter((opt) => opt.label.toLowerCase().includes(searchLower));
+  }, [options, search]);
+
+  // Click outside to close
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+        setSearch('');
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Focus input when opened
+  useEffect(() => {
+    if (isOpen && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isOpen]);
+
+  const getDisplayText = () => {
+    if (multiple) {
+      if (selectedValues.length === 0) return placeholder;
+      if (selectedValues.length === 1) {
+        const opt = options.find((o) => o.value === selectedValues[0]);
+        return opt?.label || selectedValues[0];
+      }
+      return `${selectedValues.length} selected`;
+    } else {
+      if (!selectedValue) return placeholder;
+      const opt = options.find((o) => o.value === selectedValue);
+      return opt?.label || selectedValue;
+    }
+  };
+
+  const handleSelect = (optValue: string) => {
+    if (multiple) {
+      const newValues = selectedValues.includes(optValue)
+        ? selectedValues.filter((v) => v !== optValue)
+        : [...selectedValues, optValue];
+      onChange(newValues);
+    } else {
+      onChange(optValue);
+      setIsOpen(false);
+      setSearch('');
+    }
+  };
+
+  const isSelected = (optValue: string) => {
+    if (multiple) {
+      return selectedValues.includes(optValue);
+    }
+    return selectedValue === optValue;
+  };
+
+  return (
+    <div ref={containerRef} className="relative">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={cn(
+          'flex items-center gap-2 px-3 py-1.5 rounded-full w-full text-left min-w-[120px]',
+          'bg-white/80 dark:bg-white/20',
+          'border border-white/90 dark:border-white/25',
+          'hover:bg-white hover:border-white hover:shadow-[0_2px_8px_rgba(255,255,255,0.5)] dark:hover:bg-white/30 dark:hover:shadow-[0_2px_8px_rgba(255,255,255,0.08)] transition-all',
+          isOpen && 'ring-2 ring-mint/40'
+        )}
+      >
+        <span className={cn(
+          'text-xs font-medium flex-1 truncate',
+          (multiple ? selectedValues.length === 0 : !selectedValue) ? 'text-text-muted' : 'text-text-primary'
+        )}>
+          {getDisplayText()}
+        </span>
+        <ChevronDown
+          className={cn(
+            'w-3.5 h-3.5 text-text-muted transition-transform shrink-0',
+            isOpen && 'rotate-180'
+          )}
+        />
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.15 }}
+            className="absolute top-full left-0 right-0 mt-2 z-60 max-h-60 overflow-hidden flex flex-col rounded-xl glass-dropdown min-w-[180px]"
+          >
+            {/* Search input */}
+            <div className="p-2">
+              <div className="relative">
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search..."
+                  className="w-full pl-8 pr-3 py-1.5 text-xs bg-white/80 dark:bg-white/20 border border-white/90 dark:border-white/25 rounded-full text-text-primary placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-mint/40"
+                />
+              </div>
+            </div>
+
+            {/* Options list */}
+            <div className="flex-1 overflow-y-auto p-2 space-y-0.5">
+              {filteredOptions.map((opt) => (
+                <button
+                  key={opt.value}
+                  onClick={() => handleSelect(opt.value)}
+                  className={cn(
+                    'flex items-center gap-2 w-full px-2 py-1.5 rounded-lg text-left',
+                    'hover:bg-mint/10 dark:hover:bg-mint/15 transition-all',
+                    isSelected(opt.value) && 'bg-mint/15 dark:bg-mint/20'
+                  )}
+                >
+                  {multiple && (
+                    <div className={cn(
+                      'w-4 h-4 rounded border flex items-center justify-center shrink-0',
+                      isSelected(opt.value)
+                        ? 'bg-mint border-mint'
+                        : 'border-gray-300 dark:border-gray-600'
+                    )}>
+                      {isSelected(opt.value) && <Check className="w-3 h-3 text-white" />}
+                    </div>
+                  )}
+                  <span className="text-xs font-medium text-text-primary flex-1">{opt.label}</span>
+                  {!multiple && isSelected(opt.value) && (
+                    <Check className="w-3.5 h-3.5 text-mint shrink-0" />
+                  )}
+                </button>
+              ))}
+
+              {filteredOptions.length === 0 && (
+                <p className="text-xs text-gray-500 dark:text-gray-400 text-center py-3">
+                  No options found
+                </p>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
 
@@ -719,51 +953,26 @@ function ValueInput({ field, operator, value, onChange }: ValueInputProps) {
 
   // Multi-select
   if (field.valueType === 'multi-select' && field.options) {
-    const selectedValues = Array.isArray(value) ? value : [];
     return (
-      <div className="flex flex-wrap gap-1 p-2 rounded-xl bg-white/50 dark:bg-white/10 border border-white/90 dark:border-white/25 min-h-9">
-        {field.options.map((opt) => {
-          const isSelected = selectedValues.includes(opt.value);
-          return (
-            <button
-              key={opt.value}
-              type="button"
-              onClick={() => {
-                const newValues = isSelected
-                  ? selectedValues.filter((v) => v !== opt.value)
-                  : [...selectedValues, opt.value];
-                onChange(newValues);
-              }}
-              className={cn(
-                'px-2 py-0.5 text-[10px] font-medium rounded-full transition-colors',
-                isSelected
-                  ? 'bg-mint text-white shadow-sm'
-                  : 'bg-white/80 dark:bg-white/20 text-gray-600 dark:text-gray-300 border border-white/90 dark:border-white/25 hover:bg-white hover:border-white hover:shadow-[0_2px_8px_rgba(255,255,255,0.5)] dark:hover:bg-white/30 dark:hover:shadow-[0_2px_8px_rgba(255,255,255,0.08)]'
-              )}
-            >
-              {opt.label}
-            </button>
-          );
-        })}
-      </div>
+      <OptionSelect
+        options={field.options}
+        value={Array.isArray(value) ? value : []}
+        onChange={(v) => onChange(v)}
+        multiple
+        placeholder="Select values..."
+      />
     );
   }
 
   // Single select
   if (field.valueType === 'select' && field.options) {
     return (
-      <select
+      <OptionSelect
+        options={field.options}
         value={value as string}
-        onChange={(e) => onChange(e.target.value)}
-        className="px-3 py-1.5 text-xs font-medium rounded-full bg-white/80 dark:bg-white/20 border border-white/90 dark:border-white/25 text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/40 transition-colors cursor-pointer hover:bg-white hover:border-white hover:shadow-[0_2px_8px_rgba(255,255,255,0.5)] dark:hover:bg-white/30 dark:hover:shadow-[0_2px_8px_rgba(255,255,255,0.08)]"
-      >
-        <option value="">Select value...</option>
-        {field.options.map((opt) => (
-          <option key={opt.value} value={opt.value}>
-            {opt.label}
-          </option>
-        ))}
-      </select>
+        onChange={(v) => onChange(v as string)}
+        placeholder="Select value..."
+      />
     );
   }
 
@@ -1100,7 +1309,7 @@ export function AdvancedFiltersPanel({ isOpen, onClose }: AdvancedFiltersPanelPr
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/30 dark:bg-black/50 backdrop-blur-sm z-40"
+            className="fixed inset-0 bg-black/30 dark:bg-black/50 backdrop-blur-sm z-9998"
             onClick={onClose}
           />
 
@@ -1110,7 +1319,7 @@ export function AdvancedFiltersPanel({ isOpen, onClose }: AdvancedFiltersPanelPr
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: '100%', opacity: 0 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed right-6 top-6 bottom-6 w-1/3 min-w-[400px] max-w-[600px] glass-modal-panel z-50 flex flex-col overflow-hidden"
+            className="fixed right-6 top-6 bottom-6 w-1/3 min-w-[400px] max-w-[600px] glass-modal-panel z-9999 flex flex-col overflow-hidden"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-4">

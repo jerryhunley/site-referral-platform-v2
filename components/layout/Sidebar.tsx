@@ -40,7 +40,7 @@ export function Sidebar() {
       initial={false}
       animate={{ width: isCollapsed ? 88 : 268 }}
       transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-      className="h-[calc(100vh-24px)] my-3 ml-3 flex flex-col floating-sidebar"
+      className="h-[calc(100vh-24px)] my-3 ml-3 flex flex-col floating-sidebar z-30"
     >
       {/* Logo Section */}
       <div className="px-4 py-5">

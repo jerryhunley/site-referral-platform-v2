@@ -18,7 +18,7 @@ export function Header({ title = 'Dashboard' }: HeaderProps) {
   const { isPro, setShowUpgradeModal } = useProTier();
 
   return (
-    <header className="sticky top-0 z-40 px-4 pt-3 pb-6">
+    <header className="sticky top-0 z-30 px-4 pt-3 pb-6">
       <div className="floating-header h-14 px-5 flex items-center justify-between">
         {/* Left: Page Title */}
         <h1 className="text-lg font-semibold text-text-primary">{title}</h1>
