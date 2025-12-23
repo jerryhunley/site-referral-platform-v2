@@ -31,17 +31,27 @@ export default function ReferralsPage() {
 
   // Column sorting for list view header
   type SortKey = 'name' | 'study' | 'status' | 'submitted' | 'assignee';
-  type SortDirection = 'asc' | 'desc';
-  const [columnSort, setColumnSort] = useState<{ key: SortKey; direction: SortDirection }>({
-    key: 'submitted',
-    direction: 'desc',
+  type SortDirection = 'asc' | 'desc' | null;
+  const [columnSort, setColumnSort] = useState<{ key: SortKey | null; direction: SortDirection }>({
+    key: null,
+    direction: null,
   });
 
   const handleColumnSort = (key: SortKey) => {
-    setColumnSort((prev) => ({
-      key,
-      direction: prev.key === key && prev.direction === 'asc' ? 'desc' : 'asc',
-    }));
+    setColumnSort((prev) => {
+      if (prev.key !== key) {
+        // New column: start with ascending
+        return { key, direction: 'asc' };
+      }
+      // Same column: cycle through asc → desc → none
+      if (prev.direction === 'asc') {
+        return { key, direction: 'desc' };
+      }
+      if (prev.direction === 'desc') {
+        return { key: null, direction: null };
+      }
+      return { key, direction: 'asc' };
+    });
   };
 
   // Filter and sort referrals
@@ -83,24 +93,29 @@ export default function ReferralsPage() {
     // Sort - use column sorting in list view, otherwise use filter bar sort
     if (viewMode === 'list') {
       const { key, direction } = columnSort;
-      const multiplier = direction === 'asc' ? 1 : -1;
 
-      result.sort((a, b) => {
-        switch (key) {
-          case 'name':
-            return multiplier * `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`);
-          case 'study':
-            return multiplier * (a.studyId || '').localeCompare(b.studyId || '');
-          case 'status':
-            return multiplier * a.status.localeCompare(b.status);
-          case 'submitted':
-            return multiplier * (new Date(a.submittedAt).getTime() - new Date(b.submittedAt).getTime());
-          case 'assignee':
-            return multiplier * (a.assignedTo || 'zzz').localeCompare(b.assignedTo || 'zzz');
-          default:
-            return 0;
-        }
-      });
+      if (key && direction) {
+        const multiplier = direction === 'asc' ? 1 : -1;
+        result.sort((a, b) => {
+          switch (key) {
+            case 'name':
+              return multiplier * `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`);
+            case 'study':
+              return multiplier * (a.studyId || '').localeCompare(b.studyId || '');
+            case 'status':
+              return multiplier * a.status.localeCompare(b.status);
+            case 'submitted':
+              return multiplier * (new Date(a.submittedAt).getTime() - new Date(b.submittedAt).getTime());
+            case 'assignee':
+              return multiplier * (a.assignedTo || 'zzz').localeCompare(b.assignedTo || 'zzz');
+            default:
+              return 0;
+          }
+        });
+      } else {
+        // Default: newest first when no column sort active
+        result.sort((a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime());
+      }
     } else {
       // Grid view uses filter bar sorting
       switch (filters.sortBy) {

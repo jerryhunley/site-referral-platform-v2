@@ -158,8 +158,11 @@ export function ReferralCard({
           </div>
         )}
 
+        {/* Dotted divider */}
+        <div className="mt-4 mb-4 mx-1 dotted-divider" />
+
         {/* Actions */}
-        <div className="mt-4 pt-4 border-t card-divider flex items-center justify-between">
+        <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <motion.button
             onClick={(e) => {
@@ -362,10 +365,10 @@ export function ReferralCard({
 
 // Sortable column header
 type SortKey = 'name' | 'study' | 'status' | 'submitted' | 'assignee';
-type SortDirection = 'asc' | 'desc';
+type SortDirection = 'asc' | 'desc' | null;
 
 interface ReferralListHeaderProps {
-  sortBy?: SortKey;
+  sortBy?: SortKey | null;
   sortDirection?: SortDirection;
   onSort?: (key: SortKey) => void;
   isAllSelected?: boolean;
@@ -375,7 +378,7 @@ interface ReferralListHeaderProps {
 
 function SortArrow({ active, direction }: { active: boolean; direction: SortDirection }) {
   return (
-    <span className={`ml-1 inline-flex flex-col text-[8px] leading-none ${active ? 'text-mint' : 'text-text-muted/50'}`}>
+    <span className={`ml-1 inline-flex flex-col text-[8px] leading-none ${active && direction ? 'text-mint' : 'text-text-muted/50'}`}>
       <ChevronUp className={`w-3 h-3 -mb-1 ${active && direction === 'asc' ? 'text-mint' : ''}`} />
       <ChevronDown className={`w-3 h-3 ${active && direction === 'desc' ? 'text-mint' : ''}`} />
     </span>

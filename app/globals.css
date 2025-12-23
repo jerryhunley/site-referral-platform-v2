@@ -1373,6 +1373,19 @@ textarea:focus {
   border-color: rgba(255, 255, 255, 0.25);
 }
 
+/* Dotted divider pattern */
+.dotted-divider {
+  height: 1px;
+  border: none;
+  background-image: radial-gradient(circle, rgb(156 163 175 / 0.5) 1px, transparent 1px);
+  background-size: 8px 1px;
+  background-repeat: repeat-x;
+}
+
+.dark .dotted-divider {
+  background-image: radial-gradient(circle, rgb(255 255 255 / 0.25) 1px, transparent 1px);
+}
+
 /* ========================================
    Reduced Motion Support (Accessibility)
    ======================================== */

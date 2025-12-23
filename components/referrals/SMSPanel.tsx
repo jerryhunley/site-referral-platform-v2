@@ -126,12 +126,13 @@ export function SMSPanel({ messages, onSend, referralName }: SMSPanelProps) {
   return (
     <GlassCard padding="none" animate={false} className="flex flex-col h-[500px]">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-glass-border">
+      <div className="flex items-center justify-between px-4 py-3">
         <h3 className="font-semibold text-text-primary">Messages</h3>
         <span className="text-xs text-text-muted">
           {messages.length} message{messages.length !== 1 ? 's' : ''}
         </span>
       </div>
+      <div className="mx-4 dotted-divider" />
 
       {/* Messages List */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
@@ -203,7 +204,8 @@ export function SMSPanel({ messages, onSend, referralName }: SMSPanelProps) {
       </div>
 
       {/* Input Area */}
-      <div className="border-t border-glass-border p-4">
+      <div className="mx-4 dotted-divider" />
+      <div className="p-4">
         {/* Templates Dropdown */}
         <AnimatePresence>
           {showTemplates && (
