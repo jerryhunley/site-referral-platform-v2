@@ -394,8 +394,9 @@ export function ReferralListHeader({
   const columnClass = "flex items-center gap-0.5 cursor-pointer hover:text-text-primary transition-colors select-none";
 
   return (
-    <div className="flex items-center gap-4 px-5 py-3 text-[11px] font-semibold text-text-muted uppercase tracking-wider border-b border-white/30 dark:border-white/10">
-      {/* Bulk Select Checkbox */}
+    <div className="relative">
+      <div className="flex items-center gap-4 px-5 py-3 text-[11px] font-semibold text-text-muted uppercase tracking-wider">
+        {/* Bulk Select Checkbox */}
       <div className="w-5" onClick={(e) => e.stopPropagation()}>
         <Checkbox
           checked={isAllSelected}
@@ -452,5 +453,17 @@ export function ReferralListHeader({
 
       <div className="w-24 text-right">Actions</div>
     </div>
+    {/* Inset dotted divider */}
+    <div className="mx-5 py-2">
+      <div
+        className="h-px"
+        style={{
+          backgroundImage: 'radial-gradient(circle, rgb(156 163 175 / 0.5) 1px, transparent 1px)',
+          backgroundSize: '8px 1px',
+          backgroundRepeat: 'repeat-x',
+        }}
+      />
+    </div>
+  </div>
   );
 }

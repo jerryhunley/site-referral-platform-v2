@@ -569,7 +569,7 @@ export function FilterBar({
             <div className="flex items-center gap-0.5 p-0.5 bg-white/80 dark:bg-white/20 rounded-full border border-white/90 dark:border-white/25">
               <button
                 onClick={() => onViewModeChange('grid')}
-                className={`p-1.5 rounded-full transition-colors ${
+                className={`p-1.5 rounded-full transition-colors focus:outline-none ${
                   viewMode === 'grid'
                     ? 'bg-mint text-white'
                     : 'text-text-muted hover:text-text-primary'
@@ -579,7 +579,7 @@ export function FilterBar({
               </button>
               <button
                 onClick={() => onViewModeChange('list')}
-                className={`p-1.5 rounded-full transition-colors ${
+                className={`p-1.5 rounded-full transition-colors focus:outline-none ${
                   viewMode === 'list'
                     ? 'bg-mint text-white'
                     : 'text-text-muted hover:text-text-primary'
@@ -769,7 +769,7 @@ export function FilterBar({
         <div className="flex items-center gap-0.5 p-0.5 bg-white/30 dark:bg-white/10 backdrop-blur-sm rounded-xl">
           <button
             onClick={() => onViewModeChange('grid')}
-            className={`p-1.5 rounded-lg transition-colors ${
+            className={`p-1.5 rounded-lg transition-colors focus:outline-none ${
               viewMode === 'grid'
                 ? 'bg-mint/80 text-white backdrop-blur-sm shadow-sm'
                 : 'text-text-muted glass-hover'
@@ -779,7 +779,7 @@ export function FilterBar({
           </button>
           <button
             onClick={() => onViewModeChange('list')}
-            className={`p-1.5 rounded-lg transition-colors ${
+            className={`p-1.5 rounded-lg transition-colors focus:outline-none ${
               viewMode === 'list'
                 ? 'bg-mint/80 text-white backdrop-blur-sm shadow-sm'
                 : 'text-text-muted glass-hover'

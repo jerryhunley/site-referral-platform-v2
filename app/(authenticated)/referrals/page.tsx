@@ -297,62 +297,48 @@ export default function ReferralsPage() {
         </AnimatePresence>
 
         {/* List/Grid Content */}
-        {filteredReferrals.length === 0 ? (
-          <div className="p-8">
-            <EmptyState
-              type="no-results"
-              title="No referrals found"
-              description="Try adjusting your filters or add a new referral."
-              action={
-                <Button
-                  variant="secondary"
-                  onClick={() =>
-                    setFilters({
-                      search: '',
-                      statuses: [],
-                      studyIds: [],
-                      assignedTo: [],
-                      sortBy: 'newest',
-                    })
-                  }
-                >
-                  Clear Filters
-                </Button>
-              }
-            />
-          </div>
-        ) : viewMode === 'grid' ? (
-          <div className="p-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-              {filteredReferrals.map((referral, index) => (
-                <ReferralCard
-                  key={referral.id}
-                  referral={referral}
-                  isSelected={selectedIds.has(referral.id)}
-                  onSelect={handleSelect}
-                  onView={handleView}
-                  onCall={handleCall}
-                  onSMS={handleSMS}
-                  onStatusChange={handleStatusChange}
-                  viewMode="grid"
-                  delay={index * 0.02}
-                />
-              ))}
-            </div>
-          </div>
-        ) : (
-          <div className="px-4 pb-4">
-            {/* Inner card container for list view */}
-            <div className="glass-card overflow-hidden p-3">
-              <ReferralListHeader
-                sortBy={columnSort.key}
-                sortDirection={columnSort.direction}
-                onSort={handleColumnSort}
-                isAllSelected={selectedIds.size === filteredReferrals.length && filteredReferrals.length > 0}
-                isPartialSelected={selectedIds.size > 0 && selectedIds.size < filteredReferrals.length}
-                onSelectAll={handleSelectAll}
+        <AnimatePresence mode="wait">
+          {filteredReferrals.length === 0 ? (
+            <motion.div
+              key="empty"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              className="p-8"
+            >
+              <EmptyState
+                type="no-results"
+                title="No referrals found"
+                description="Try adjusting your filters or add a new referral."
+                action={
+                  <Button
+                    variant="secondary"
+                    onClick={() =>
+                      setFilters({
+                        search: '',
+                        statuses: [],
+                        studyIds: [],
+                        assignedTo: [],
+                        sortBy: 'newest',
+                      })
+                    }
+                  >
+                    Clear Filters
+                  </Button>
+                }
               />
-              <div>
+            </motion.div>
+          ) : viewMode === 'grid' ? (
+            <motion.div
+              key="grid"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              className="p-4"
+            >
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                 {filteredReferrals.map((referral, index) => (
                   <ReferralCard
                     key={referral.id}
@@ -363,14 +349,51 @@ export default function ReferralsPage() {
                     onCall={handleCall}
                     onSMS={handleSMS}
                     onStatusChange={handleStatusChange}
-                    viewMode="list"
-                  delay={index * 0.01}
-                />
-              ))}
+                    viewMode="grid"
+                    delay={index * 0.02}
+                  />
+                ))}
               </div>
-            </div>
-          </div>
-        )}
+            </motion.div>
+          ) : (
+            <motion.div
+              key="list"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              className="px-4 pb-4"
+            >
+              {/* Inner card container for list view */}
+              <div className="glass-card overflow-hidden p-3 outline-none">
+                <ReferralListHeader
+                  sortBy={columnSort.key}
+                  sortDirection={columnSort.direction}
+                  onSort={handleColumnSort}
+                  isAllSelected={selectedIds.size === filteredReferrals.length && filteredReferrals.length > 0}
+                  isPartialSelected={selectedIds.size > 0 && selectedIds.size < filteredReferrals.length}
+                  onSelectAll={handleSelectAll}
+                />
+                <div>
+                  {filteredReferrals.map((referral, index) => (
+                    <ReferralCard
+                      key={referral.id}
+                      referral={referral}
+                      isSelected={selectedIds.has(referral.id)}
+                      onSelect={handleSelect}
+                      onView={handleView}
+                      onCall={handleCall}
+                      onSMS={handleSMS}
+                      onStatusChange={handleStatusChange}
+                      viewMode="list"
+                      delay={index * 0.01}
+                    />
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Results Count Footer */}
         {filteredReferrals.length > 0 && (
