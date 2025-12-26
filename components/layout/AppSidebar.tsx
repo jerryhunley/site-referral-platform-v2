@@ -15,6 +15,7 @@ import {
   ChevronRight,
   FileEdit,
   CalendarDays,
+  MessageSquare,
 } from 'lucide-react';
 import { Logo } from '@/components/ui';
 import { useAuth } from '@/lib/context/AuthContext';
@@ -37,6 +38,7 @@ import { cn } from '@/lib/utils';
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/referrals', label: 'Referrals', icon: Users },
+  { href: '/messages', label: 'Messages', icon: MessageSquare },
   { href: '/analytics', label: 'Analytics', icon: BarChart3, isPro: true },
   { href: '/working-session', label: 'Working Session', icon: Phone },
   { href: '/appointments', label: 'Appointments', icon: CalendarDays },

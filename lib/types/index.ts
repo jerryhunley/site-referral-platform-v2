@@ -124,6 +124,29 @@ export interface ActivityItem {
   userId: string;
 }
 
+export interface Conversation {
+  id: string;
+  referralId: string;
+  referralName: string;
+  referralPhone: string;
+  studyId: string;
+  studyName: string;
+  messages: Message[];
+  lastMessageAt: string;
+  lastMessagePreview: string;
+  lastMessageDirection: 'inbound' | 'outbound';
+  unreadCount: number;
+  isArchived: boolean;
+  isUrgent: boolean;
+  snoozeUntil: string | null;
+  assignedTo: string | null;
+}
+
+export interface MessagesFilterState {
+  search: string;
+  view: 'all' | 'unread' | 'archived';
+}
+
 // Status configuration for badges
 export interface StatusConfig {
   label: string;
