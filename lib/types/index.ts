@@ -145,6 +145,9 @@ export interface Conversation {
 export interface MessagesFilterState {
   search: string;
   view: 'all' | 'unread' | 'archived';
+  studyId: string | null;
+  sortBy: 'newest' | 'oldest';
+  urgentOnly: boolean;
 }
 
 // Status configuration for badges

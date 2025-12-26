@@ -104,7 +104,7 @@ export function MessageInput({ onSend, disabled = false }: MessageInputProps) {
           onClick={() => setShowTemplates(!showTemplates)}
           className={`p-2.5 rounded-xl transition-colors shrink-0 ${
             showTemplates
-              ? 'bg-[#007AFF]/20 text-[#007AFF]'
+              ? 'bg-mint/20 text-mint'
               : 'bg-white/40 dark:bg-white/10 backdrop-blur-sm text-text-secondary hover:text-text-primary hover:bg-white/50 dark:hover:bg-white/15'
           }`}
         >
@@ -133,7 +133,7 @@ export function MessageInput({ onSend, disabled = false }: MessageInputProps) {
               text-text-primary text-sm
               placeholder:text-text-muted
               resize-none
-              focus:outline-none focus:ring-2 focus:ring-[#007AFF]/50 focus:border-[#007AFF]
+              focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint
               disabled:opacity-50 disabled:cursor-not-allowed
             "
           />
@@ -149,7 +149,7 @@ export function MessageInput({ onSend, disabled = false }: MessageInputProps) {
         <button
           onClick={handleSend}
           disabled={!newMessage.trim() || disabled}
-          className="p-2.5 shrink-0 rounded-xl bg-[#007AFF] hover:bg-[#0066DD] text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="p-2.5 shrink-0 rounded-xl bg-mint hover:bg-mint/90 text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <Send className="w-5 h-5" />
         </button>

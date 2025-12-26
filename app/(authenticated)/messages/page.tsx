@@ -24,6 +24,9 @@ export default function MessagesPage() {
   const [filters, setFilters] = useState<MessagesFilterState>({
     search: '',
     view: 'all',
+    studyId: null,
+    sortBy: 'newest',
+    urgentOnly: false,
   });
   const [showConversation, setShowConversation] = useState(false);
 
@@ -53,6 +56,23 @@ export default function MessagesPage() {
           c.studyName.toLowerCase().includes(searchLower)
       );
     }
+
+    // Filter by study
+    if (filters.studyId) {
+      filtered = filtered.filter((c) => c.studyId === filters.studyId);
+    }
+
+    // Filter by urgent only
+    if (filters.urgentOnly) {
+      filtered = filtered.filter((c) => c.isUrgent);
+    }
+
+    // Sort by date
+    filtered = [...filtered].sort((a, b) => {
+      const dateA = new Date(a.lastMessageAt).getTime();
+      const dateB = new Date(b.lastMessageAt).getTime();
+      return filters.sortBy === 'newest' ? dateB - dateA : dateA - dateB;
+    });
 
     return filtered;
   }, [allConversations, filters]);
