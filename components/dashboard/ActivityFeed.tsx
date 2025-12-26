@@ -144,20 +144,18 @@ export function ActivityFeed({
                     className="flex items-start gap-3 p-3 rounded-xl glass-hover group cursor-pointer"
                   >
                     {/* User Avatar */}
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-bg-tertiary flex items-center justify-center text-xs font-medium text-text-secondary">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-vista-blue/15 flex items-center justify-center text-xs font-semibold text-vista-blue">
                       {getUserInitials(activity.userId)}
                     </div>
 
                     {/* Content */}
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium text-text-primary text-sm">
-                          {getUserName(activity.userId)}
-                        </span>
-                        <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-xs ${config.bgColor} ${config.color}`}>
-                          <Icon className="w-3 h-3" />
-                          {config.label}
-                        </span>
+                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs ${config.bgColor} ${config.color} mb-1`}>
+                        <Icon className="w-3 h-3" />
+                        {config.label}
+                      </span>
+                      <div className="font-medium text-text-primary text-sm">
+                        {getUserName(activity.userId)}
                       </div>
                       <p className="text-sm text-text-secondary mt-0.5 truncate">
                         {activity.description}
