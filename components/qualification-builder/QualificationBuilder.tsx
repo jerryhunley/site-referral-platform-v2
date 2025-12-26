@@ -53,13 +53,13 @@ export function QualificationBuilder() {
             onClick={handleSave}
             disabled={!hasUnsavedChanges}
             className={cn(
-              'flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all',
+              'flex items-center gap-2 px-5 py-1.5 text-xs font-medium rounded-full shadow-sm hover:shadow-md hover:scale-105 active:scale-95 transition-all',
               hasUnsavedChanges
-                ? 'bg-[linear-gradient(135deg,#36A67E_0%,#2E9B73_50%,#1F7A58_100%)] text-white shadow-md shadow-mint/25 hover:shadow-lg'
-                : 'bg-white/30 dark:bg-white/10 text-text-muted cursor-not-allowed'
+                ? 'text-white bg-[linear-gradient(135deg,#36A67E_0%,#2E9B73_50%,#1F7A58_100%)] hover:bg-[linear-gradient(135deg,#4AC498_0%,#36A67E_50%,#2E9B73_100%)]'
+                : 'text-text-muted bg-white/30 dark:bg-white/10 cursor-not-allowed hover:scale-100 active:scale-100'
             )}
           >
-            <Save className="w-4 h-4" />
+            <Save className="w-3.5 h-3.5" />
             Save Situations
           </button>
         )}
@@ -95,14 +95,9 @@ export function QualificationBuilder() {
             <div className="pt-4">
               <button
                 onClick={addSituation}
-                className={cn(
-                  'w-full flex items-center justify-center gap-2 px-4 py-3',
-                  'glass-button rounded-2xl',
-                  'text-text-secondary hover:text-mint',
-                  'transition-colors'
-                )}
+                className="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-xs font-medium text-text-primary glass-button rounded-full hover:scale-105 active:scale-95 transition-all"
               >
-                <Plus className="w-5 h-5" />
+                <Plus className="w-3.5 h-3.5" />
                 Add Situation
               </button>
             </div>
