@@ -112,44 +112,47 @@ export function FormTestPanel() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
+            className="fixed inset-0 bg-black/30 dark:bg-black/50 backdrop-blur-sm z-9998"
             onClick={handleClose}
           />
 
           {/* Panel */}
           <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
+            initial={{ x: '100%', opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: '100%', opacity: 0 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed right-0 top-0 bottom-0 w-[480px] bg-bg-secondary border-l border-glass-border shadow-xl z-50 flex flex-col"
+            className="fixed right-6 top-6 bottom-6 w-1/2 glass-modal-panel z-9999 flex flex-col overflow-hidden"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-glass-border">
+            <div className="flex items-center justify-between px-6 py-4">
               <div>
                 <h2 className="text-lg font-semibold text-text-primary">
                   Test Form
                 </h2>
-                <p className="text-sm text-text-muted">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
                   Preview how your form works
                 </p>
               </div>
               <div className="flex items-center gap-2">
                 <button
                   onClick={handleReset}
-                  className="p-2 rounded-lg hover:bg-bg-tertiary text-text-muted hover:text-text-primary transition-colors"
+                  className="p-2 rounded-full text-text-secondary hover:text-text-primary glass-button hover:scale-105 active:scale-95 transition-all"
                   title="Reset form"
                 >
-                  <RotateCcw className="w-5 h-5" />
+                  <RotateCcw className="w-4 h-4" />
                 </button>
                 <button
                   onClick={handleClose}
-                  className="p-2 rounded-lg hover:bg-bg-tertiary text-text-muted hover:text-text-primary transition-colors"
+                  className="p-2 rounded-full text-text-secondary hover:text-text-primary glass-button hover:scale-105 active:scale-95 transition-all"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-4 h-4" />
                 </button>
               </div>
             </div>
+
+            {/* Header divider */}
+            <div className="mx-6 dotted-divider" />
 
             {/* Content */}
             <div className="flex-1 overflow-y-auto p-6">

@@ -30,11 +30,11 @@ import Link from 'next/link';
 import { useFormBuilder } from '@/lib/context/FormBuilderContext';
 import { Button } from '@/components/ui/Button';
 import { GlassCard } from '@/components/ui/GlassCard';
-import { FieldPalette } from './FieldPalette';
 import { BuilderCanvas } from './BuilderCanvas';
 import { FieldConfigPanel } from './FieldConfigPanel';
 import { FormTestPanel } from './FormTestPanel';
 import { FormSettingsPanel } from './FormSettingsPanel';
+import { FieldPaletteModal } from './FieldPaletteModal';
 import { type FieldType, FIELD_REGISTRY } from '@/lib/types/form-builder';
 
 export function FormBuilder() {
@@ -51,6 +51,8 @@ export function FormBuilder() {
     toggleSettingsPanel,
     markSaved,
     updateFormName,
+    openFieldPaletteModal,
+    closeFieldPaletteModal,
   } = useFormBuilder();
 
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -305,32 +307,17 @@ export function FormBuilder() {
           </div>
         </motion.div>
 
-        {/* Main Content - 2 Column Layout */}
-        <div className="flex-1 flex gap-6 min-h-0">
-          {/* Field Palette */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.1 }}
-            className="w-72 shrink-0"
-          >
-            <GlassCard padding="none" className="h-full overflow-hidden">
-              <FieldPalette />
-            </GlassCard>
-          </motion.div>
-
-          {/* Builder Canvas (serves as preview) */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="flex-1 min-w-0"
-          >
-            <GlassCard padding="none" className="h-full overflow-hidden">
-              <BuilderCanvas />
-            </GlassCard>
-          </motion.div>
-        </div>
+        {/* Main Content - Full Width Canvas */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="flex-1 min-h-0"
+        >
+          <GlassCard padding="none" className="h-full overflow-hidden">
+            <BuilderCanvas />
+          </GlassCard>
+        </motion.div>
 
         {/* Drag Overlay */}
         <DragOverlay>
@@ -348,6 +335,20 @@ export function FormBuilder() {
       <FieldConfigPanel />
       <FormTestPanel />
       <FormSettingsPanel />
+
+      {/* Field Palette Modal */}
+      <FieldPaletteModal
+        isOpen={state.isFieldPaletteModalOpen}
+        onClose={closeFieldPaletteModal}
+        onSelectField={(fieldType) => {
+          addField(
+            fieldType,
+            state.selectedPageIndex,
+            state.fieldInsertPosition?.afterFieldId ?? undefined
+          );
+          closeFieldPaletteModal();
+        }}
+      />
     </DndContext>
   );
 }

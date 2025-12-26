@@ -81,7 +81,7 @@ export function Modal({
           >
             {/* Header */}
             {(title || showCloseButton) && (
-              <div className="relative z-10 flex items-center justify-between px-6 py-4 border-b border-glass-border">
+              <div className="relative z-10 flex items-center justify-between px-6 py-4">
                 {title && (
                   <h2 className="text-xl font-semibold text-text-primary">
                     {title}
@@ -90,7 +90,7 @@ export function Modal({
                 {showCloseButton && (
                   <motion.button
                     onClick={onClose}
-                    className="p-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-bg-tertiary transition-colors"
+                    className="p-2 rounded-full text-text-secondary hover:text-text-primary glass-button transition-all"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     aria-label="Close modal"
@@ -99,6 +99,11 @@ export function Modal({
                   </motion.button>
                 )}
               </div>
+            )}
+
+            {/* Divider */}
+            {(title || showCloseButton) && (
+              <div className="mx-6 dotted-divider" />
             )}
 
             {/* Body */}

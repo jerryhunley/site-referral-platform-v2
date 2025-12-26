@@ -65,14 +65,15 @@ const fieldComponents: Record<string, FieldComponent> = {
 };
 
 export function FieldRenderer(props: FieldRendererProps) {
-  const { field, styling, formValues = {} } = props;
+  const { field, styling, formValues = {}, disabled } = props;
 
-  // Check conditional visibility
-  const isVisible = shouldShowField(field, formValues);
-
-  // If field has conditions and is not visible, don't render
-  if (!isVisible) {
-    return null;
+  // Skip conditional visibility check in builder mode (when disabled is true)
+  // Only evaluate conditions when in test/preview mode with actual form values
+  if (!disabled) {
+    const isVisible = shouldShowField(field, formValues);
+    if (!isVisible) {
+      return null;
+    }
   }
 
   const FieldComponent = fieldComponents[field.type];

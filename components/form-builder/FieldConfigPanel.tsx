@@ -2,12 +2,97 @@
 
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Plus, Trash2, GripVertical, Eye } from 'lucide-react';
+import { X, Plus, Trash2, GripVertical, Eye, ChevronDown, Paintbrush } from 'lucide-react';
 import { useFormBuilder } from '@/lib/context/FormBuilderContext';
-import { FIELD_REGISTRY, type FieldOption, type FieldWidth, type ConditionalGroup } from '@/lib/types/form-builder';
+import { FIELD_REGISTRY, type FieldOption, type FieldWidth, type ConditionalGroup, type SingleChoiceDisplayStyle, type AdvancedFieldStyles } from '@/lib/types/form-builder';
 import { cn } from '@/lib/utils';
 import { ConditionBuilder } from './ConditionBuilder';
 import { createConditionGroup } from '@/lib/utils/condition-evaluator';
+import { cssObjectToString, cssStringToObject, getStyleKeysForFieldType, getStyleKeyDisplayName } from '@/lib/utils/css-parser';
+
+// Collapsible Section Component
+interface CollapsibleSectionProps {
+  title: string;
+  icon?: React.ReactNode;
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+}
+
+function CollapsibleSection({ title, icon, children, defaultOpen = false }: CollapsibleSectionProps) {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
+
+  return (
+    <div className="pt-4">
+      <div className="mb-4 dotted-divider" />
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex items-center gap-2 text-left group"
+      >
+        {icon}
+        <h3 className="text-sm font-semibold text-text-primary flex-1">{title}</h3>
+        <ChevronDown
+          className={cn(
+            'w-4 h-4 text-text-muted transition-transform duration-200',
+            isOpen && 'rotate-180'
+          )}
+        />
+      </button>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden"
+          >
+            <div className="pt-3 space-y-4">{children}</div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+// Style Input Component
+interface StyleInputProps {
+  label: string;
+  value?: React.CSSProperties;
+  onChange: (styles: React.CSSProperties) => void;
+}
+
+function StyleInput({ label, value, onChange }: StyleInputProps) {
+  const [cssText, setCssText] = useState(() => value ? cssObjectToString(value) : '');
+
+  useEffect(() => {
+    setCssText(value ? cssObjectToString(value) : '');
+  }, [value]);
+
+  const handleBlur = () => {
+    try {
+      const parsed = cssStringToObject(cssText);
+      onChange(parsed);
+    } catch {
+      // Invalid CSS, keep previous value
+    }
+  };
+
+  return (
+    <div>
+      <label className="block text-xs font-medium text-text-secondary mb-1">
+        {label}
+      </label>
+      <textarea
+        value={cssText}
+        onChange={(e) => setCssText(e.target.value)}
+        onBlur={handleBlur}
+        rows={2}
+        className="w-full px-3 py-2 text-xs font-mono rounded-lg bg-white/40 dark:bg-white/10 backdrop-blur-sm border border-white/50 dark:border-white/10 text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint transition-colors resize-none"
+        placeholder="color: #333; padding: 8px;"
+      />
+    </div>
+  );
+}
 
 export function FieldConfigPanel() {
   const { state, updateField, selectField } = useFormBuilder();
@@ -128,6 +213,27 @@ export function FieldConfigPanel() {
     }
   };
 
+  const handleDisplayStyleChange = (displayStyle: SingleChoiceDisplayStyle) => {
+    if (selectedFieldId) {
+      updateField(selectedFieldId, { displayStyle });
+    }
+  };
+
+  const handleAdvancedStyleChange = (styleKey: keyof AdvancedFieldStyles, styles: React.CSSProperties) => {
+    if (selectedFieldId) {
+      const currentStyles = field?.advancedStyles || {};
+      updateField(selectedFieldId, {
+        advancedStyles: {
+          ...currentStyles,
+          [styleKey]: styles,
+        },
+      });
+    }
+  };
+
+  // Get relevant style keys for this field type
+  const styleKeys = field ? getStyleKeysForFieldType(field.type) : [];
+
   return (
     <AnimatePresence>
       {isConfigPanelOpen && field && (
@@ -137,7 +243,7 @@ export function FieldConfigPanel() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
+            className="fixed inset-0 bg-black/30 dark:bg-black/50 backdrop-blur-sm z-9998"
             onClick={handleClose}
           />
 
@@ -147,23 +253,26 @@ export function FieldConfigPanel() {
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: '100%', opacity: 0 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed right-6 top-24 bottom-6 w-96 glass-panel rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden"
+            className="fixed right-6 top-6 bottom-6 w-1/3 min-w-[400px] max-w-[600px] glass-modal-panel z-9999 flex flex-col overflow-hidden"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-glass-border">
+            <div className="flex items-center justify-between px-6 py-4">
               <div>
                 <h2 className="text-lg font-semibold text-text-primary">
                   Configure Field
                 </h2>
-                <p className="text-sm text-text-muted">{metadata?.label}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">{metadata?.label}</p>
               </div>
               <button
                 onClick={handleClose}
-                className="p-2 rounded-lg glass-hover text-text-muted hover:text-text-primary transition-colors"
+                className="p-2 rounded-full text-text-secondary hover:text-text-primary glass-button hover:scale-105 active:scale-95 transition-all"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
+
+            {/* Header divider */}
+            <div className="mx-6 dotted-divider" />
 
             {/* Content */}
             <div className="flex-1 overflow-y-auto p-6 space-y-6">
@@ -280,7 +389,7 @@ export function FieldConfigPanel() {
                         key={width}
                         onClick={() => handleWidthChange(width)}
                         className={cn(
-                          'flex-1 py-2 rounded-lg text-sm font-medium transition-colors',
+                          'flex-1 py-2 rounded-full text-sm font-medium transition-colors',
                           field.width === width
                             ? 'bg-mint text-white'
                             : 'bg-white/40 dark:bg-white/10 text-text-secondary hover:text-text-primary hover:bg-white/50 dark:hover:bg-white/15'
@@ -312,7 +421,7 @@ export function FieldConfigPanel() {
                     {localOptions.map((option, index) => (
                       <div
                         key={option.id}
-                        className="flex items-center gap-2 p-2 rounded-lg bg-white/40 dark:bg-white/10 backdrop-blur-sm border border-white/50 dark:border-white/10"
+                        className="flex items-center gap-2 px-3 py-2 rounded-full bg-white/40 dark:bg-white/10 backdrop-blur-sm border border-white/50 dark:border-white/10"
                       >
                         <GripVertical className="w-4 h-4 text-text-muted cursor-grab" />
                         <input
@@ -337,9 +446,56 @@ export function FieldConfigPanel() {
                 </div>
               )}
 
+              {/* Display Style (for single choice only) */}
+              {field.type === 'single_choice' && (
+                <div>
+                  <label className="block text-sm font-medium text-text-primary mb-2">
+                    Display Style
+                  </label>
+                  <div className="flex gap-2">
+                    {(['radio', 'dropdown', 'button'] as SingleChoiceDisplayStyle[]).map((style) => (
+                      <button
+                        key={style}
+                        onClick={() => handleDisplayStyleChange(style)}
+                        className={cn(
+                          'flex-1 py-2 rounded-full text-sm font-medium transition-colors capitalize',
+                          (field.displayStyle || 'radio') === style
+                            ? 'bg-mint text-white'
+                            : 'bg-white/40 dark:bg-white/10 text-text-secondary hover:text-text-primary hover:bg-white/50 dark:hover:bg-white/15'
+                        )}
+                      >
+                        {style === 'radio' ? 'Radio' : style === 'dropdown' ? 'Dropdown' : 'Buttons'}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Advanced Styles */}
+              {styleKeys.length > 0 && (
+                <CollapsibleSection
+                  title="Advanced Styles"
+                  icon={<Paintbrush className="w-4 h-4 text-vista-blue" />}
+                  defaultOpen={false}
+                >
+                  <p className="text-xs text-text-muted mb-3">
+                    Enter CSS properties to customize this field&apos;s appearance.
+                  </p>
+                  {styleKeys.map((key) => (
+                    <StyleInput
+                      key={key}
+                      label={getStyleKeyDisplayName(key)}
+                      value={field.advancedStyles?.[key]}
+                      onChange={(styles) => handleAdvancedStyleChange(key, styles)}
+                    />
+                  ))}
+                </CollapsibleSection>
+              )}
+
               {/* Conditional Visibility */}
               {!isLayoutElement && (
-                <div className="pt-4 border-t border-glass-border">
+                <div className="pt-4">
+                  <div className="mb-4 dotted-divider" />
                   <div className="flex items-center gap-2 mb-3">
                     <Eye className="w-4 h-4 text-mint" />
                     <h3 className="text-sm font-semibold text-text-primary">

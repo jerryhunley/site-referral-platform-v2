@@ -108,6 +108,24 @@ function formBuilderReducer(
       const page = state.form.pages[pageIndex];
       if (!page) return state;
 
+      // Check if this is a conditional field addition
+      const conditionalOnFieldId = state.fieldInsertPosition?.conditionalOnFieldId;
+      if (conditionalOnFieldId) {
+        // Pre-configure the conditional visibility
+        newField.conditionalVisibility = {
+          id: `cond-group-${Date.now()}`,
+          logic: 'and',
+          conditions: [
+            {
+              id: `cond-${Date.now()}`,
+              sourceFieldId: conditionalOnFieldId,
+              operator: 'is_not_empty',
+            },
+          ],
+          nestedGroups: [],
+        };
+      }
+
       let newFieldIds: string[];
       if (afterFieldId) {
         const insertIndex = page.fieldIds.indexOf(afterFieldId);
@@ -142,7 +160,8 @@ function formBuilderReducer(
           updatedAt: new Date().toISOString(),
         },
         selectedFieldId: newField.id,
-        // Config panel stays closed - user must click Edit explicitly
+        // Open config panel if this is a conditional field, otherwise stay closed
+        isConfigPanelOpen: !!conditionalOnFieldId,
         hasUnsavedChanges: true,
         undoStack: saveToUndoStack(state.form),
         redoStack: [],
@@ -548,6 +567,20 @@ function formBuilderReducer(
     case 'RESET_FORM':
       return createInitialState();
 
+    case 'OPEN_FIELD_PALETTE_MODAL':
+      return {
+        ...state,
+        isFieldPaletteModalOpen: true,
+        fieldInsertPosition: action.payload ?? { afterFieldId: null },
+      };
+
+    case 'CLOSE_FIELD_PALETTE_MODAL':
+      return {
+        ...state,
+        isFieldPaletteModalOpen: false,
+        fieldInsertPosition: undefined,
+      };
+
     default:
       return state;
   }
@@ -597,6 +630,11 @@ interface FormBuilderContextValue {
   toggleConfigPanel: () => void;
   toggleSettingsPanel: () => void;
   closeAllPanels: () => void;
+
+  // Field palette modal
+  openFieldPaletteModal: (afterFieldId?: string | null) => void;
+  openConditionalFieldPaletteModal: (fieldId: string) => void;
+  closeFieldPaletteModal: () => void;
 
   // Undo/redo
   undo: () => void;
@@ -735,6 +773,23 @@ export function FormBuilderProvider({ children, initialForm }: FormBuilderProvid
     dispatch({ type: 'CLOSE_ALL_PANELS' });
   }, []);
 
+  // Field palette modal
+  const openFieldPaletteModal = useCallback((afterFieldId?: string | null) => {
+    dispatch({ type: 'OPEN_FIELD_PALETTE_MODAL', payload: { afterFieldId: afterFieldId ?? null } });
+  }, []);
+
+  const openConditionalFieldPaletteModal = useCallback((fieldId: string) => {
+    // Open the modal with the field to insert after AND the field to make conditional on
+    dispatch({
+      type: 'OPEN_FIELD_PALETTE_MODAL',
+      payload: { afterFieldId: fieldId, conditionalOnFieldId: fieldId },
+    });
+  }, []);
+
+  const closeFieldPaletteModal = useCallback(() => {
+    dispatch({ type: 'CLOSE_FIELD_PALETTE_MODAL' });
+  }, []);
+
   // Undo/redo
   const undo = useCallback(() => {
     dispatch({ type: 'UNDO' });
@@ -783,6 +838,9 @@ export function FormBuilderProvider({ children, initialForm }: FormBuilderProvid
         toggleConfigPanel,
         toggleSettingsPanel,
         closeAllPanels,
+        openFieldPaletteModal,
+        openConditionalFieldPaletteModal,
+        closeFieldPaletteModal,
         undo,
         redo,
         canUndo: state.undoStack.length > 0,

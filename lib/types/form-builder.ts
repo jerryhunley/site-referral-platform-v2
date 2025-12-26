@@ -2,6 +2,8 @@
 // Form Builder - TypeScript Types
 // ========================================
 
+import type React from 'react';
+
 // Field type definitions
 export type PredefinedFieldType =
   | 'best_time_to_call'
@@ -50,6 +52,23 @@ export type LabelPosition = 'top' | 'inline';
 
 // Progress bar styles
 export type ProgressBarStyle = 'steps' | 'bar' | 'dots';
+
+// Single choice display styles
+export type SingleChoiceDisplayStyle = 'radio' | 'dropdown' | 'button';
+
+// Advanced field styles for custom styling
+export interface AdvancedFieldStyles {
+  label?: React.CSSProperties;
+  input?: React.CSSProperties;
+  checkbox?: React.CSSProperties;
+  radioGroup?: React.CSSProperties;
+  button?: React.CSSProperties;
+  inputAddon?: React.CSSProperties;
+  container?: React.CSSProperties;
+  divider?: React.CSSProperties;
+  dividerContainer?: React.CSSProperties;
+  dividerLabel?: React.CSSProperties;
+}
 
 // Validation rule types
 export type ValidationRuleType =
@@ -144,6 +163,10 @@ export interface FieldConfig {
   weightUnit?: 'lbs' | 'kg';
   // Conditional visibility - when should this field be shown
   conditionalVisibility?: ConditionalGroup;
+  // Display style for single choice fields
+  displayStyle?: SingleChoiceDisplayStyle;
+  // Advanced custom styles
+  advancedStyles?: AdvancedFieldStyles;
 }
 
 // Form page (for wizard mode)
@@ -165,6 +188,8 @@ export interface FormStyling {
   useGlassEffect: boolean;
   showProgressBar: boolean;
   progressBarStyle: ProgressBarStyle;
+  // Global default styles for all fields
+  defaultAdvancedStyles?: AdvancedFieldStyles;
 }
 
 // Form settings
@@ -175,6 +200,11 @@ export interface FormSettings {
   webhookUrl?: string;
   enableRecaptcha: boolean;
   collectAnalytics: boolean;
+  // Qualification redirect URLs
+  qualifyingUrl?: string;
+  disqualifyingUrl?: string;
+  // Default display language
+  defaultLanguage?: string;
 }
 
 // Complete form definition
@@ -202,6 +232,8 @@ export interface FormBuilderState {
   isTestPanelOpen: boolean;
   isConfigPanelOpen: boolean;
   isSettingsPanelOpen: boolean;
+  isFieldPaletteModalOpen: boolean;
+  fieldInsertPosition?: { afterFieldId: string | null; conditionalOnFieldId?: string };
   hasUnsavedChanges: boolean;
   undoStack: FormDefinition[];
   redoStack: FormDefinition[];
@@ -236,7 +268,9 @@ export type FormBuilderAction =
   | { type: 'UNDO' }
   | { type: 'REDO' }
   | { type: 'MARK_SAVED' }
-  | { type: 'RESET_FORM' };
+  | { type: 'RESET_FORM' }
+  | { type: 'OPEN_FIELD_PALETTE_MODAL'; payload?: { afterFieldId: string | null; conditionalOnFieldId?: string } }
+  | { type: 'CLOSE_FIELD_PALETTE_MODAL' };
 
 // Field metadata for palette
 export interface FieldMetadata {
@@ -633,6 +667,8 @@ export function createInitialState(form?: FormDefinition): FormBuilderState {
     isTestPanelOpen: false,
     isConfigPanelOpen: false,
     isSettingsPanelOpen: false,
+    isFieldPaletteModalOpen: false,
+    fieldInsertPosition: undefined,
     hasUnsavedChanges: false,
     undoStack: [],
     redoStack: [],

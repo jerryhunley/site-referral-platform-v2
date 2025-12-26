@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Plus,
@@ -8,6 +8,8 @@ import {
   ChevronDown,
   ChevronRight,
   Layers,
+  Check,
+  Search,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type {
@@ -24,6 +26,314 @@ import {
   operatorRequiresValue,
   canAddNestedGroup,
 } from '@/lib/utils/condition-evaluator';
+
+// ===========================================
+// Custom Dropdown Components
+// ===========================================
+
+interface FieldDropdownProps {
+  value: string;
+  options: FieldConfig[];
+  onChange: (fieldId: string) => void;
+  placeholder?: string;
+}
+
+function FieldDropdown({ value, options, onChange, placeholder = 'Select field...' }: FieldDropdownProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [search, setSearch] = useState('');
+  const containerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const selectedField = options.find((f) => f.id === value);
+
+  const filteredOptions = options.filter((f) =>
+    (f.label || f.name).toLowerCase().includes(search.toLowerCase())
+  );
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+        setSearch('');
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    if (isOpen && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isOpen]);
+
+  return (
+    <div ref={containerRef} className="relative flex-1 min-w-[140px]">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={cn(
+          'flex items-center gap-2 px-3 py-1.5 rounded-full w-full text-left',
+          'bg-white/80 dark:bg-slate-800/60',
+          'border border-white/90 dark:border-slate-700/50',
+          'hover:bg-white hover:border-white hover:shadow-[0_2px_8px_rgba(255,255,255,0.5)] dark:hover:bg-slate-700/60 dark:hover:shadow-[0_2px_8px_rgba(0,0,0,0.15)] transition-all',
+          isOpen && 'ring-2 ring-mint/40'
+        )}
+      >
+        <span className={cn(
+          'text-xs font-medium flex-1 truncate',
+          selectedField ? 'text-text-primary' : 'text-text-muted'
+        )}>
+          {selectedField ? (selectedField.label || selectedField.name) : placeholder}
+        </span>
+        <ChevronDown
+          className={cn(
+            'w-3.5 h-3.5 text-text-muted transition-transform shrink-0',
+            isOpen && 'rotate-180'
+          )}
+        />
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.15 }}
+            className="absolute top-full left-0 right-0 mt-2 z-50 max-h-60 overflow-hidden flex flex-col rounded-xl glass-dropdown"
+          >
+            {/* Search input */}
+            <div className="p-2">
+              <div className="relative">
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search..."
+                  className="w-full pl-8 pr-3 py-1.5 text-xs bg-white/80 dark:bg-slate-800/60 border border-white/90 dark:border-slate-700/50 rounded-full text-text-primary placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-mint/40"
+                />
+              </div>
+            </div>
+
+            {/* Options list */}
+            <div className="flex-1 overflow-y-auto p-2 space-y-0.5">
+              {filteredOptions.map((field) => (
+                <button
+                  key={field.id}
+                  onClick={() => {
+                    onChange(field.id);
+                    setIsOpen(false);
+                    setSearch('');
+                  }}
+                  className={cn(
+                    'flex items-center gap-2 w-full px-3 py-1.5 rounded-full text-left',
+                    'hover:bg-mint/10 dark:hover:bg-mint/15 transition-all',
+                    value === field.id && 'bg-mint/15 dark:bg-mint/20'
+                  )}
+                >
+                  <span className="text-xs font-medium text-text-primary flex-1">
+                    {field.label || field.name}
+                  </span>
+                  {value === field.id && (
+                    <Check className="w-3.5 h-3.5 text-mint shrink-0" />
+                  )}
+                </button>
+              ))}
+
+              {filteredOptions.length === 0 && (
+                <p className="text-xs text-gray-500 dark:text-gray-400 text-center py-3">
+                  No fields found
+                </p>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+interface OperatorDropdownProps {
+  value: ConditionOperator;
+  operators: ConditionOperator[];
+  onChange: (operator: ConditionOperator) => void;
+  disabled?: boolean;
+}
+
+function OperatorDropdown({ value, operators, onChange, disabled }: OperatorDropdownProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  return (
+    <div ref={containerRef} className="relative">
+      <button
+        onClick={() => !disabled && setIsOpen(!isOpen)}
+        disabled={disabled}
+        className={cn(
+          'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-left',
+          'bg-white/80 dark:bg-slate-800/60',
+          'border border-white/90 dark:border-slate-700/50',
+          'hover:bg-white hover:border-white hover:shadow-[0_2px_8px_rgba(255,255,255,0.5)] dark:hover:bg-slate-700/60 dark:hover:shadow-[0_2px_8px_rgba(0,0,0,0.15)] transition-all',
+          isOpen && 'ring-2 ring-mint/40',
+          disabled && 'opacity-50 cursor-not-allowed'
+        )}
+      >
+        <span className="text-xs font-medium text-text-primary whitespace-nowrap">
+          {getOperatorLabel(value)}
+        </span>
+        <ChevronDown
+          className={cn(
+            'w-3 h-3 text-text-muted transition-transform shrink-0',
+            isOpen && 'rotate-180'
+          )}
+        />
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.15 }}
+            className="absolute top-full left-0 mt-2 z-50 min-w-[140px] overflow-hidden flex flex-col rounded-xl glass-dropdown"
+          >
+            <div className="p-2 space-y-0.5">
+              {operators.map((op) => (
+                <button
+                  key={op}
+                  onClick={() => {
+                    onChange(op);
+                    setIsOpen(false);
+                  }}
+                  className={cn(
+                    'flex items-center gap-2 w-full px-3 py-1.5 rounded-full text-left',
+                    'hover:bg-mint/10 dark:hover:bg-mint/15 transition-all',
+                    value === op && 'bg-mint/15 dark:bg-mint/20'
+                  )}
+                >
+                  <span className="text-xs font-medium text-text-primary flex-1 whitespace-nowrap">
+                    {getOperatorLabel(op)}
+                  </span>
+                  {value === op && (
+                    <Check className="w-3.5 h-3.5 text-mint shrink-0" />
+                  )}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+interface ValueDropdownProps {
+  value: string;
+  options: { id: string; value: string; label: string }[];
+  onChange: (value: string) => void;
+  disabled?: boolean;
+  placeholder?: string;
+}
+
+function ValueDropdown({ value, options, onChange, disabled, placeholder = 'Select value...' }: ValueDropdownProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const selectedOption = options.find((o) => o.value === value);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  return (
+    <div ref={containerRef} className="relative flex-1 min-w-[120px]">
+      <button
+        onClick={() => !disabled && setIsOpen(!isOpen)}
+        disabled={disabled}
+        className={cn(
+          'flex items-center gap-2 px-3 py-1.5 rounded-full w-full text-left',
+          'bg-white/80 dark:bg-slate-800/60',
+          'border border-white/90 dark:border-slate-700/50',
+          'hover:bg-white hover:border-white hover:shadow-[0_2px_8px_rgba(255,255,255,0.5)] dark:hover:bg-slate-700/60 dark:hover:shadow-[0_2px_8px_rgba(0,0,0,0.15)] transition-all',
+          isOpen && 'ring-2 ring-mint/40',
+          disabled && 'opacity-50 cursor-not-allowed'
+        )}
+      >
+        <span className={cn(
+          'text-xs font-medium flex-1 truncate',
+          selectedOption ? 'text-text-primary' : 'text-text-muted'
+        )}>
+          {selectedOption?.label || placeholder}
+        </span>
+        <ChevronDown
+          className={cn(
+            'w-3.5 h-3.5 text-text-muted transition-transform shrink-0',
+            isOpen && 'rotate-180'
+          )}
+        />
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.15 }}
+            className="absolute top-full left-0 right-0 mt-2 z-50 max-h-48 overflow-hidden flex flex-col rounded-xl glass-dropdown"
+          >
+            <div className="flex-1 overflow-y-auto p-2 space-y-0.5">
+              {options.map((opt) => (
+                <button
+                  key={opt.id}
+                  onClick={() => {
+                    onChange(opt.value);
+                    setIsOpen(false);
+                  }}
+                  className={cn(
+                    'flex items-center gap-2 w-full px-3 py-1.5 rounded-full text-left',
+                    'hover:bg-mint/10 dark:hover:bg-mint/15 transition-all',
+                    value === opt.value && 'bg-mint/15 dark:bg-mint/20'
+                  )}
+                >
+                  <span className="text-xs font-medium text-text-primary flex-1">
+                    {opt.label}
+                  </span>
+                  {value === opt.value && (
+                    <Check className="w-3.5 h-3.5 text-mint shrink-0" />
+                  )}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+// ===========================================
+// Condition Builder Components
+// ===========================================
 
 interface ConditionBuilderProps {
   group: ConditionalGroup;
@@ -58,76 +368,56 @@ function ConditionRow({
   const isChoiceField = fieldOptions.length > 0;
   const isMultipleChoice = selectedField?.type === 'multiple_choice';
 
+  const handleFieldChange = (fieldId: string) => {
+    const newField = availableFields.find((f) => f.id === fieldId);
+    const newOperators = newField
+      ? getOperatorsForFieldType(newField.type)
+      : operators;
+    onChange({
+      ...condition,
+      sourceFieldId: fieldId,
+      operator: newOperators[0],
+      value: '',
+    });
+  };
+
+  const handleOperatorChange = (operator: ConditionOperator) => {
+    onChange({
+      ...condition,
+      operator,
+      value: operatorRequiresValue(operator) ? condition.value : undefined,
+    });
+  };
+
   return (
-    <div className="flex flex-wrap items-center gap-2 p-2 rounded-lg bg-white/30 dark:bg-white/5 border border-white/40 dark:border-white/10">
+    <div className="flex flex-wrap items-center gap-2">
       {/* Field selector */}
-      <select
+      <FieldDropdown
         value={condition.sourceFieldId}
-        onChange={(e) => {
-          const newField = availableFields.find((f) => f.id === e.target.value);
-          const newOperators = newField
-            ? getOperatorsForFieldType(newField.type)
-            : operators;
-          onChange({
-            ...condition,
-            sourceFieldId: e.target.value,
-            operator: newOperators[0],
-            value: '',
-          });
-        }}
-        className="flex-1 min-w-[120px] px-2 py-1.5 text-sm rounded-lg bg-white/40 dark:bg-white/10 border border-white/50 dark:border-white/10 text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/50"
-      >
-        <option value="">Select field...</option>
-        {availableFields.map((field) => (
-          <option key={field.id} value={field.id}>
-            {field.label || field.name}
-          </option>
-        ))}
-      </select>
+        options={availableFields}
+        onChange={handleFieldChange}
+      />
 
       {/* Operator selector */}
-      <select
+      <OperatorDropdown
         value={condition.operator}
-        onChange={(e) =>
-          onChange({
-            ...condition,
-            operator: e.target.value as ConditionOperator,
-            value: operatorRequiresValue(e.target.value as ConditionOperator)
-              ? condition.value
-              : undefined,
-          })
-        }
-        className="flex-1 min-w-[100px] px-2 py-1.5 text-sm rounded-lg bg-white/40 dark:bg-white/10 border border-white/50 dark:border-white/10 text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/50"
+        operators={operators}
+        onChange={handleOperatorChange}
         disabled={!condition.sourceFieldId}
-      >
-        {operators.map((op) => (
-          <option key={op} value={op}>
-            {getOperatorLabel(op)}
-          </option>
-        ))}
-      </select>
+      />
 
       {/* Value input */}
       {needsValue && (
         <>
           {isChoiceField && !isMultipleChoice ? (
-            <select
+            <ValueDropdown
               value={condition.value as string || ''}
-              onChange={(e) =>
-                onChange({ ...condition, value: e.target.value })
-              }
-              className="flex-1 min-w-[100px] px-2 py-1.5 text-sm rounded-lg bg-white/40 dark:bg-white/10 border border-white/50 dark:border-white/10 text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/50"
+              options={fieldOptions}
+              onChange={(v) => onChange({ ...condition, value: v })}
               disabled={!condition.sourceFieldId}
-            >
-              <option value="">Select value...</option>
-              {fieldOptions.map((opt) => (
-                <option key={opt.id} value={opt.value}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
+            />
           ) : isMultipleChoice ? (
-            <div className="flex-1 min-w-[100px] flex flex-wrap gap-1 p-1 rounded-lg bg-white/40 dark:bg-white/10 border border-white/50 dark:border-white/10">
+            <div className="flex-1 min-w-[100px] flex flex-wrap gap-1 p-1.5 rounded-xl bg-white/80 dark:bg-slate-800/60 border border-white/90 dark:border-slate-700/50">
               {fieldOptions.map((opt) => {
                 const values = Array.isArray(condition.value)
                   ? condition.value
@@ -144,10 +434,10 @@ function ConditionRow({
                       onChange({ ...condition, value: newValues });
                     }}
                     className={cn(
-                      'px-2 py-0.5 text-xs rounded-md transition-colors',
+                      'px-2.5 py-0.5 text-xs font-medium rounded-full transition-all',
                       isSelected
                         ? 'bg-mint text-white'
-                        : 'bg-white/40 dark:bg-white/10 text-text-secondary hover:text-text-primary'
+                        : 'bg-white/60 dark:bg-white/10 text-text-secondary hover:text-text-primary hover:bg-white/80'
                     )}
                   >
                     {opt.label}
@@ -163,7 +453,7 @@ function ConditionRow({
                 onChange({ ...condition, value: e.target.value })
               }
               placeholder="Value"
-              className="flex-1 min-w-[80px] px-2 py-1.5 text-sm rounded-lg bg-white/40 dark:bg-white/10 border border-white/50 dark:border-white/10 text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-mint/50"
+              className="flex-1 min-w-[80px] px-3 py-1.5 text-xs font-medium rounded-full bg-white/80 dark:bg-slate-800/60 border border-white/90 dark:border-slate-700/50 text-text-primary placeholder:text-text-muted hover:bg-white hover:border-white hover:shadow-[0_2px_8px_rgba(255,255,255,0.5)] dark:hover:bg-slate-700/60 dark:hover:shadow-[0_2px_8px_rgba(0,0,0,0.15)] focus:outline-none focus:ring-2 focus:ring-mint/40 transition-all"
               disabled={!condition.sourceFieldId}
             />
           )}
@@ -173,7 +463,7 @@ function ConditionRow({
       {/* Remove button */}
       <button
         onClick={onRemove}
-        className="p-1.5 rounded-lg text-text-muted hover:text-error hover:bg-error/10 transition-colors"
+        className="p-1.5 rounded-full text-text-primary glass-button hover:text-error hover:scale-105 active:scale-95 transition-all"
         title="Remove condition"
       >
         <Trash2 className="w-4 h-4" />
@@ -242,18 +532,18 @@ export function ConditionBuilder({
   return (
     <div
       className={cn(
-        'rounded-xl border transition-colors',
+        'rounded-xl transition-colors',
         depth === 0
-          ? 'border-white/40 dark:border-white/10 bg-white/20 dark:bg-white/5'
-          : 'border-mint/30 bg-mint/5',
+          ? 'glass-card-inset'
+          : 'border border-mint/30 bg-mint/5',
         depth > 0 && 'ml-4'
       )}
     >
       {/* Group Header */}
-      <div className="flex items-center gap-2 p-2">
+      <div className="flex items-center gap-2 p-3">
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="p-1 rounded-lg text-text-muted hover:text-text-primary hover:bg-white/30 dark:hover:bg-white/10 transition-colors"
+          className="p-1.5 rounded-full text-text-muted hover:text-text-primary glass-button hover:scale-105 active:scale-95 transition-all"
         >
           {isExpanded ? (
             <ChevronDown className="w-4 h-4" />
@@ -266,7 +556,7 @@ export function ConditionBuilder({
           <Layers className="w-4 h-4 text-mint" />
         )}
 
-        <span className="text-xs font-medium text-text-secondary uppercase tracking-wider">
+        <span className="text-xs font-semibold text-text-secondary uppercase tracking-wider">
           {depth === 0 ? 'Show when' : 'Group'}
         </span>
 
@@ -275,10 +565,10 @@ export function ConditionBuilder({
           <button
             onClick={handleToggleLogic}
             className={cn(
-              'px-2 py-0.5 text-xs font-medium rounded-md transition-colors',
+              'px-3 py-1 text-xs font-semibold rounded-md transition-colors',
               group.logic === 'and'
-                ? 'bg-mint/20 text-mint'
-                : 'bg-vista-blue/20 text-vista-blue'
+                ? 'bg-mint/15 text-mint dark:bg-mint/20'
+                : 'bg-vista-blue/15 text-vista-blue dark:bg-vista-blue/20'
             )}
           >
             {group.logic.toUpperCase()}
@@ -291,7 +581,7 @@ export function ConditionBuilder({
         {depth > 0 && onRemove && (
           <button
             onClick={onRemove}
-            className="p-1 rounded-lg text-text-muted hover:text-error hover:bg-error/10 transition-colors"
+            className="p-1.5 rounded-full text-text-primary glass-button hover:text-error hover:scale-105 active:scale-95 transition-all"
             title="Remove group"
           >
             <Trash2 className="w-4 h-4" />
@@ -309,13 +599,28 @@ export function ConditionBuilder({
             transition={{ duration: 0.15 }}
             className="overflow-hidden"
           >
-            <div className="p-2 pt-0 space-y-2">
+            <div className="p-3 pt-0 space-y-3">
               {/* Conditions */}
               {group.conditions.map((condition, index) => (
-                <div key={condition.id} className="relative">
+                <div key={condition.id} className="space-y-2">
                   {index > 0 && (
-                    <div className="absolute -top-1.5 left-4 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-text-muted bg-white/60 dark:bg-bg-secondary rounded">
-                      {group.logic}
+                    <div className="flex items-center gap-2 pl-4">
+                      <span className={cn(
+                        'px-3 py-1 text-xs font-semibold rounded-md',
+                        group.logic === 'and'
+                          ? 'bg-mint/15 text-mint dark:bg-mint/20'
+                          : 'bg-vista-blue/15 text-vista-blue dark:bg-vista-blue/20'
+                      )}>
+                        {group.logic.toUpperCase()}
+                      </span>
+                      <div
+                        className="flex-1 h-px"
+                        style={{
+                          backgroundImage: 'radial-gradient(circle, rgb(156 163 175 / 0.5) 1px, transparent 1px)',
+                          backgroundSize: '8px 1px',
+                          backgroundRepeat: 'repeat-x',
+                        }}
+                      />
                     </div>
                   )}
                   <ConditionRow
@@ -329,10 +634,25 @@ export function ConditionBuilder({
 
               {/* Nested Groups */}
               {group.nestedGroups.map((nestedGroup, index) => (
-                <div key={nestedGroup.id} className="relative">
+                <div key={nestedGroup.id} className="space-y-2">
                   {(group.conditions.length > 0 || index > 0) && (
-                    <div className="absolute -top-1.5 left-4 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-text-muted bg-white/60 dark:bg-bg-secondary rounded">
-                      {group.logic}
+                    <div className="flex items-center gap-2 pl-4">
+                      <span className={cn(
+                        'px-3 py-1 text-xs font-semibold rounded-md',
+                        group.logic === 'and'
+                          ? 'bg-mint/15 text-mint dark:bg-mint/20'
+                          : 'bg-vista-blue/15 text-vista-blue dark:bg-vista-blue/20'
+                      )}>
+                        {group.logic.toUpperCase()}
+                      </span>
+                      <div
+                        className="flex-1 h-px"
+                        style={{
+                          backgroundImage: 'radial-gradient(circle, rgb(156 163 175 / 0.5) 1px, transparent 1px)',
+                          backgroundSize: '8px 1px',
+                          backgroundRepeat: 'repeat-x',
+                        }}
+                      />
                     </div>
                   )}
                   <ConditionBuilder
@@ -346,11 +666,21 @@ export function ConditionBuilder({
                 </div>
               ))}
 
+              {/* Dotted divider */}
+              <div
+                className="h-px"
+                style={{
+                  backgroundImage: 'radial-gradient(circle, rgb(156 163 175 / 0.5) 1px, transparent 1px)',
+                  backgroundSize: '8px 1px',
+                  backgroundRepeat: 'repeat-x',
+                }}
+              />
+
               {/* Add buttons */}
               <div className="flex items-center gap-2 pt-1">
                 <button
                   onClick={handleAddCondition}
-                  className="flex items-center gap-1 px-2 py-1 text-xs font-medium text-mint hover:text-mint-dark transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-text-primary glass-button rounded-full hover:scale-105 active:scale-95 transition-all"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   Add Condition
@@ -359,7 +689,7 @@ export function ConditionBuilder({
                 {canNest && (
                   <button
                     onClick={handleAddNestedGroup}
-                    className="flex items-center gap-1 px-2 py-1 text-xs font-medium text-vista-blue hover:text-vista-blue/80 transition-colors"
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-text-primary glass-button rounded-full hover:scale-105 active:scale-95 transition-all"
                   >
                     <Layers className="w-3.5 h-3.5" />
                     Add Group
